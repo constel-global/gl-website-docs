@@ -1,1188 +1,513 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gravity Labs — Architecture Reference</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #050b23;
-    --bg2: rgba(14, 27, 63, 0.66);
-    --bg3: rgba(28, 45, 88, 0.72);
-    --border: rgba(167, 191, 255, 0.18);
-    --border-active: rgba(167, 191, 255, 0.34);
-    --text: #eaf1ff;
-    --text2: #aebce1;
-    --text3: #7a8dbd;
-    --accent-blue: #3f75ff;
-    --accent-teal: #14b8a6;
-    --accent-purple: #a78bfa;
-    --accent-amber: #f59e0b;
-    --accent-coral: #f87171;
-    --accent-green: #4ade80;
-    --accent-pink: #f472b6;
-    --accent-indigo: #818cf8;
-    --hero-bg-light: url("./assets/BG_-_Light.png");
-    --hero-bg-dark: url("./assets/BG_-_Dark.png");
-  }
-  body[data-theme="light"] {
-    --bg: #e8f2fd;
-    --bg2: rgba(255, 255, 255, 0.78);
-    --bg3: rgba(229, 239, 252, 0.9);
-    --border: rgba(92, 122, 177, 0.22);
-    --border-active: rgba(70, 99, 156, 0.35);
-    --text: #14274f;
-    --text2: #425b8f;
-    --text3: #6a7fae;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.7;
-    min-height: 100vh;
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 
-  /* ── Header ── */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 28px 48px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: sticky;
-    top: 0;
-    background: rgba(7, 15, 42, 0.8);
-    backdrop-filter: blur(12px);
-    z-index: 100;
-  }
-  body[data-theme="light"] header { background: rgba(235, 244, 255, 0.84); }
-  .logo-mark {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 14px; font-weight: 700;
-    color: #fff; flex-shrink: 0;
-  }
-  .header-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px; letter-spacing: 0.08em;
-    color: var(--text2);
-    text-transform: uppercase;
-  }
-  .header-title span { color: var(--text); }
-  .header-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 4px 10px;
-    border: 1px solid var(--border-active);
-    border-radius: 100px;
-    color: var(--text2);
-  }
-  .header-controls {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .theme-toggle {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    width: 32px;
-    height: 26px;
-    border: 1px solid var(--border-active);
-    border-radius: 100px;
-    color: var(--text2);
-    background: var(--bg2);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
-  }
-  .theme-toggle:hover {
-    border-color: var(--text2);
-    color: var(--text);
-  }
-  .theme-toggle svg {
-    width: 15px;
-    height: 15px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    pointer-events: none;
-  }
+:root{--transition:0.3s cubic-bezier(0.4,0,0.2,1)}
 
-  /* ── Layout ── */
-  .page { max-width: 1100px; margin: 0 auto; padding: 0 48px 120px; }
+[data-theme="dark"]{
+  --bg:#0a0e1a;--bg2:#111520;--bg3:#181e2e;
+  --border:rgba(255,255,255,0.07);--border-active:rgba(255,255,255,0.16);
+  --text:#e8edf8;--text2:#7a85a8;--text3:#3e4660;
+  --accent:#2563eb;--accent-h:#3b74f8;--accent-soft:rgba(37,99,235,0.12);--accent-glow:rgba(37,99,235,0.22);
+  --tag-bg:rgba(255,255,255,0.05);--tag-border:rgba(255,255,255,0.1);
+  --sidebar-bg:#0d1120;--sidebar-active:rgba(37,99,235,0.12);
+  --nav-bg:rgba(10,14,26,0.92);
+  --code-bg:#0d1120;--code-text:#a5b4fc;
+  --chip-green:rgba(74,222,128,0.1);--chip-green-t:rgba(74,222,128,0.2);--chip-green-c:#4ade80;
+  --chip-amber:rgba(251,191,36,0.1);--chip-amber-t:rgba(251,191,36,0.2);--chip-amber-c:#fbbf24;
+  --chip-red:rgba(248,113,113,0.1);--chip-red-t:rgba(248,113,113,0.2);--chip-red-c:#f87171;
+  --table-stripe:rgba(255,255,255,0.02);
+  --example-bg:rgba(37,99,235,0.06);--example-border:rgba(37,99,235,0.18);
+}
+[data-theme="light"]{
+  --bg:#f0f5fc;--bg2:#ffffff;--bg3:#f7faff;
+  --border:rgba(37,99,235,0.1);--border-active:rgba(37,99,235,0.28);
+  --text:#0d1830;--text2:#3d5080;--text3:#8090b8;
+  --accent:#2563eb;--accent-h:#1d4ed8;--accent-soft:rgba(37,99,235,0.07);--accent-glow:rgba(37,99,235,0.14);
+  --tag-bg:rgba(37,99,235,0.06);--tag-border:rgba(37,99,235,0.14);
+  --sidebar-bg:#e8effa;--sidebar-active:rgba(37,99,235,0.1);
+  --nav-bg:rgba(240,245,252,0.92);
+  --code-bg:#e8effa;--code-text:#1d4ed8;
+  --chip-green:rgba(22,163,74,0.08);--chip-green-t:rgba(22,163,74,0.18);--chip-green-c:#16a34a;
+  --chip-amber:rgba(217,119,6,0.08);--chip-amber-t:rgba(217,119,6,0.18);--chip-amber-c:#d97706;
+  --chip-red:rgba(220,38,38,0.08);--chip-red-t:rgba(220,38,38,0.18);--chip-red-c:#dc2626;
+  --table-stripe:rgba(37,99,235,0.02);
+  --example-bg:rgba(37,99,235,0.04);--example-border:rgba(37,99,235,0.14);
+}
 
-  /* ── Hero ── */
-  .intro {
-    margin: 34px 0 56px;
-    border: 1px solid var(--border);
-    border-radius: 26px;
-    overflow: hidden;
-    position: relative;
-    background-color: var(--bg2);
-    background-image:
-      radial-gradient(circle at 72% 24%, rgba(89, 135, 255, 0.28), transparent 44%),
-      radial-gradient(circle at 14% 88%, rgba(145, 198, 255, 0.2), transparent 42%),
-      linear-gradient(135deg, rgba(7, 20, 56, 0.86), rgba(9, 17, 44, 0.82)),
-      var(--hero-bg-dark);
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 26px 60px rgba(2, 8, 28, 0.35);
-  }
-  body[data-theme="light"] .intro {
-    background-image:
-      radial-gradient(circle at 72% 24%, rgba(129, 168, 232, 0.22), transparent 45%),
-      radial-gradient(circle at 14% 88%, rgba(154, 192, 226, 0.18), transparent 42%),
-      linear-gradient(135deg, rgba(228, 238, 249, 0.92), rgba(215, 230, 247, 0.88)),
-      var(--hero-bg-light);
-  }
-  .intro-content {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 44px;
-    padding: 72px 60px;
-    position: relative;
-    z-index: 1;
-  }
-  .intro-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; letter-spacing: 0.12em;
-    color: var(--accent-blue);
-    text-transform: uppercase;
-    margin-bottom: 18px;
-  }
-  .intro h1 {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 60px;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--text);
-    margin-bottom: 22px;
-    letter-spacing: -0.03em;
-  }
-  .intro p {
-    color: var(--text2);
-    max-width: 640px;
-    font-size: 18px;
-    line-height: 1.6;
-  }
-  .hero-highlights {
-    list-style: none;
-    margin-top: 28px;
-    display: grid;
-    gap: 10px;
-  }
-  .hero-highlights li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text);
-    font-size: 17px;
-  }
-  .hero-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--accent-blue);
-    box-shadow: 0 0 0 4px rgba(63, 117, 255, 0.2);
-    flex-shrink: 0;
-  }
-  .hero-info-card {
-    border: 1px solid var(--border);
-    background: rgba(11, 26, 63, 0.44);
-    border-radius: 20px;
-    backdrop-filter: blur(12px);
-    padding: 26px;
-    align-self: center;
-  }
-  body[data-theme="light"] .hero-info-card {
-    background: rgba(255, 255, 255, 0.58);
-  }
-  .hero-info-card .meta-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .hero-info-card .meta-value {
-    font-size: 26px;
-    line-height: 1.25;
-    color: var(--text);
-    margin-bottom: 16px;
-    font-weight: 600;
-  }
-  .hero-info-list {
-    list-style: none;
-    display: grid;
-    gap: 10px;
-    color: var(--text2);
-    font-size: 14px;
-  }
-  .hero-info-list li strong {
-    color: var(--text);
-    font-weight: 600;
-  }
-  @media (max-width: 980px) {
-    .intro-content {
-      grid-template-columns: 1fr;
-      gap: 22px;
-      padding: 50px 34px;
-    }
-    .intro h1 { font-size: 46px; }
-  }
+body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh}
 
-  /* ── Section heading ── */
-  .section-head {
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 24px;
-  }
-  .section-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; color: var(--text3);
-    min-width: 28px;
-  }
-  .section-head h2 {
-    font-family: 'Space Mono', monospace;
-    font-size: 17px; font-weight: 700;
-    color: var(--text);
-  }
+/* ── TOP NAV ── */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 32px;gap:24px;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:background var(--transition),border-color var(--transition)}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(37,99,235,0.3)}
+.logo-icon svg{width:16px;height:16px}
+.logo-wordmark{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.02em;transition:color var(--transition)}
+.logo-wordmark span{color:var(--accent)}
+.nav-tabs{display:flex;align-items:center;gap:2px;margin-left:24px}
+.nav-tab{font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;color:var(--text2);transition:all var(--transition);border:1px solid transparent}
+.nav-tab:hover{color:var(--text);background:var(--accent-soft)}
+.nav-tab.active{color:var(--accent);background:var(--accent-soft);border-color:var(--border-active)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.version-badge{font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);color:var(--text3);transition:all var(--transition)}
+.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--tag-bg);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all var(--transition)}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.theme-btn svg{width:14px;height:14px}
+.i-sun{display:none}.i-moon{display:block}
+[data-theme="light"] .i-sun{display:block}[data-theme="light"] .i-moon{display:none}
 
-  /* ── Architecture stack diagram ── */
-  .arch-stack { margin-bottom: 80px; }
-  .layer-block {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 8px;
-    transition: border-color 0.2s;
-  }
-  .layer-block:hover { border-color: var(--border-active); }
-  .layer-block.active { border-color: var(--border-active); }
+/* ── PAGE LAYOUT ── */
+.page-wrap{display:flex;min-height:100vh;padding-top:56px}
 
-  .layer-header {
-    display: flex; align-items: center; gap: 16px;
-    padding: 18px 24px;
-    cursor: pointer;
-    user-select: none;
-    background: var(--bg2);
-    transition: background 0.15s;
-  }
-  .layer-header:hover { background: var(--bg3); }
+/* ── SIDEBAR ── */
+.sidebar{width:240px;flex-shrink:0;position:fixed;top:56px;bottom:0;left:0;overflow-y:auto;background:var(--sidebar-bg);border-right:1px solid var(--border);padding:24px 0 48px;transition:background var(--transition),border-color var(--transition)}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sb-section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:0 20px;margin:20px 0 6px;transition:color var(--transition)}
+.sb-link{display:flex;align-items:center;gap:10px;padding:7px 20px;font-size:13px;color:var(--text2);text-decoration:none;transition:all var(--transition);border-left:2px solid transparent;cursor:pointer}
+.sb-link:hover{color:var(--text);background:var(--accent-soft)}
+.sb-link.active{color:var(--accent);background:var(--sidebar-active);border-left-color:var(--accent);font-weight:500}
+.sb-link .sb-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);min-width:22px;transition:color var(--transition)}
+.sb-link.active .sb-num{color:var(--accent)}
 
-  .layer-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .layer-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text2);
-    min-width: 200px;
-  }
-  .layer-tags {
-    display: flex; gap: 6px; flex-wrap: wrap; flex: 1;
-  }
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    color: var(--text2);
-    background: rgba(255,255,255,0.03);
-  }
-  .layer-chevron {
-    margin-left: auto;
-    color: var(--text3);
-    font-size: 18px;
-    transition: transform 0.25s;
-    flex-shrink: 0;
-  }
-  .layer-block.active .layer-chevron { transform: rotate(180deg); }
+/* ── MAIN CONTENT ── */
+.main-content{margin-left:240px;flex:1;min-width:0;padding:48px 64px 120px;max-width:960px}
 
-  .layer-body {
-    display: none;
-    padding: 28px 28px 28px;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-  }
-  .layer-block.active .layer-body { display: block; }
+/* ── SECTION ── */
+.doc-section{margin-bottom:80px;scroll-margin-top:80px}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.section-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--text);margin-bottom:16px;transition:color var(--transition)}
+.section-lead{color:var(--text2);font-size:15px;line-height:1.75;max-width:680px;margin-bottom:28px}
+.divider{border:none;border-top:1px solid var(--border);margin:80px 0;transition:border-color var(--transition)}
 
-  .layer-body-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-  }
-  @media (max-width: 800px) {
-    .layer-body-grid { grid-template-columns: 1fr; }
-  }
+/* ── PAGE INTRO ── */
+.page-intro{margin-bottom:56px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+.page-intro h1{font-family:'Sora',sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.025em;color:var(--text);margin-bottom:12px}
+.page-intro p{color:var(--text2);font-size:15px;max-width:600px}
+.intro-meta{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
+.intro-meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+.intro-meta-item svg{width:12px;height:12px;color:var(--accent)}
 
-  .info-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 10px 24px rgba(7, 15, 45, 0.16);
-  }
-  .info-card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 10px;
-  }
-  .info-card p { color: var(--text2); font-size: 13.5px; line-height: 1.65; }
-  .info-card ul { padding-left: 18px; color: var(--text2); font-size: 13.5px; }
-  .info-card ul li { margin-bottom: 5px; }
+/* ── CARDS GRID ── */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.cards-2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;transition:all var(--transition)}
+.card:hover{border-color:var(--border-active)}
+.card-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.card p,.card ul{color:var(--text2);font-size:13.5px;line-height:1.65}
+.card ul{padding-left:16px}
+.card ul li{margin-bottom:5px}
 
-  .service-chips {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
-  }
-  .chip {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 5px 10px;
-    border-radius: 6px;
-    border: 1px solid;
-  }
+/* ── TAGS ── */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.tag{font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:5px;border:1px solid var(--tag-border);background:var(--tag-bg);color:var(--text2)}
+.tag.blue{color:var(--accent);border-color:rgba(37,99,235,0.25);background:rgba(37,99,235,0.07)}
+.tag.green{color:var(--chip-green-c);border-color:var(--chip-green-t);background:var(--chip-green)}
+.tag.amber{color:var(--chip-amber-c);border-color:var(--chip-amber-t);background:var(--chip-amber)}
+.tag.red{color:var(--chip-red-c);border-color:var(--chip-red-t);background:var(--chip-red)}
 
-  /* decision table */
-  .decision-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    margin-top: 8px;
-  }
-  .decision-table th {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text3);
-    padding: 10px 12px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  .decision-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text2);
-    vertical-align: top;
-  }
-  .decision-table tr:last-child td { border-bottom: none; }
-  .decision-table .chosen {
-    color: var(--accent-teal);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-  }
+/* ── EXAMPLE BOX ── */
+.example{background:var(--example-bg);border:1px solid var(--example-border);border-radius:8px;padding:16px 18px;margin-top:14px}
+.example-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.example p{color:var(--text2);font-size:13.5px;line-height:1.65}
 
-  /* flow diagram */
-  .flow-diagram {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex-wrap: wrap;
-    margin: 12px 0;
-  }
-  .flow-step {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text2);
-    white-space: nowrap;
-  }
-  .flow-arrow {
-    color: var(--text3);
-    font-size: 18px;
-    padding: 0 6px;
-    flex-shrink: 0;
-  }
+/* ── CODE ── */
+.code{background:var(--code-bg);border:1px solid var(--border);border-radius:7px;padding:14px 18px;font-family:'DM Mono',monospace;font-size:12px;color:var(--code-text);overflow-x:auto;white-space:pre;margin:10px 0;transition:all var(--transition)}
 
-  /* example box */
-  .example-box {
-    background: rgba(20, 184, 166, 0.05);
-    border: 1px solid rgba(20, 184, 166, 0.2);
-    border-radius: 8px;
-    padding: 16px 18px;
-    margin-top: 12px;
-  }
-  .example-box .ex-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent-teal);
-    margin-bottom: 8px;
-  }
-  .example-box p { color: var(--text2); font-size: 13px; line-height: 1.65; }
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.tbl th{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:var(--table-stripe)}
 
-  /* code snippet */
-  .code-snip {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 12px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: #a5b4fc;
-    margin-top: 10px;
-    overflow-x: auto;
-    white-space: pre;
-  }
+/* ── PIPELINE ── */
+.pipeline{display:flex;flex-direction:column;gap:2px;margin:14px 0}
+.pipe-stage{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;transition:all var(--transition)}
+.pipe-num{width:28px;height:28px;border-radius:6px;background:var(--accent-soft);border:1px solid var(--border-active);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);flex-shrink:0;margin-top:1px}
+.pipe-name{font-size:13.5px;font-weight:500;color:var(--text);min-width:180px}
+.pipe-detail{font-size:13px;color:var(--text2)}
+.pipe-connector{width:1px;height:10px;background:var(--border-active);margin-left:27px}
 
-  /* ADR section */
-  .adr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 700px) { .adr-grid { grid-template-columns: 1fr; } }
-  .adr-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px 18px;
-  }
-  .adr-status {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-bottom: 8px;
-  }
-  .adr-status.decided { background: rgba(74,222,128,0.1); color: var(--accent-green); border: 1px solid rgba(74,222,128,0.2); }
-  .adr-status.pending { background: rgba(245,158,11,0.1); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.2); }
-  .adr-card h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-  .adr-card p { font-size: 12.5px; color: var(--text2); }
+/* ── LAYER STACK ── */
+.layer-stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.layer-item{border:1px solid var(--border);border-radius:9px;overflow:hidden;transition:border-color var(--transition)}
+.layer-item:hover{border-color:var(--border-active)}
+.layer-item.open{border-color:var(--border-active)}
+.layer-hd{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;background:var(--bg2);user-select:none}
+.layer-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.layer-name{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);min-width:200px}
+.layer-tags{display:flex;gap:5px;flex-wrap:wrap;flex:1}
+.layer-chev{margin-left:auto;color:var(--text3);transition:transform 0.25s;flex-shrink:0;font-size:16px}
+.layer-item.open .layer-chev{transform:rotate(180deg)}
+.layer-bd{display:none;padding:20px 20px 20px;background:var(--bg);border-top:1px solid var(--border)}
+.layer-item.open .layer-bd{display:block}
 
-  /* scale section */
-  .scale-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin: 16px 0;
-  }
-  .scale-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-  }
-  .scale-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 22px; font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .scale-label { font-size: 11px; color: var(--text2); }
+/* ── ACTOR CHIPS ── */
+.actors{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.actor{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text2);transition:all var(--transition)}
+.actor:hover{border-color:var(--border-active);color:var(--text)}
+.actor svg{width:16px;height:16px;color:var(--accent);flex-shrink:0}
 
-  /* CI/CD pipeline visual */
-  .pipeline {
-    display: flex; flex-direction: column; gap: 2px;
-    margin: 12px 0;
-  }
-  .pipeline-stage {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 14px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 13px;
-  }
-  .pipeline-stage .p-icon {
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-  .pipeline-stage .p-name { font-weight: 500; min-width: 160px; }
-  .pipeline-stage .p-detail { color: var(--text2); font-size: 12px; }
-  .pipeline-connector {
-    width: 1px; height: 10px;
-    background: var(--border-active);
-    margin-left: 25px;
-  }
+/* ── SCALE ROW ── */
+.scale-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.scale-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px;text-align:center;transition:all var(--transition)}
+.scale-card:hover{border-color:var(--border-active)}
+.scale-num{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;margin-bottom:4px}
+.scale-sub{font-size:11px;color:var(--text2);line-height:1.5}
 
-  /* section spacer */
-  .section { margin-bottom: 72px; }
+/* ── ADR GRID ── */
+.adr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.adr-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 18px;transition:all var(--transition)}
+.adr-status{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;margin-bottom:8px}
+.adr-card h4{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:6px}
+.adr-card p{font-size:12.5px;color:var(--text2)}
 
-  /* highlight inline */
-  .hl { color: var(--text); font-weight: 500; }
-  .hl-blue { color: var(--accent-blue); }
-  .hl-teal { color: var(--accent-teal); }
-  .hl-amber { color: var(--accent-amber); }
-  .hl-coral { color: var(--accent-coral); }
-  .hl-green { color: var(--accent-green); }
-  .hl-purple { color: var(--accent-purple); }
-  .hl-pink { color: var(--accent-pink); }
-  .hl-indigo { color: var(--accent-indigo); }
+/* ── ALERT PATH ── */
+.alert-path{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin:12px 0}
+.ap-step{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 14px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);white-space:nowrap}
+.ap-arrow{color:var(--text3);padding:0 6px;font-size:16px}
 
-  /* toc */
-  .toc {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px 24px;
-    margin-bottom: 64px;
-    background: var(--bg2);
-    backdrop-filter: blur(8px);
-  }
-  .toc-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 14px;
-  }
-  .toc-links { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; }
-  .toc-links a {
-    color: var(--text2);
-    text-decoration: none;
-    font-size: 13px;
-    display: flex; gap: 10px; align-items: baseline;
-    transition: color 0.15s;
-  }
-  .toc-links a:hover { color: var(--accent-teal); }
-  .toc-links a .toc-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; color: var(--text3); min-width: 20px;
-  }
+/* ── SERVICE GRID ── */
+.svc-grid{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.svc-chip{font-family:'DM Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;border:1px solid}
 
-  /* horizontal rule between sections */
-  .section-rule { border: none; border-top: 1px solid var(--border); margin: 72px 0 64px; }
-  @media (max-width: 760px) {
-    header { padding: 20px 22px; }
-    .page { padding: 0 18px 90px; }
-    .header-title { font-size: 11px; }
-    .header-badge { display: none; }
-    .intro h1 { font-size: 36px; }
-    .hero-highlights li { font-size: 15px; }
-  }
+/* ── HIGHLIGHT ── */
+.hl{color:var(--text);font-weight:500}
+.hl-blue{color:var(--accent)}
+.hl-green{color:var(--chip-green-c)}
+.hl-amber{color:var(--chip-amber-c)}
+.hl-red{color:var(--chip-red-c)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){.sidebar{display:none}.main-content{margin-left:0;padding:32px 24px 80px}}
+@media(max-width:600px){.cards{grid-template-columns:1fr}.scale-row{grid-template-columns:1fr 1fr}.adr-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo-mark">GL</div>
-  <div>
-    <div class="header-title"><span>Gravity Labs</span> — Architecture Reference</div>
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a class="logo" href="index.html">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <span class="logo-wordmark">Gravity<span>Labs</span></span>
+  </a>
+  <div class="nav-tabs">
+    <a class="nav-tab active" href="index.html">Documentation</a>
+    <a class="nav-tab" href="diagram.html">Architecture</a>
+    <a class="nav-tab" href="flows.html">Flows</a>
   </div>
-  <div class="header-controls">
-    <div class="header-badge">v1.0 · May 2026</div>
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch to light mode"></button>
+  <div class="nav-right">
+    <span class="version-badge">v1.0 · May 2026</span>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
   </div>
-</header>
+</nav>
 
-<div class="page">
+<div class="page-wrap">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-section-label">Overview</div>
+  <a class="sb-link active" onclick="scrollTo('s00')"><span class="sb-num">00</span>Users &amp; Actors</a>
+  <a class="sb-link" onclick="scrollTo('s01')"><span class="sb-num">01</span>Access &amp; Edge</a>
+  <a class="sb-link" onclick="scrollTo('s02')"><span class="sb-num">02</span>Full Stack</a>
+  <div class="sb-section-label">Application</div>
+  <a class="sb-link" onclick="scrollTo('s03')"><span class="sb-num">03</span>Client Layer</a>
+  <a class="sb-link" onclick="scrollTo('s04')"><span class="sb-num">04</span>API Gateway</a>
+  <a class="sb-link" onclick="scrollTo('s05')"><span class="sb-num">05</span>App Services</a>
+  <a class="sb-link" onclick="scrollTo('s06')"><span class="sb-num">06</span>AI Agents</a>
+  <a class="sb-link" onclick="scrollTo('s07')"><span class="sb-num">07</span>Workflow</a>
+  <div class="sb-section-label">Infrastructure</div>
+  <a class="sb-link" onclick="scrollTo('s08')"><span class="sb-num">08</span>Messaging &amp; Cache</a>
+  <a class="sb-link" onclick="scrollTo('s09')"><span class="sb-num">09</span>Data Layer</a>
+  <a class="sb-link" onclick="scrollTo('s10')"><span class="sb-num">10</span>CI/CD &amp; Clusters</a>
+  <a class="sb-link" onclick="scrollTo('s11')"><span class="sb-num">11</span>Monitoring</a>
+  <a class="sb-link" onclick="scrollTo('s12')"><span class="sb-num">12</span>Peripheral Services</a>
+  <div class="sb-section-label">Planning</div>
+  <a class="sb-link" onclick="scrollTo('s13')"><span class="sb-num">13</span>Scale Strategy</a>
+  <a class="sb-link" onclick="scrollTo('s14')"><span class="sb-num">14</span>Open Decisions</a>
+</aside>
 
-  <!-- Intro -->
-  <div class="intro">
-    <div class="intro-content">
-      <div>
-        <div class="intro-eyebrow">Architecture Reference Document</div>
-        <h1>Real cloud labs.<br>Clear system design.</h1>
-        <p>Everything engineering needs to understand Gravity Labs platform architecture - each layer, each decision, and how services, agents, workflow, and infrastructure connect in production.</p>
-        <ul class="hero-highlights">
-          <li><span class="hero-dot"></span>AI agent-based lab lifecycle orchestration.</li>
-          <li><span class="hero-dot"></span>Cloud-agnostic architecture patterns.</li>
-          <li><span class="hero-dot"></span>Scale-ready design from 500 to 25,000 participants.</li>
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+  <div class="page-intro">
+    <div class="section-eyebrow">Architecture Reference Document</div>
+    <h1>Gravity Labs Platform Architecture</h1>
+    <p>Layer-by-layer reference for the entire platform — every technology, every decision, and exactly how it fits. Living document updated each sprint.</p>
+    <div class="intro-meta">
+      <span class="intro-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>May 2026</span>
+      <span class="intro-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Sprint 1 Active</span>
+      <span class="intro-meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Constel Global</span>
+    </div>
+  </div>
+
+  <!-- S00: Users & Actors -->
+  <div class="doc-section" id="s00">
+    <div class="section-eyebrow">00 / Users &amp; Actors</div>
+    <h2 class="section-title">Users &amp; Actors</h2>
+    <p class="section-lead">Four distinct user types interact with the Gravity Labs platform, each with different access levels, capabilities, and entry points.</p>
+    <div class="actors">
+      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Participants / Learners</div>
+      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Trainers / Evaluators</div>
+      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Platform Admins</div>
+      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sponsors / Partners</div>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="card-label">Participants</div><p>Access labs via browser. Receive a unique isolated cloud environment. Interact through Guacamole (RDP/SSH) or Code-Server. Scored in real time by the AI scoring agent.</p></div>
+      <div class="card"><div class="card-label">Trainers / Evaluators</div><p>Create and manage lab content via the lab catalog. Monitor participant progress in real time via the Proctor View. Review AI-generated scores and override if needed.</p></div>
+      <div class="card"><div class="card-label">Platform Admins</div><p>Full access to the Admin Portal. Approve HITL gates, manage tenants, configure subscriptions, monitor infrastructure health, and trigger event launches.</p></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S01: Access & Edge -->
+  <div class="doc-section" id="s01">
+    <div class="section-eyebrow">01 / Access &amp; Edge Layer</div>
+    <h2 class="section-title">Access &amp; Edge Layer</h2>
+    <p class="section-lead">All external traffic enters through Nginx acting as the ingress controller inside AKS. Throttling and rate limiting are managed at the AKS/application layer — no external API gateway or WAF in the current architecture.</p>
+    <div class="cards">
+      <div class="card"><div class="card-label">Technology</div><p><span class="hl-blue">Nginx Ingress Controller</span> deployed inside AKS. Single entry point for all frontend and API traffic. TLS termination, URL routing, upstream health checks.</p>
+        <div class="tags"><span class="tag blue">Nginx</span><span class="tag">TLS termination</span><span class="tag">URL routing</span><span class="tag">Health probes</span></div>
+      </div>
+      <div class="card"><div class="card-label">Throttling &amp; Rate Limiting</div>
+        <p>Rate limiting handled at two layers:</p>
+        <ul style="margin-top:8px">
+          <li><span class="hl">Nginx:</span> <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">limit_req_zone</code> per IP at ingress</li>
+          <li><span class="hl">auth-service:</span> Redis-backed per-IP counter with SETNX + EXPIRE pattern</li>
+          <li><span class="hl">AKS Network Policy:</span> pod-to-pod traffic rules enforced by Kubernetes NetworkPolicy resources</li>
         </ul>
       </div>
-      <aside class="hero-info-card">
-        <div class="meta-title">Reference Snapshot</div>
-        <div class="meta-value">v1.0 Architecture<br>May 2026</div>
-        <ul class="hero-info-list">
-          <li><strong>13</strong> sections of architecture detail</li>
-          <li><strong>8</strong> AI agents with independent scaling</li>
-          <li><strong>3</strong> core Temporal workflows</li>
-          <li><strong>1</strong> source of truth for platform design</li>
-        </ul>
-      </aside>
+      <div class="card"><div class="card-label">Routing Table</div>
+        <div class="code">/api/v1/auth/*    → auth-service:8001
+/api/v1/tenant/*  → tenant-service:8002
+/api/v1/events/*  → event-service:8003
+/api/v1/labs/*    → lab-service:8004
+/api/v1/agents/*  → agent-gateway:8010
+/api/v1/billing/* → billing-service:8006
+/* (static)       → frontend pod</div>
+      </div>
     </div>
+    <div class="example"><div class="example-label">Why no Azure Application Gateway?</div><p>Azure Application Gateway + WAF v2 is an excellent managed service but is Azure-specific and adds cost. Nginx inside AKS provides the same routing and TLS termination capabilities, runs identically on AWS/GCP, and keeps the stack cloud-agnostic. WAF rules can be added via Nginx ModSecurity module if needed in a future phase.</p></div>
   </div>
+  <hr class="divider">
 
-  <!-- TOC -->
-  <div class="toc">
-    <div class="toc-title">Contents</div>
-    <div class="toc-links">
-      <a href="#arch"><span class="toc-num">01</span>Full Architecture Stack</a>
-      <a href="#agents"><span class="toc-num">06</span>AI Agents Layer</a>
-      <a href="#client"><span class="toc-num">02</span>Client Layer</a>
-      <a href="#workflow"><span class="toc-num">07</span>Workflow Orchestration</a>
-      <a href="#gateway"><span class="toc-num">03</span>API Gateway</a>
-      <a href="#messaging"><span class="toc-num">08</span>Messaging & Cache</a>
-      <a href="#services"><span class="toc-num">04</span>Application Services</a>
-      <a href="#data"><span class="toc-num">09</span>Data Layer</a>
-      <a href="#infra"><span class="toc-num">05</span>Infrastructure & CI/CD</a>
-      <a href="#monitoring"><span class="toc-num">10</span>Monitoring</a>
-      <a href="#peripheral"><span class="toc-num">11</span>Peripheral Services</a>
-      <a href="#scale"><span class="toc-num">12</span>Scale Strategy</a>
-      <a href="#decisions"><span class="toc-num">13</span>Open Decisions</a>
-    </div>
-  </div>
-
-  <!-- Section 01: Full Architecture Stack -->
-  <div class="section" id="arch">
-    <div class="section-head">
-      <span class="section-num">01</span>
-      <h2>Full Architecture Stack</h2>
-    </div>
-    <p style="color:var(--text2); margin-bottom:28px;">Click any layer to expand it. Each layer links to the detailed section below.</p>
-
-    <div class="arch-stack">
-
-      <!-- Client -->
-      <div class="layer-block active" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-blue)"></div>
-          <div class="layer-label">Client Layer</div>
-          <div class="layer-tags">
-            <span class="tag">React 18</span><span class="tag">TypeScript</span><span class="tag">Tailwind CSS</span><span class="tag">Zustand</span>
-          </div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">Single-page application served from AKS. Communicates exclusively through the Nginx API gateway. Handles auth token storage, silent refresh, and role-based UI rendering.</p>
-          <a href="#client" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
+  <!-- S02: Full Stack -->
+  <div class="doc-section" id="s02">
+    <div class="section-eyebrow">02 / Full Stack</div>
+    <h2 class="section-title">Full Architecture Stack</h2>
+    <p class="section-lead">Click any layer to expand. Each layer links to its detailed section below.</p>
+    <div class="layer-stack">
+      <div class="layer-item open" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#2563eb"></div><div class="layer-name">Client Layer</div><div class="layer-tags"><span class="tag">React 18</span><span class="tag">TypeScript</span><span class="tag">Tailwind</span><span class="tag">Zustand</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">Single-page application served from AKS. Communicates exclusively through Nginx. Handles auth token storage, silent refresh, and role-based UI rendering. <a href="#s03" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- Gateway -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--text3)"></div>
-          <div class="layer-label">API Gateway</div>
-          <div class="layer-tags">
-            <span class="tag">Nginx</span><span class="tag">Routing</span><span class="tag">TLS termination</span>
-          </div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">Single ingress point. Routes <code style="font-family:'DM Mono',monospace; color:var(--accent-indigo)">/api/v1/auth/*</code> → auth-service, <code style="font-family:'DM Mono',monospace; color:var(--accent-indigo)">/api/v1/labs/*</code> → lab-service, etc. Terminates TLS. No business logic here.</p>
-          <a href="#gateway" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#64748b"></div><div class="layer-name">Access &amp; Edge</div><div class="layer-tags"><span class="tag">Nginx</span><span class="tag">AKS Ingress</span><span class="tag">TLS</span><span class="tag">Rate Limiting</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">Nginx ingress controller inside AKS. TLS termination, URL-based routing to microservices, per-IP rate limiting. No external WAF layer. <a href="#s01" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- App Services -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-teal)"></div>
-          <div class="layer-label">Application Services</div>
-          <div class="layer-tags">
-            <span class="tag">FastAPI</span><span class="tag">asyncpg</span><span class="tag">Python 3.11</span><span class="tag">many microservices</span>
-          </div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px; margin-bottom:14px;">Each business domain = one FastAPI microservice, independently deployable in AKS. All services use async SQLAlchemy + asyncpg to talk to their own database within the shared PostgreSQL instance.</p>
-          <div class="service-chips">
-            <span class="chip" style="color:var(--accent-teal); border-color:rgba(20,184,166,0.25)">auth-service ✅</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">tenant-service</span>
-            <span class="chip" style="color:var(--accent-amber); border-color:rgba(245,158,11,0.25)">event-service</span>
-            <span class="chip" style="color:var(--accent-coral); border-color:rgba(248,113,113,0.25)">lab-service</span>
-            <span class="chip" style="color:var(--accent-indigo); border-color:rgba(129,140,248,0.25)">scoring-service</span>
-            <span class="chip" style="color:var(--accent-blue); border-color:rgba(59,130,246,0.25)">billing-service</span>
-            <span class="chip" style="color:var(--accent-pink); border-color:rgba(244,114,182,0.25)">notification-service</span>
-            <span class="chip" style="color:var(--accent-green); border-color:rgba(74,222,128,0.25)">catalog-service</span>
-            <span class="chip" style="color:var(--text2); border-color:var(--border)">+ more per sprint</span>
-          </div>
-          <a href="#services" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:14px;">↓ see full detail</a>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#14b8a6"></div><div class="layer-name">Application Services</div><div class="layer-tags"><span class="tag">FastAPI</span><span class="tag">Python 3.11</span><span class="tag">asyncpg</span><span class="tag">many microservices</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">Each business domain is an independent FastAPI microservice in AKS. auth-service ✅ Phase 1. Many more added each sprint. <a href="#s05" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- AI Agents -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-purple)"></div>
-          <div class="layer-label">AI Agents Layer</div>
-          <div class="layer-tags">
-            <span class="tag">8 agents</span><span class="tag">LangGraph</span><span class="tag">Claude API</span><span class="tag">independent pods</span>
-          </div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px; margin-bottom:12px;">Each AI agent is its own microservice/container in AKS. This enables independent horizontal scaling during events — Scoring agent scales to hundreds of pods while Lab Architect stays at 2.</p>
-          <div class="service-chips">
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">lab-architect-agent</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">dataset-forge-agent</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">provisioning-agent</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">qa-validator-agent</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">live-observer-agent</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">hint-dispenser-agent</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">scoring-agent</span>
-            <span class="chip" style="color:var(--accent-purple); border-color:rgba(167,139,250,0.25)">cross-validator-agent</span>
-          </div>
-          <a href="#agents" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:14px;">↓ see full detail</a>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#a78bfa"></div><div class="layer-name">AI Agents Layer</div><div class="layer-tags"><span class="tag">8 agents</span><span class="tag">LangGraph</span><span class="tag">Claude API</span><span class="tag">KEDA autoscale</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">Each agent is its own container in AKS. KEDA scales each agent independently based on RabbitMQ queue depth. <a href="#s06" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- Workflow -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-coral)"></div>
-          <div class="layer-label">Workflow Orchestration</div>
-          <div class="layer-tags"><span class="tag">Temporal</span><span class="tag">durable execution</span><span class="tag">Terraform/Pulumi workers</span></div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">Temporal orchestrates all long-running, multi-step lab lifecycle workflows. If a server crashes mid-provisioning, Temporal replays from the last checkpoint — no orphaned VMs, no missed license assignments.</p>
-          <a href="#workflow" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#f87171"></div><div class="layer-name">Workflow Orchestration</div><div class="layer-tags"><span class="tag">Temporal</span><span class="tag">durable execution</span><span class="tag">3 core workflows</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">Temporal orchestrates all long-running lab lifecycle workflows. Crash-safe, replay-on-failure, supports HITL wait signals. <a href="#s07" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- Messaging -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-amber)"></div>
-          <div class="layer-label">Messaging & Cache</div>
-          <div class="layer-tags"><span class="tag">RabbitMQ</span><span class="tag">Valkey (Redis-compatible)</span></div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">RabbitMQ carries async events between services (event.started, lab.provisioned, score.ready). Valkey handles all stateful ephemeral data: JWT tokens, rate-limit counters, SSO state, session data.</p>
-          <a href="#messaging" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#f59e0b"></div><div class="layer-name">Messaging &amp; Cache</div><div class="layer-tags"><span class="tag">RabbitMQ</span><span class="tag">Redis</span><span class="tag">async events</span><span class="tag">JWT store</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">RabbitMQ for async inter-service events. Redis for ephemeral stateful data — JWT tokens, rate limit counters, SSO state, session cache. <a href="#s08" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- Data -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-green)"></div>
-          <div class="layer-label">Data Layer</div>
-          <div class="layer-tags"><span class="tag">PostgreSQL 16</span><span class="tag">single instance</span><span class="tag">multiple databases</span><span class="tag">self-managed in AKS</span></div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">One PostgreSQL 16 instance running in AKS. Each microservice owns its own database inside that instance (gravitylabs_auth, gravitylabs_tenant, gravitylabs_labs, etc.) — hard logical isolation with no cross-service queries allowed. Self-managed means this is portable to AWS/GCP as-is.</p>
-          <a href="#data" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#4ade80"></div><div class="layer-name">Data Layer</div><div class="layer-tags"><span class="tag">PostgreSQL 16</span><span class="tag">single instance</span><span class="tag">multiple databases</span><span class="tag">self-managed</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">One PostgreSQL 16 instance in AKS. Each microservice owns its own database. Enforced at the Postgres user/permissions level — no cross-service queries possible. <a href="#s09" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- Infra / CI/CD -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-indigo)"></div>
-          <div class="layer-label">Infrastructure & CI/CD</div>
-          <div class="layer-tags"><span class="tag">Terraform</span><span class="tag">Helm Charts</span><span class="tag">ACR</span><span class="tag">GitHub Actions</span><span class="tag">Argo CD</span></div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">Terraform provisions the AKS cluster, ACR, Key Vault, networking. Helm packages each service. GitHub Actions builds images and pushes to ACR. Argo CD watches the Helm chart repo and syncs AKS — GitOps, cluster always matches Git.</p>
-          <a href="#infra" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#818cf8"></div><div class="layer-name">Infrastructure &amp; CI/CD</div><div class="layer-tags"><span class="tag">Terraform</span><span class="tag">Helm</span><span class="tag">ACR</span><span class="tag">GitHub Actions</span><span class="tag">Argo CD</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">Dev+Stage on shared AKS cluster (namespaced). Production on dedicated AKS cluster. GitHub Actions builds + pushes to ACR. Argo CD syncs cluster to Git. <a href="#s10" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
-
-      <!-- Monitoring -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--accent-pink)"></div>
-          <div class="layer-label">Monitoring & Observability</div>
-          <div class="layer-tags"><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Loki</span><span class="tag">structlog</span></div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">Prometheus scrapes metrics from every pod. Grafana dashboards show lab provisioning queue depth, token burn rate, VM health, active sessions. Loki aggregates logs from all containers. All running inside AKS.</p>
-          <a href="#monitoring" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
-      </div>
-
-      <!-- Peripheral -->
-      <div class="layer-block" onclick="toggleLayer(this)">
-        <div class="layer-header">
-          <div class="layer-dot" style="background:var(--text3)"></div>
-          <div class="layer-label">Peripheral Services</div>
-          <div class="layer-tags"><span class="tag">Email</span><span class="tag">Object Storage</span><span class="tag">CDN</span><span class="tag">self-managed OSS</span></div>
-          <div class="layer-chevron">⌄</div>
-        </div>
-        <div class="layer-body">
-          <p style="color:var(--text2); font-size:13.5px;">Services outside the core app layer. OSS-first to stay cloud-agnostic. Sendgrid for transactional email (SMTP-compatible, swap to SES/Mailgun on any cloud). MinIO for object storage (S3-compatible API — runs in AKS, swap to Azure Blob/S3/GCS with config only). Cloudflare for CDN and DDoS protection.</p>
-          <a href="#peripheral" style="color:var(--accent-teal); font-size:12px; font-family:'DM Mono',monospace; text-decoration:none; display:block; margin-top:12px;">↓ see full detail</a>
-        </div>
-      </div>
-
-    </div>
-  </div><!-- /arch section -->
-
-  <hr class="section-rule">
-
-  <!-- Section 02: Client Layer -->
-  <div class="section" id="client">
-    <div class="section-head"><span class="section-num">02</span><h2>Client Layer</h2></div>
-    <div class="layer-body-grid">
-      <div class="info-card">
-        <div class="info-card-label">Technology</div>
-        <p><span class="hl-blue">React 18</span> + TypeScript, Tailwind CSS, Zustand (state), Axios (HTTP), React Hook Form + Zod (validation), Framer Motion (UI animation). Built with Vite. Served as static files from an Nginx pod inside AKS.</p>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Why This Stack</div>
-        <ul>
-          <li>React 18 concurrent rendering handles real-time lab status updates without UI freezing</li>
-          <li>Zustand is lightweight vs Redux — no boilerplate for auth + lab state</li>
-          <li>Tailwind keeps styles co-located with components — critical for a large team</li>
-          <li>Vite gives sub-second hot reload, keeping dev velocity high</li>
-        </ul>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Gravity Labs example</div>
-        <div class="example-box">
-          <div class="ex-label">Live lab status flow</div>
-          <p>When a participant launches a lab, the React UI polls the lab-service every 3 seconds via Axios. The Zustand <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">useLabStore</code> updates the status chip (Analyzing → Designing → Provisioning → Ready) without re-rendering the whole page — React 18's concurrent mode batches these updates efficiently.</p>
-        </div>
+      <div class="layer-item" onclick="toggleLayer(this)">
+        <div class="layer-hd"><div class="layer-dot" style="background:#f472b6"></div><div class="layer-name">Monitoring &amp; Alerting</div><div class="layer-tags"><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Loki</span><span class="tag">path-based alerts</span></div><div class="layer-chev">⌄</div></div>
+        <div class="layer-bd"><p style="color:var(--text2);font-size:13.5px">Prometheus scrapes all pods. Grafana manages dashboards and alert routing (path-based). Loki aggregates logs. All inside AKS. <a href="#s11" style="color:var(--accent);text-decoration:none">→ see detail</a></p></div>
       </div>
     </div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
-
-  <!-- Section 03: API Gateway -->
-  <div class="section" id="gateway">
-    <div class="section-head"><span class="section-num">03</span><h2>API Gateway — Nginx</h2></div>
-    <div class="layer-body-grid">
-      <div class="info-card">
-        <div class="info-card-label">Technology</div>
-        <p><span class="hl">Nginx 1.25</span> running as a Kubernetes deployment. Acts as the single entry point for all API traffic from the frontend. All service-to-service internal calls bypass it and go direct on the internal Docker/K8s network.</p>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Routing Rules</div>
-        <div class="code-snip">/api/v1/auth/*     → auth-service:8001
-/api/v1/tenant/*   → tenant-service:8002
-/api/v1/events/*   → event-service:8003
-/api/v1/labs/*     → lab-service:8004
-/api/v1/agents/*   → agent-gateway:8010
-/api/v1/billing/*  → billing-service:8006
-/api/v1/catalog/*  → catalog-service:8007</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Why Not a Cloud API Gateway</div>
-        <p>Azure API Management / AWS API Gateway are costly at scale and create cloud lock-in. Nginx is free, runs in AKS, and the config is version-controlled in the same repo. Migrating clouds = copy one nginx.conf.</p>
-        <div class="example-box" style="margin-top:10px;">
-          <div class="ex-label">Gravity Labs example</div>
-          <p>A participant clicks "Launch Lab." The React app calls <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">POST /api/v1/labs/provision</code>. Nginx routes it to lab-service. Lab-service validates the JWT by calling auth-service internally — directly, not through Nginx.</p>
-        </div>
+  <!-- S03: Client -->
+  <div class="doc-section" id="s03">
+    <div class="section-eyebrow">03 / Client Layer</div>
+    <h2 class="section-title">Client Layer</h2>
+    <p class="section-lead">Single-page application served as static files from an Nginx pod inside AKS.</p>
+    <div class="cards">
+      <div class="card"><div class="card-label">Technology</div><p><span class="hl-blue">React 18</span> + TypeScript, Tailwind CSS, Zustand (state), Axios (HTTP), React Hook Form + Zod (validation), Framer Motion. Built with Vite.</p></div>
+      <div class="card"><div class="card-label">Why This Stack</div><ul><li>React 18 concurrent rendering handles real-time lab status without UI freezing</li><li>Zustand — lightweight, no Redux boilerplate</li><li>Tailwind — styles co-located with components</li><li>Vite — sub-second hot reload</li></ul></div>
+      <div class="card"><div class="card-label">Gravity Labs Example</div>
+        <div class="example"><div class="example-label">Live lab status</div><p>Participant clicks "Launch Lab." React polls lab-service every 3s via Axios. Zustand <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">useLabStore</code> updates the status chip — Analyzing → Designing → Provisioning → Ready — without re-rendering the whole page.</p></div>
       </div>
     </div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
+  <!-- S04: API Gateway -->
+  <div class="doc-section" id="s04">
+    <div class="section-eyebrow">04 / API Gateway</div>
+    <h2 class="section-title">API Gateway — Nginx</h2>
+    <p class="section-lead">Nginx runs as a Kubernetes deployment. Single entry point for all API traffic from the frontend. Internal service-to-service calls bypass it entirely on the cluster network.</p>
+    <div class="cards cards-2">
+      <div class="card"><div class="card-label">Why Not a Cloud API Gateway</div><p>Azure API Management / AWS API Gateway are cloud-specific and costly at scale. Nginx is free, runs in AKS, and the config is version-controlled. Migrating clouds means copying one nginx.conf — zero code changes.</p></div>
+      <div class="card"><div class="card-label">Rate Limiting Configuration</div>
+        <div class="code">limit_req_zone $binary_remote_addr
+  zone=api:10m rate=100r/m;
 
-  <!-- Section 04: Application Services -->
-  <div class="section" id="services">
-    <div class="section-head"><span class="section-num">04</span><h2>Application Services Layer</h2></div>
-    <p style="color:var(--text2); margin-bottom:24px; max-width:700px;">Every business domain is its own FastAPI microservice. The list below is not exhaustive — new services will be added each sprint. The pattern stays consistent: one service, one database, one Helm chart, one GitHub Actions pipeline.</p>
-
-    <div class="layer-body-grid" style="grid-template-columns:1fr 1fr; margin-bottom:20px;">
-      <div class="info-card">
-        <div class="info-card-label">Technology & Pattern</div>
-        <ul>
-          <li><span class="hl-teal">FastAPI</span> — async, OpenAPI auto-docs, Pydantic validation</li>
-          <li><span class="hl-teal">SQLAlchemy 2.x async</span> + asyncpg — non-blocking DB calls</li>
-          <li><span class="hl-teal">Alembic</span> — schema migrations per service</li>
-          <li><span class="hl-teal">structlog</span> — structured JSON logs (Loki-ready)</li>
-          <li><span class="hl-teal">python-jose</span> — JWT validation via auth-service</li>
-          <li>Each service calls <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">/internal/verify</code> on auth-service to validate tokens</li>
-        </ul>
+limit_req zone=api burst=20 nodelay;
+limit_req_status 429;</div>
+        <p style="margin-top:8px;color:var(--text2);font-size:13px">Combined with Redis-backed per-service rate limiters in each FastAPI service for fine-grained control.</p>
       </div>
-      <div class="info-card">
-        <div class="info-card-label">Service Inventory (current + planned)</div>
-        <table class="decision-table">
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S05: App Services -->
+  <div class="doc-section" id="s05">
+    <div class="section-eyebrow">05 / Application Services</div>
+    <h2 class="section-title">Application Services Layer</h2>
+    <p class="section-lead">Every business domain is its own FastAPI microservice. The list below grows each sprint. The pattern is consistent — one service, one database, one Helm chart, one pipeline.</p>
+    <div class="cards cards-2" style="margin-bottom:16px">
+      <div class="card"><div class="card-label">Tech Pattern</div><ul><li><span class="hl-blue">FastAPI</span> — async, OpenAPI docs, Pydantic validation</li><li><span class="hl-blue">SQLAlchemy 2.x async</span> + asyncpg</li><li><span class="hl-blue">Alembic</span> — migrations per service</li><li><span class="hl-blue">structlog</span> — structured JSON logs (Loki-ready)</li><li>Each service calls <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">/internal/verify</code> on auth-service to validate JWTs</li></ul></div>
+      <div class="card"><div class="card-label">Service Inventory</div>
+        <table class="tbl">
           <tr><th>Service</th><th>Domain</th><th>Phase</th></tr>
-          <tr><td>auth-service</td><td>Identity, JWT, SSO</td><td class="chosen">✅ Phase 1</td></tr>
-          <tr><td>tenant-service</td><td>Orgs, seats, SAML</td><td style="color:var(--accent-amber)">Phase 2</td></tr>
-          <tr><td>event-service</td><td>Hackathons, cohorts</td><td style="color:var(--accent-amber)">Phase 2</td></tr>
-          <tr><td>lab-service</td><td>Lab lifecycle + Temporal</td><td style="color:var(--accent-coral)">Phase 3</td></tr>
-          <tr><td>catalog-service</td><td>Lab templates, paths</td><td style="color:var(--accent-coral)">Phase 3</td></tr>
-          <tr><td>scoring-service</td><td>5-dim grading</td><td style="color:var(--accent-coral)">Phase 3</td></tr>
-          <tr><td>billing-service</td><td>Tokens, subscriptions</td><td style="color:var(--accent-blue)">Phase 4</td></tr>
-          <tr><td>notification-service</td><td>Email, in-app alerts</td><td style="color:var(--accent-blue)">Phase 4</td></tr>
-          <tr><td>analytics-service</td><td>Reports, dashboards</td><td style="color:var(--accent-blue)">Phase 4</td></tr>
-          <tr><td>… more each sprint</td><td></td><td></td></tr>
+          <tr><td>auth-service</td><td>Identity, JWT, SSO</td><td><span class="tag green">Phase 1 ✅</span></td></tr>
+          <tr><td>tenant-service</td><td>Orgs, seats, SAML</td><td><span class="tag amber">Phase 2</span></td></tr>
+          <tr><td>event-service</td><td>Hackathons, cohorts</td><td><span class="tag amber">Phase 2</span></td></tr>
+          <tr><td>lab-service</td><td>Lab lifecycle + Temporal</td><td><span class="tag">Phase 3</span></td></tr>
+          <tr><td>catalog-service</td><td>Lab templates</td><td><span class="tag">Phase 3</span></td></tr>
+          <tr><td>scoring-service</td><td>5-dim grading</td><td><span class="tag">Phase 3</span></td></tr>
+          <tr><td>billing-service</td><td>Tokens, subscriptions</td><td><span class="tag">Phase 4</span></td></tr>
+          <tr><td>notification-service</td><td>Email, in-app alerts</td><td><span class="tag">Phase 4</span></td></tr>
+          <tr><td>analytics-service</td><td>Reports, dashboards</td><td><span class="tag">Phase 4</span></td></tr>
         </table>
       </div>
     </div>
-
-    <div class="info-card" style="margin-top:0;">
-      <div class="info-card-label">Why microservices, not a monolith</div>
-      <p>At 25,000 concurrent users, the scoring engine will be under maximum load while the billing service is idle. A monolith scales everything together and wastes compute. Microservices let us scale each component to exactly what the load demands — scoring-service at 200 pods, auth-service at 10, billing at 2.</p>
-    </div>
+    <div class="example"><div class="example-label">Why microservices at scale</div><p>At 25,000 concurrent users, the scoring engine is under maximum load while billing is idle. A monolith scales everything together and wastes compute. Microservices let us scale scoring-service to 200 pods while billing stays at 2.</p></div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
-
-  <!-- Section 05: Infrastructure -->
-  <div class="section" id="infra">
-    <div class="section-head"><span class="section-num">05</span><h2>Infrastructure & CI/CD</h2></div>
-
-    <div class="layer-body-grid" style="margin-bottom:20px;">
-      <div class="info-card">
-        <div class="info-card-label">AKS Cluster Topology</div>
-        <p style="margin-bottom:10px;"><span class="hl">Single AKS cluster</span>, namespace-separated by environment:</p>
-        <ul>
-          <li><code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">gl-dev</code> — developer sandbox</li>
-          <li><code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">gl-staging</code> — pre-prod, full stack</li>
-          <li><code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">gl-prod</code> — production</li>
-        </ul>
-        <p style="margin-top:10px; color:var(--text2); font-size:13px;">For world-record events: second prod cluster in a second Azure region, fronted by Azure Traffic Manager.</p>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Terraform — What It Provisions</div>
-        <ul>
-          <li>AKS cluster (node pools, autoscaler config)</li>
-          <li>ACR (Azure Container Registry)</li>
-          <li>Azure Key Vault (all secrets)</li>
-          <li>Virtual Network + subnets</li>
-          <li>Load Balancer + public IP</li>
-          <li>Storage accounts (PostgreSQL PVC backing)</li>
-        </ul>
-        <div class="example-box" style="margin-top:10px;">
-          <div class="ex-label">Multi-cloud principle</div>
-          <p>Terraform modules are written provider-agnostic where possible. Switching to AWS = swap the Azure provider for AWS provider. App layer (Helm) doesn't change at all.</p>
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Helm — What It Packages</div>
-        <p style="margin-bottom:10px;">Each microservice and agent has its own Helm chart. A monorepo <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">charts/</code> directory contains:</p>
-        <ul>
-          <li>Deployment (image, replicas, resource limits)</li>
-          <li>Service (ClusterIP / LoadBalancer)</li>
-          <li>HPA (Horizontal Pod Autoscaler)</li>
-          <li>ConfigMap + Secret references to Key Vault</li>
-          <li>ServiceMonitor (Prometheus scrape config)</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- CI/CD pipeline -->
-    <div class="info-card" style="margin-top:0;">
-      <div class="info-card-label">CI/CD Pipeline — GitHub Actions + Argo CD</div>
-      <div class="pipeline" style="margin-top:16px;">
-        <div class="pipeline-stage">
-          <div class="p-icon" style="background:rgba(74,222,128,0.1)">✍</div>
-          <div class="p-name" style="color:var(--accent-green)">Dev pushes PR</div>
-          <div class="p-detail">Feature branch → pull request opened on GitHub</div>
-        </div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage">
-          <div class="p-icon" style="background:rgba(59,130,246,0.1)">⚙</div>
-          <div class="p-name" style="color:var(--accent-blue)">GitHub Actions — CI</div>
-          <div class="p-detail">Run tests → lint → build Docker image → push to ACR with git SHA tag</div>
-        </div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage">
-          <div class="p-icon" style="background:rgba(167,139,250,0.1)">🏷</div>
-          <div class="p-name" style="color:var(--accent-purple)">Update Helm values</div>
-          <div class="p-detail">GitHub Actions commits new image tag to <code style="font-family:'DM Mono',monospace; font-size:11px">charts/auth-service/values.yaml</code></div>
-        </div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage">
-          <div class="p-icon" style="background:rgba(20,184,166,0.1)">👁</div>
-          <div class="p-name" style="color:var(--accent-teal)">Argo CD — detects change</div>
-          <div class="p-detail">Watches the Helm chart repo. Sees new image tag. Marks app as OutOfSync.</div>
-        </div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage">
-          <div class="p-icon" style="background:rgba(245,158,11,0.1)">🚀</div>
-          <div class="p-name" style="color:var(--accent-amber)">Argo CD — syncs AKS</div>
-          <div class="p-detail">Rolling deploy to gl-staging (auto) or gl-prod (manual approval gate). Cluster always matches Git.</div>
-        </div>
-      </div>
-      <div class="example-box" style="margin-top:16px;">
-        <div class="ex-label">Why GitHub Actions + Argo CD, not Actions alone</div>
-        <p>GitHub Actions does build — it shouldn't also hold cluster credentials and kubectl commands. Argo CD owns the deploy half. This separates concerns: if the cluster drifts (someone ran kubectl apply directly), Argo CD detects it and re-converges. With Actions alone, drift is invisible.</p>
-      </div>
-    </div>
-  </div>
-
-  <hr class="section-rule">
-
-  <!-- Section 06: AI Agents -->
-  <div class="section" id="agents">
-    <div class="section-head"><span class="section-num">06</span><h2>AI Agents Layer</h2></div>
-    <p style="color:var(--text2); margin-bottom:24px; max-width:700px;">Each AI agent is an independently deployed microservice in AKS. They communicate with lab-service and each other via RabbitMQ (async) or direct REST calls (sync, internal network only). Agents are orchestrated by Temporal workflows — Temporal calls the agent services as Activities.</p>
-
-    <div class="layer-body-grid" style="margin-bottom:20px;">
-      <div class="info-card">
-        <div class="info-card-label">Agent Runtime Stack</div>
-        <ul>
-          <li><span class="hl-purple">LangGraph</span> — agent state machine and tool-call orchestration</li>
-          <li><span class="hl-purple">Claude API (Anthropic)</span> — primary LLM for lab design, analysis, commentary</li>
-          <li><span class="hl-purple">Azure OpenAI GPT-4o</span> — fallback / cost routing for high-volume scoring</li>
-          <li><span class="hl-purple">FastAPI</span> — same framework as app services, consistent tooling</li>
-          <li><span class="hl-purple">Temporal Activity Workers</span> — each agent registers as a Temporal activity worker, so Temporal workflows can call them reliably with retries</li>
-        </ul>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Why Each Agent = Its Own Container</div>
-        <ul>
-          <li>During a 25K-user event, scoring-agent needs 300+ replicas. Lab-architect needs 3. Bundled = you scale both to 300.</li>
-          <li>An LLM timeout in hint-dispenser-agent doesn't crash provisioning-agent</li>
-          <li>Independent versioning — you can hotfix scoring logic without redeploying the whole agent fleet</li>
-          <li>KEDA autoscaling per agent based on RabbitMQ queue depth</li>
-        </ul>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Agent Communication Pattern</div>
-        <div class="flow-diagram" style="flex-direction:column; gap:6px; margin-top:8px;">
-          <div class="flow-step" style="width:100%; text-align:center;">Temporal ProvisionLabWorkflow</div>
-          <div style="color:var(--text3); text-align:center; font-size:20px;">↓</div>
-          <div style="display:flex; gap:6px; justify-content:center;">
-            <div class="flow-step">lab-architect-agent</div>
-            <div style="color:var(--text3); font-size:14px; display:flex; align-items:center;">→</div>
-            <div class="flow-step">dataset-forge-agent</div>
-          </div>
-          <div style="color:var(--text3); text-align:center; font-size:20px;">↓ via RabbitMQ</div>
-          <div style="display:flex; gap:6px; justify-content:center;">
-            <div class="flow-step">provisioning-agent</div>
-            <div style="color:var(--text3); font-size:14px; display:flex; align-items:center;">→</div>
-            <div class="flow-step">qa-validator-agent</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="layer-body-grid" style="grid-template-columns:1fr 1fr;">
-      <div class="info-card">
-        <div class="info-card-label">Agent Scaling (KEDA)</div>
-        <table class="decision-table">
-          <tr><th>Agent</th><th>Scale Trigger</th><th>Max Replicas</th></tr>
-          <tr><td>lab-architect</td><td>Lab request queue</td><td>10</td></tr>
-          <tr><td>dataset-forge</td><td>Dataset queue depth</td><td>50</td></tr>
-          <tr><td>provisioning</td><td>Provision queue</td><td>100</td></tr>
-          <tr><td>qa-validator</td><td>Validation queue</td><td>50</td></tr>
-          <tr><td>live-observer</td><td>Active lab count</td><td>200</td></tr>
-          <tr><td>hint-dispenser</td><td>Hint request queue</td><td>100</td></tr>
-          <tr><td>scoring</td><td>Score queue depth</td><td>300</td></tr>
-          <tr><td>cross-validator</td><td>Submission queue</td><td>100</td></tr>
+  <!-- S06: AI Agents -->
+  <div class="doc-section" id="s06">
+    <div class="section-eyebrow">06 / AI Agents Layer</div>
+    <h2 class="section-title">AI Agents Layer</h2>
+    <p class="section-lead">Each of the 8 AI agents is its own independently deployed microservice in AKS. Agents are orchestrated by Temporal workflows and communicate via RabbitMQ.</p>
+    <div class="cards" style="margin-bottom:16px">
+      <div class="card"><div class="card-label">Agent Runtime</div><ul><li><span class="hl-blue">LangGraph</span> — agent state machine &amp; tool calls</li><li><span class="hl-blue">Claude API</span> — primary LLM for lab design &amp; analysis</li><li><span class="hl-blue">Azure OpenAI GPT-4o</span> — fallback for high-volume scoring</li><li><span class="hl-blue">FastAPI</span> — same framework as app services</li><li><span class="hl-blue">Temporal Activity Workers</span> — each agent registers as a Temporal worker</li></ul></div>
+      <div class="card"><div class="card-label">Why Each Agent = Own Container</div><ul><li>During a 25K event, scoring-agent needs 300+ replicas. Lab-architect needs 3. Bundled = you scale both to 300.</li><li>LLM timeout in hint-dispenser doesn't crash provisioning-agent</li><li>Independent versioning — hotfix scoring without redeploying the fleet</li><li>KEDA autoscaling per agent based on RabbitMQ queue depth</li></ul></div>
+      <div class="card"><div class="card-label">Agent Scaling (KEDA)</div>
+        <table class="tbl">
+          <tr><th>Agent</th><th>Max Pods</th></tr>
+          <tr><td>lab-architect-agent</td><td>10</td></tr>
+          <tr><td>dataset-forge-agent</td><td>50</td></tr>
+          <tr><td>provisioning-agent</td><td>100</td></tr>
+          <tr><td>qa-validator-agent</td><td>50</td></tr>
+          <tr><td>live-observer-agent</td><td>200</td></tr>
+          <tr><td>hint-dispenser-agent</td><td>100</td></tr>
+          <tr><td>scoring-agent</td><td>300</td></tr>
+          <tr><td>cross-validator-agent</td><td>100</td></tr>
         </table>
       </div>
-      <div class="info-card">
-        <div class="info-card-label">Gravity Labs example — scoring at event scale</div>
-        <div class="example-box">
-          <div class="ex-label">25,000-user event — final submission wave</div>
-          <p>At T-30min, 20,000 participants submit simultaneously. The scoring queue in RabbitMQ fills with 20,000 messages. KEDA sees the queue depth and scales scoring-agent from 5 → 280 pods in under 90 seconds. Each pod picks jobs from the queue, calls Claude API for commentary, writes results to PostgreSQL scoring DB. Queue drains in ~8 minutes. KEDA scales back down to 5 pods once it's clear.</p>
-        </div>
+    </div>
+    <div class="example"><div class="example-label">25,000-user event — scoring wave</div><p>At T-30min, 20,000 participants submit. The scoring queue fills with 20,000 messages. KEDA sees the queue depth and scales scoring-agent from 5 → 280 pods in under 90 seconds. Each pod calls Claude API for commentary and writes results to the scoring DB. Queue drains in ~8 minutes. KEDA scales back down automatically.</p></div>
+  </div>
+  <hr class="divider">
+
+  <!-- S07: Temporal -->
+  <div class="doc-section" id="s07">
+    <div class="section-eyebrow">07 / Workflow Orchestration</div>
+    <h2 class="section-title">Workflow Orchestration — Temporal</h2>
+    <p class="section-lead">Temporal provides durable execution for all long-running, multi-step lab lifecycle workflows. Write the workflow as normal Python code — Temporal guarantees it completes correctly even if servers crash mid-execution.</p>
+    <div class="cards cards-2" style="margin-bottom:16px">
+      <div class="card"><div class="card-label">Without vs With Temporal</div><p><span class="hl" style="color:var(--chip-red-c)">Without:</span> Background job calls Terraform → Graph API → DB update. Server crashes after Terraform. You have a live VM, no license, leaked cost, broken state. Manual recovery required.</p><p style="margin-top:10px"><span class="hl-green">With Temporal:</span> Workflow replays from the last checkpoint. Terraform step completed? Skip it. Resume at Graph API. Zero data loss, zero manual recovery.</p></div>
+      <div class="card"><div class="card-label">3 Core Workflows</div><ul><li style="margin-bottom:8px"><span class="hl">ProvisionLabWorkflow</span> — AI design → dataset → VM/container → license assign → dataset inject → URL return. 2–8 min.</li><li style="margin-bottom:8px"><span class="hl">GradeLabWorkflow</span> — scoring scripts → AI commentary → 5-dimension score → store results.</li><li><span class="hl">DestroyLabWorkflow</span> — revoke licenses → delete Entra users → Terraform destroy → log cost. Atomic teardown.</li></ul></div>
+    </div>
+    <div class="card" style="margin-bottom:0"><div class="card-label">ProvisionLabWorkflow — step by step</div>
+      <div class="pipeline" style="margin-top:14px">
+        <div class="pipe-stage"><div class="pipe-num">1</div><div><div class="pipe-name">lab-architect-agent</div><div class="pipe-detail">NL description → IaC template + scoring rubric (LangGraph + Claude API)</div></div></div>
+        <div class="pipe-connector"></div>
+        <div class="pipe-stage"><div class="pipe-num" style="background:var(--chip-amber);border-color:var(--chip-amber-t);color:var(--chip-amber-c)">G1</div><div><div class="pipe-name">HITL Gate 1 — Blueprint Review</div><div class="pipe-detail">Admin approves lab manifest. Temporal waits on signal indefinitely.</div></div></div>
+        <div class="pipe-connector"></div>
+        <div class="pipe-stage"><div class="pipe-num">2</div><div><div class="pipe-name">dataset-forge-agent</div><div class="pipe-detail">Generates N unique synthetic datasets (Faker + Pandas). One per participant.</div></div></div>
+        <div class="pipe-connector"></div>
+        <div class="pipe-stage"><div class="pipe-num" style="background:var(--chip-amber);border-color:var(--chip-amber-t);color:var(--chip-amber-c)">G2</div><div><div class="pipe-name">HITL Gate 2 — Procurement Review</div><div class="pipe-detail">Admin reviews subscription list + per-user cost. Temporal waits for approval.</div></div></div>
+        <div class="pipe-connector"></div>
+        <div class="pipe-stage"><div class="pipe-num">3</div><div><div class="pipe-name">provisioning-agent</div><div class="pipe-detail">Runs Terraform/Bicep. Creates VMSS environment. Assigns Microsoft licenses via Graph API.</div></div></div>
+        <div class="pipe-connector"></div>
+        <div class="pipe-stage"><div class="pipe-num">4</div><div><div class="pipe-name">qa-validator-agent</div><div class="pipe-detail">Dry-run: checks connectivity, subscriptions, dataset, network isolation. Pass/fail report.</div></div></div>
+        <div class="pipe-connector"></div>
+        <div class="pipe-stage"><div class="pipe-num" style="background:var(--chip-amber);border-color:var(--chip-amber-t);color:var(--chip-amber-c)">G3</div><div><div class="pipe-name">HITL Gate 3 — Pre-Launch</div><div class="pipe-detail">Admin reviews QA report + final cost. One click → lab goes live.</div></div></div>
+        <div class="pipe-connector"></div>
+        <div class="pipe-stage" style="border-color:var(--chip-green-t)"><div class="pipe-num" style="background:var(--chip-green);border-color:var(--chip-green-t);color:var(--chip-green-c)">✓</div><div><div class="pipe-name" style="color:var(--chip-green-c)">Lab Ready</div><div class="pipe-detail">Guacamole URL + credentials returned. live-observer-agent begins monitoring.</div></div></div>
       </div>
     </div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
-
-  <!-- Section 07: Temporal -->
-  <div class="section" id="workflow">
-    <div class="section-head"><span class="section-num">07</span><h2>Workflow Orchestration — Temporal</h2></div>
-    <p style="color:var(--text2); margin-bottom:24px; max-width:700px;">Temporal solves the hardest problem in lab provisioning: multi-step, long-running processes that must complete correctly even when infrastructure fails. It gives us durable execution — write the workflow as normal Python code, and Temporal guarantees it runs to completion.</p>
-
-    <div class="layer-body-grid" style="margin-bottom:20px;">
-      <div class="info-card">
-        <div class="info-card-label">What is Temporal</div>
-        <p>A workflow orchestration engine. You write a Python function (<code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">@workflow.defn</code>) with steps (<code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">@activity.defn</code>). Temporal persists every step's result. If the server crashes between step 3 and 4, Temporal replays from step 3's saved result — transparently, automatically.</p>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Without vs With Temporal</div>
-        <p><span class="hl-coral">Without:</span> You write a background job calling Terraform → Graph API → DB update → notification. Server crashes after Terraform but before Graph API. You have a live VM and no license — leaked cost, broken state. You need manual retry logic, dead-letter queues, compensating transactions.</p>
-        <p style="margin-top:10px;"><span class="hl-green">With Temporal:</span> The workflow function replays from the last checkpoint. Terraform step already completed? Skip it. Resume at Graph API. Zero data loss, zero manual recovery.</p>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Gravity Labs — 3 Core Workflows</div>
-        <ul>
-          <li style="margin-bottom:8px;"><span class="hl">ProvisionLabWorkflow</span> — AI design → dataset → VM/container spin-up → license assign → dataset inject → URL return. 2–8 min.</li>
-          <li style="margin-bottom:8px;"><span class="hl">GradeLabWorkflow</span> — run scoring scripts against live cloud → AI commentary → 5-dimension score → store results.</li>
-          <li><span class="hl">DestroyLabWorkflow</span> — revoke licenses → delete Entra users → Terraform destroy → log cost. Atomic — half-teardown impossible.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="info-card">
-      <div class="info-card-label">ProvisionLabWorkflow — step by step (Gravity Labs example)</div>
-      <div class="pipeline" style="margin-top:16px;">
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(167,139,250,0.1)">1</div><div class="p-name">lab-architect-agent</div><div class="p-detail">Receives NL description → produces IaC template + scoring rubric (LangGraph + Claude API)</div></div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(167,139,250,0.1)">2</div><div class="p-name">HITL Gate 1</div><div class="p-detail">Admin reviews blueprint — approve/reject. Temporal waits indefinitely (signal).</div></div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(167,139,250,0.1)">3</div><div class="p-name">dataset-forge-agent</div><div class="p-detail">Generates N unique synthetic datasets (Faker + Pandas). One per participant.</div></div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(167,139,250,0.1)">4</div><div class="p-name">HITL Gate 2</div><div class="p-detail">Admin reviews procurement list + cost. Temporal waits for approval signal.</div></div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(167,139,250,0.1)">5</div><div class="p-name">provisioning-agent</div><div class="p-detail">Runs Terraform/Bicep. Creates VM/AKS/container. Assigns Microsoft licenses via Graph API.</div></div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(167,139,250,0.1)">6</div><div class="p-name">qa-validator-agent</div><div class="p-detail">Dry-run: checks connectivity, subscriptions, dataset, network isolation. Pass/fail report.</div></div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(167,139,250,0.1)">7</div><div class="p-name">HITL Gate 3</div><div class="p-detail">Admin reviews QA report + final cost. One click → lab goes live.</div></div>
-        <div class="pipeline-connector"></div>
-        <div class="pipeline-stage"><div class="p-icon" style="background:rgba(74,222,128,0.1)">✓</div><div class="p-name" style="color:var(--accent-green)">Lab Ready</div><div class="p-detail">Guacamole URL + credentials returned to participant. live-observer-agent starts watching.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="section-rule">
-
-  <!-- Section 08: Messaging & Cache -->
-  <div class="section" id="messaging">
-    <div class="section-head"><span class="section-num">08</span><h2>Messaging & Cache</h2></div>
-    <div class="layer-body-grid">
-      <div class="info-card">
-        <div class="info-card-label">RabbitMQ — Async Messaging</div>
-        <p style="margin-bottom:10px;">Carries events between services and agents. Services don't call each other directly for async operations — they publish to a queue and move on.</p>
-        <table class="decision-table">
-          <tr><th>Event</th><th>Publisher → Consumer</th></tr>
-          <tr><td>event.started</td><td>event-service → lab-service</td></tr>
+  <!-- S08: Messaging & Cache -->
+  <div class="doc-section" id="s08">
+    <div class="section-eyebrow">08 / Messaging &amp; Cache</div>
+    <h2 class="section-title">Messaging &amp; Cache</h2>
+    <p class="section-lead">RabbitMQ carries async events between services. Redis stores all ephemeral stateful data. Both are self-managed inside AKS for cloud portability.</p>
+    <div class="cards">
+      <div class="card"><div class="card-label">RabbitMQ — Async Messaging</div>
+        <table class="tbl">
+          <tr><th>Queue</th><th>Publisher → Consumer</th></tr>
           <tr><td>lab.provision.requested</td><td>lab-service → provisioning-agent</td></tr>
+          <tr><td>event.started</td><td>event-service → lab-service</td></tr>
           <tr><td>lab.ready</td><td>lab-service → notification-service</td></tr>
           <tr><td>submission.received</td><td>lab-service → scoring-agent</td></tr>
           <tr><td>score.ready</td><td>scoring-agent → analytics-service</td></tr>
         </table>
       </div>
-      <div class="info-card">
-        <div class="info-card-label">Valkey — Cache & Token Store</div>
-        <p style="margin-bottom:10px;">Redis-compatible, BSD-licensed. All ephemeral stateful data lives here — not in PostgreSQL.</p>
-        <div class="code-snip">refresh:{user_id}:{jti}     → "1"  TTL 7d
-refresh_tokens:{user_id}   → Set{jti}
-login_attempts:{ip}        → count  TTL 15m
-blocklist:{jti}            → "1"  TTL=token TTL
-sso_state:{state}          → data  TTL 10m
-sso_code:{code}            → user_id  TTL 5m
-lab_status:{lab_id}        → JSON  TTL 1h
-rate_limit:{service}:{ip}  → count  TTL 1m</div>
+      <div class="card"><div class="card-label">Redis — Cache &amp; Token Store</div>
+        <div class="code">refresh:{user_id}:{jti}    → "1"  TTL 7d
+refresh_tokens:{user_id}  → Set{jti}
+login_attempts:{ip}       → count TTL 15m
+blocklist:{jti}           → "1"  TTL=token TTL
+sso_state:{state}         → data  TTL 10m
+lab_status:{lab_id}       → JSON  TTL 1h
+rate_limit:{svc}:{ip}     → count TTL 1m</div>
       </div>
-      <div class="info-card">
-        <div class="info-card-label">Why Self-Managed (not managed MQ / cache)</div>
-        <p style="margin-bottom:8px;">Azure Service Bus and Azure Cache for Redis are excellent managed services — but they tie you to Azure. RabbitMQ and Valkey run identically on AWS EKS, GCP GKE, or bare metal.</p>
-        <div class="example-box">
-          <div class="ex-label">Multi-cloud portability</div>
-          <p>Moving Gravity Labs to AWS = update Terraform provider. The entire messaging and cache layer runs in the new AKS-equivalent cluster with zero code changes.</p>
-        </div>
-        <p style="margin-top:10px; color:var(--text2); font-size:13px;"><span class="hl-amber">Production note:</span> In Phase 4, RabbitMQ gets clustered (3 nodes) for HA. Valkey gets a primary + replica pair. Both managed via Helm charts in AKS.</p>
+      <div class="card"><div class="card-label">Redis — Why (replacing Valkey)</div><p>Redis is the industry standard — broad team familiarity, strong client ecosystem, and <span class="hl-blue">Azure Cache for Redis</span> provides a fully managed HA option when moving to production. The same <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">redis.asyncio</code> client works against both self-managed Redis in AKS and managed Azure Cache for Redis — zero code changes when switching.</p>
+        <div class="example"><div class="example-label">Multi-cloud portability</div><p>Self-managed Redis in AKS for Dev/Stage. Azure Cache for Redis for Production (managed HA, geo-replication). AWS ElastiCache for Redis if moving to AWS. Config change only — no code changes.</p></div>
       </div>
     </div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
-
-  <!-- Section 09: Data Layer -->
-  <div class="section" id="data">
-    <div class="section-head"><span class="section-num">09</span><h2>Data Layer — PostgreSQL</h2></div>
-    <div class="layer-body-grid" style="margin-bottom:20px;">
-      <div class="info-card">
-        <div class="info-card-label">Architecture Decision</div>
-        <p><span class="hl">Single PostgreSQL 16 instance</span> in AKS, with one database per microservice. Not five separate Postgres pods — one pod, multiple logical databases inside it.</p>
-        <div class="code-snip">gravitylabs_auth      ← auth-service only
+  <!-- S09: Data Layer -->
+  <div class="doc-section" id="s09">
+    <div class="section-eyebrow">09 / Data Layer</div>
+    <h2 class="section-title">Data Layer — PostgreSQL</h2>
+    <p class="section-lead">One PostgreSQL 16 instance running in AKS. Each microservice owns its own logical database inside that instance. Self-managed for full cloud portability.</p>
+    <div class="cards">
+      <div class="card"><div class="card-label">Database Layout</div>
+        <div class="code">gravitylabs_auth      ← auth-service only
 gravitylabs_tenant    ← tenant-service only
 gravitylabs_events    ← event-service only
 gravitylabs_labs      ← lab-service only
@@ -1191,184 +516,154 @@ gravitylabs_catalog   ← catalog-service only
 gravitylabs_billing   ← billing-service only
 gravitylabs_temporal  ← Temporal internal</div>
       </div>
-      <div class="info-card">
-        <div class="info-card-label">Why Single Instance</div>
-        <ul>
-          <li>Simpler ops — one backup, one upgrade, one monitoring target</li>
-          <li>Cheaper — one pod with 16 logical DBs vs 16 separate pods</li>
-          <li>Logical isolation is still strict — no service can query another's DB (enforced by separate DB users + passwords per service)</li>
-          <li>Future split is easy if one service's DB needs to scale independently — just migrate that one DB to its own instance</li>
-        </ul>
+      <div class="card"><div class="card-label">Why Single Instance</div><ul><li>Simpler ops — one backup, one upgrade, one monitoring target</li><li>Cheaper — one pod vs 8 separate pods</li><li>Logical isolation enforced at Postgres user level — wrong credentials = no access</li><li>Easy to split individual DBs to dedicated instances later if one service needs to scale</li></ul></div>
+      <div class="card"><div class="card-label">Why Self-Managed</div><p>Azure Database for PostgreSQL Flexible Server and AWS Aurora are excellent but cloud-specific. Running Postgres in AKS means identical setup on Azure, AWS, GCP, or on-prem. Backup runs as a Kubernetes CronJob executing <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">pg_dump</code> → cloud object storage (Azure Blob / S3).</p></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S10: CI/CD & Clusters -->
+  <div class="doc-section" id="s10">
+    <div class="section-eyebrow">10 / Infrastructure &amp; CI/CD</div>
+    <h2 class="section-title">Infrastructure &amp; CI/CD</h2>
+    <p class="section-lead">Terraform provisions infrastructure. Helm packages services. GitHub Actions builds. Argo CD deploys. Dev and Stage share one AKS cluster; Production gets its own dedicated cluster.</p>
+    <div class="cards cards-2" style="margin-bottom:16px">
+      <div class="card"><div class="card-label">Cluster Topology</div>
+        <table class="tbl">
+          <tr><th>Environment</th><th>Cluster</th><th>Namespaces</th></tr>
+          <tr><td><span class="tag green">Dev</span></td><td>Shared AKS cluster</td><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">gl-dev</code></td></tr>
+          <tr><td><span class="tag amber">Stage</span></td><td>Shared AKS cluster</td><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">gl-staging</code></td></tr>
+          <tr><td><span class="tag red">Production</span></td><td>Dedicated AKS cluster</td><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">gl-prod</code></td></tr>
+          <tr><td><span class="tag">World Record</span></td><td>2nd prod cluster (multi-region)</td><td><code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">gl-prod-2</code></td></tr>
+        </table>
+        <div class="example" style="margin-top:10px"><div class="example-label">Why shared Dev+Stage, dedicated Prod</div><p>Dev and Stage don't need SLA guarantees — sharing a cluster cuts infra cost significantly. Production gets a dedicated cluster for full isolation, independent scaling, and zero blast radius from staging activity.</p></div>
       </div>
-      <div class="info-card">
-        <div class="info-card-label">Self-Managed — Why Not RDS / Azure Flexible</div>
-        <p style="margin-bottom:8px;">Managed Postgres services are fine but cloud-specific. Running Postgres in AKS means:</p>
-        <ul>
-          <li>Identical setup on Azure, AWS, GCP, on-prem</li>
-          <li>No extra monthly cost per managed instance</li>
-          <li>Full control over Postgres config (connection limits, extensions, WAL)</li>
-          <li>Backup is handled by a scheduled Kubernetes CronJob running <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">pg_dump</code> → MinIO</li>
-        </ul>
-        <div class="example-box" style="margin-top:10px;">
-          <div class="ex-label">Gravity Labs example</div>
-          <p>lab-service connects to <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">gravitylabs_labs</code> only, using its own DB user. It physically cannot query <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">gravitylabs_auth</code> — wrong credentials. This is enforced at the Postgres level, not application code.</p>
+      <div class="card"><div class="card-label">CI/CD Pipeline</div>
+        <div class="pipeline">
+          <div class="pipe-stage"><div class="pipe-num">1</div><div><div class="pipe-name">Dev pushes PR</div><div class="pipe-detail">Feature branch → PR opened on GitHub</div></div></div>
+          <div class="pipe-connector"></div>
+          <div class="pipe-stage"><div class="pipe-num">2</div><div><div class="pipe-name">GitHub Actions — CI</div><div class="pipe-detail">Run tests → lint → build Docker image → push to ACR with git SHA tag</div></div></div>
+          <div class="pipe-connector"></div>
+          <div class="pipe-stage"><div class="pipe-num">3</div><div><div class="pipe-name">Update Helm values</div><div class="pipe-detail">Actions commits new image tag to <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">charts/*/values.yaml</code></div></div></div>
+          <div class="pipe-connector"></div>
+          <div class="pipe-stage"><div class="pipe-num">4</div><div><div class="pipe-name">Argo CD detects change</div><div class="pipe-detail">Watches Helm chart repo. Marks app OutOfSync.</div></div></div>
+          <div class="pipe-connector"></div>
+          <div class="pipe-stage"><div class="pipe-num">5</div><div><div class="pipe-name">Argo CD syncs AKS</div><div class="pipe-detail">Auto-sync to Dev/Stage. Manual approval gate for Production.</div></div></div>
         </div>
       </div>
     </div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
-
-  <!-- Section 10: Monitoring -->
-  <div class="section" id="monitoring">
-    <div class="section-head"><span class="section-num">10</span><h2>Monitoring & Observability</h2></div>
-    <div class="layer-body-grid" style="margin-bottom:20px;">
-      <div class="info-card">
-        <div class="info-card-label">Prometheus — Metrics</div>
-        <p style="margin-bottom:8px;">Deployed inside AKS. Scrapes metrics from every pod via ServiceMonitor CRDs. All FastAPI services expose <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">/metrics</code> (prometheus-fastapi-instrumentator). Key metrics per service:</p>
-        <ul>
-          <li>Request rate, latency (p50/p95/p99), error rate</li>
-          <li>Active lab count, provisioning queue depth</li>
-          <li>RabbitMQ queue depth per queue</li>
-          <li>Valkey hit/miss rate, memory usage</li>
-          <li>Agent LLM token usage + latency</li>
-          <li>PostgreSQL connections, query time</li>
-        </ul>
+  <!-- S11: Monitoring -->
+  <div class="doc-section" id="s11">
+    <div class="section-eyebrow">11 / Monitoring &amp; Alerting</div>
+    <h2 class="section-title">Monitoring &amp; Alerting</h2>
+    <p class="section-lead">Prometheus scrapes metrics from every pod. Grafana manages all dashboards and alert routing. Loki aggregates logs. All deployed inside AKS alongside the application.</p>
+    <div class="cards" style="margin-bottom:16px">
+      <div class="card"><div class="card-label">Prometheus — Metrics</div><p>Deployed in AKS. Scrapes all pods via ServiceMonitor CRDs. Key metrics:</p><ul style="margin-top:8px"><li>Request rate, latency p50/p95/p99, error rate per service</li><li>Active lab count, provisioning queue depth</li><li>RabbitMQ queue depth per queue</li><li>Redis hit/miss rate, memory usage</li><li>Agent LLM token usage + latency</li><li>PostgreSQL connections, query time</li></ul></div>
+      <div class="card"><div class="card-label">Grafana — Dashboards &amp; Alerts</div><p>Grafana is the single pane of glass — dashboards <span class="hl">and</span> alert management. Alert sources: Prometheus (primary) and CloudWatch (AWS metrics for multi-cloud deployments).</p>
+        <div class="tags" style="margin-top:10px"><span class="tag">Event Operations</span><span class="tag">Agent Fleet</span><span class="tag">Infrastructure</span><span class="tag">Business Metrics</span></div>
       </div>
-      <div class="info-card">
-        <div class="info-card-label">Grafana — Dashboards</div>
-        <p style="margin-bottom:8px;">Also in AKS. Pre-built dashboards for:</p>
-        <ul>
-          <li><span class="hl">Event Operations</span> — active participants, labs in each status, provisioning queue, time-to-ready</li>
-          <li><span class="hl">Agent Fleet</span> — pod count per agent, LLM latency, queue drain rate</li>
-          <li><span class="hl">Infrastructure</span> — node CPU/memory, pod restarts, PVC usage</li>
-          <li><span class="hl">Business</span> — token burn rate, revenue snapshot, tenant activity</li>
-        </ul>
-        <div class="example-box" style="margin-top:10px;">
-          <div class="ex-label">During a live event</div>
-          <p>The event ops team watches the Event Operations dashboard on a big screen. Queue depth rises → KEDA auto-scales → queue drains. If queue doesn't drain, Grafana alert fires → PagerDuty page.</p>
+      <div class="card"><div class="card-label">Grafana Alert Routing — Path-Based</div>
+        <p style="margin-bottom:10px">Alerts are routed by severity and domain using Grafana's built-in Alerting with path-based routing rules:</p>
+        <div class="alert-path">
+          <span class="ap-step">Alert fires</span><span class="ap-arrow">→</span>
+          <span class="ap-step">Grafana evaluates route</span><span class="ap-arrow">→</span>
+          <span class="ap-step">Match path</span>
         </div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label">Loki — Log Aggregation</div>
-        <p style="margin-bottom:8px;">All containers write structured JSON logs via <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">structlog</code>. Loki (in AKS) aggregates logs from all pods. Grafana has a Loki datasource — query logs alongside metrics in the same dashboard.</p>
-        <p style="color:var(--text2); font-size:13px;">Example: a participant reports their lab is stuck. Ops queries Loki for <code style="font-family:'DM Mono',monospace; font-size:11px; color:var(--accent-indigo)">lab_id=xyz</code> across all services to see the exact failure point in under 10 seconds.</p>
+        <table class="tbl" style="margin-top:10px">
+          <tr><th>Path Match</th><th>Destination</th></tr>
+          <tr><td>severity=critical</td><td>PagerDuty (immediate page)</td></tr>
+          <tr><td>domain=lab-provisioning</td><td>Ops Slack channel</td></tr>
+          <tr><td>domain=billing</td><td>Finance Slack channel</td></tr>
+          <tr><td>severity=warning</td><td>Email digest</td></tr>
+          <tr><td>severity=info</td><td>Log only</td></tr>
+        </table>
       </div>
     </div>
+    <div class="example"><div class="example-label">Live event operations</div><p>Ops team watches the Event Operations dashboard on a large screen during a live event. Provisioning queue depth rises → KEDA auto-scales → queue drains. If the queue doesn't drain within 5 minutes, Grafana fires a critical alert → PagerDuty pages the on-call engineer directly.</p></div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
+  <!-- S12: Peripheral -->
+  <div class="doc-section" id="s12">
+    <div class="section-eyebrow">12 / Peripheral Services</div>
+    <h2 class="section-title">Peripheral Services</h2>
+    <p class="section-lead">Services outside the core application layer. Object storage uses cloud-managed services per deployment target. Email and CDN are provider-agnostic OSS/SaaS choices.</p>
+    <table class="tbl">
+      <tr><th>Concern</th><th>Choice</th><th>Azure</th><th>AWS</th><th>Rationale</th></tr>
+      <tr><td><span class="hl">Object Storage</span></td><td><span class="tag amber">Cloud-managed</span></td><td>Azure Blob Storage</td><td>Amazon S3</td><td>S3-compatible API across all providers. Config-only swap between clouds.</td></tr>
+      <tr><td><span class="hl">Email</span></td><td>Sendgrid</td><td>Azure Communication Services</td><td>Amazon SES</td><td>SMTP-compatible. Swap by changing SMTP host config only.</td></tr>
+      <tr><td><span class="hl">CDN / DDoS</span></td><td>Cloudflare</td><td>Azure Front Door</td><td>CloudFront</td><td>Cloudflare is provider-agnostic — sits in front of any cloud origin.</td></tr>
+      <tr><td><span class="hl">Secret Management</span></td><td>Azure Key Vault (cloud) / HashiCorp Vault (on-prem)</td><td>Azure Key Vault</td><td>AWS Secrets Manager</td><td>AKS has native Key Vault integration via CSI driver.</td></tr>
+      <tr><td><span class="hl">Lab Streaming</span></td><td>Apache Guacamole (AKS)</td><td>Azure Virtual Desktop</td><td>Amazon AppStream</td><td>Open-source, browser-based, runs anywhere. No client install.</td></tr>
+      <tr><td><span class="hl">VM Labs Compute</span></td><td>Azure VMSS</td><td>Azure VMSS</td><td>AWS Auto Scaling Groups</td><td>Warm pool enabled. Pre-built images. Auto-scaling. Isolated networks.</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
 
-  <!-- Section 11: Peripheral Services -->
-  <div class="section" id="peripheral">
-    <div class="section-head"><span class="section-num">11</span><h2>Peripheral Services</h2></div>
-    <p style="color:var(--text2); margin-bottom:24px; max-width:700px;">Services outside the core application layer. OSS-first and cloud-agnostic — every choice here can be swapped for an equivalent on a different cloud with only a config change, not a code change.</p>
-
-    <div class="info-card">
-      <div class="info-card-label">Decision Table — Peripheral Services</div>
-      <table class="decision-table" style="margin-top:12px;">
-        <tr><th>Concern</th><th>Self-managed / OSS (chosen)</th><th>Azure equivalent</th><th>AWS equivalent</th><th>Rationale</th></tr>
-        <tr><td><span class="hl">Transactional email</span></td><td class="chosen">Sendgrid (SMTP API)</td><td>Azure Communication Services Email</td><td>Amazon SES</td><td>SMTP-compatible — swap by changing SMTP host config only</td></tr>
-        <tr><td><span class="hl">Object storage</span></td><td class="chosen">MinIO in AKS (S3-compatible)</td><td>Azure Blob Storage</td><td>Amazon S3</td><td>S3 API is the industry standard. MinIO in AKS = zero cloud dependency. Move to S3/Blob = change endpoint + keys only</td></tr>
-        <tr><td><span class="hl">CDN / DDoS</span></td><td class="chosen">Cloudflare (free tier → Pro)</td><td>Azure Front Door + WAF</td><td>CloudFront + Shield</td><td>Cloudflare is provider-agnostic — it sits in front of any cloud origin</td></tr>
-        <tr><td><span class="hl">Secret management</span></td><td class="chosen">HashiCorp Vault in AKS (on-prem) / Azure Key Vault (cloud)</td><td>Azure Key Vault</td><td>AWS Secrets Manager</td><td>Vault for on-prem deployments. Key Vault for Azure production — AKS has native integration</td></tr>
-        <tr><td><span class="hl">Lab streaming (RDP/SSH)</span></td><td class="chosen">Apache Guacamole in AKS</td><td>Azure Virtual Desktop</td><td>Amazon AppStream</td><td>Guacamole is open-source, runs anywhere, browser-based — no client install</td></tr>
-        <tr><td><span class="hl">GPU labs / AI workloads</span></td><td class="chosen">Neko WebRTC + AKS GPU node pool</td><td>Azure NC-series nodes</td><td>AWS P-series</td><td>Neko provides browser-based desktop access to GPU workloads</td></tr>
-        <tr><td><span class="hl">SMS / Push (future)</span></td><td class="chosen">TBD — Twilio or self-hosted</td><td>Azure Communication Services</td><td>Amazon SNS / Pinpoint</td><td>Not in Phase 1–3 scope. Evaluate in Phase 4.</td></tr>
+  <!-- S13: Scale -->
+  <div class="doc-section" id="s13">
+    <div class="section-eyebrow">13 / Scale Strategy</div>
+    <h2 class="section-title">Scale Strategy</h2>
+    <p class="section-lead">From 500 to 25,000 participants — the platform scales horizontally at every layer.</p>
+    <div class="scale-row">
+      <div class="scale-card"><div class="scale-num" style="color:var(--chip-green-c)">500</div><div class="scale-sub">Standard event<br>Single region<br>Default node pool</div></div>
+      <div class="scale-card"><div class="scale-num" style="color:var(--accent)">5,000</div><div class="scale-sub">Large event<br>Node autoscale<br>Quota pre-request</div></div>
+      <div class="scale-card"><div class="scale-num" style="color:#a78bfa">15,000</div><div class="scale-sub">Multi-region<br>East US 2 + West US 2<br>Traffic Manager</div></div>
+      <div class="scale-card" style="border-color:rgba(245,158,11,0.3)"><div class="scale-num" style="color:var(--chip-amber-c)">25,000</div><div class="scale-sub">World record<br>4 regions<br>Sponsored licenses</div></div>
+    </div>
+    <div class="card" style="margin-top:0"><div class="card-label">Scale Mechanisms</div>
+      <table class="tbl">
+        <tr><th>Mechanism</th><th>What It Does</th></tr>
+        <tr><td>HPA</td><td>Scales pods based on CPU / memory</td></tr>
+        <tr><td>KEDA</td><td>Scales agent pods based on RabbitMQ queue depth</td></tr>
+        <tr><td>Cluster Autoscaler</td><td>Adds / removes VM nodes in AKS node pool</td></tr>
+        <tr><td>Temporal worker pools</td><td>Provisioning workers scale with workflow load</td></tr>
+        <tr><td>PgBouncer</td><td>Connection pooling in front of Postgres for 10K+ connections</td></tr>
+        <tr><td>Azure quota tickets</td><td>Submitted 6–8 weeks before large events for vCPU headroom</td></tr>
       </table>
     </div>
   </div>
+  <hr class="divider">
 
-  <hr class="section-rule">
-
-  <!-- Section 12: Scale Strategy -->
-  <div class="section" id="scale">
-    <div class="section-head"><span class="section-num">12</span><h2>Scale Strategy</h2></div>
-    <div class="scale-row">
-      <div class="scale-card">
-        <div class="scale-num" style="color:var(--accent-teal)">500</div>
-        <div class="scale-label">Standard event<br>Single region · default node pool</div>
-      </div>
-      <div class="scale-card">
-        <div class="scale-num" style="color:var(--accent-blue)">5,000</div>
-        <div class="scale-label">Large event<br>Node autoscale + quota pre-request</div>
-      </div>
-      <div class="scale-card">
-        <div class="scale-num" style="color:var(--accent-purple)">15,000</div>
-        <div class="scale-num" style="font-size:13px; color:var(--text2)">Multi-region</div>
-        <div class="scale-label">East US 2 + West US 2<br>Traffic Manager load balancing</div>
-      </div>
-      <div class="scale-card" style="border-color:rgba(245,158,11,0.3)">
-        <div class="scale-num" style="color:var(--accent-amber)">25,000</div>
-        <div class="scale-label">World record attempt<br>4 regions · subscription spread<br>Microsoft-sponsored licenses</div>
-      </div>
-    </div>
-    <div class="info-card" style="margin-top:16px;">
-      <div class="info-card-label">Scale mechanisms in AKS</div>
-      <ul style="columns:2; gap:32px;">
-        <li><span class="hl">HPA</span> — scales pods based on CPU/memory</li>
-        <li><span class="hl">KEDA</span> — scales agent pods based on RabbitMQ queue depth</li>
-        <li><span class="hl">Cluster Autoscaler</span> — adds/removes VM nodes in AKS node pool</li>
-        <li><span class="hl">Temporal worker pools</span> — provisioning workers scale with workflow load</li>
-        <li><span class="hl">PostgreSQL connection pooling</span> — PgBouncer in front of Postgres for 10K+ concurrent connections</li>
-        <li><span class="hl">Azure quota tickets</span> — submitted 6–8 weeks before large events for vCPU headroom</li>
-      </ul>
-    </div>
-  </div>
-
-  <hr class="section-rule">
-
-  <!-- Section 13: Open Decisions -->
-  <div class="section" id="decisions">
-    <div class="section-head"><span class="section-num">13</span><h2>Open Decisions (ADRs)</h2></div>
+  <!-- S14: ADRs -->
+  <div class="doc-section" id="s14">
+    <div class="section-eyebrow">14 / Open Decisions</div>
+    <h2 class="section-title">Architecture Decision Records</h2>
+    <p class="section-lead">Decisions made and pending. Updated each sprint.</p>
     <div class="adr-grid">
-      <div class="adr-card"><span class="adr-status decided">DECIDED</span><h4>Agent deployment: each agent = own container</h4><p>Enables independent scaling during events. KEDA scales scoring-agent independently from lab-architect-agent.</p></div>
-      <div class="adr-card"><span class="adr-status decided">DECIDED</span><h4>Single PostgreSQL instance, multiple databases</h4><p>Self-managed in AKS. Cloud-agnostic. Logical isolation enforced at DB user level. Split individual DBs later if needed.</p></div>
-      <div class="adr-card"><span class="adr-status decided">DECIDED</span><h4>CI/CD: GitHub Actions + Argo CD</h4><p>Actions = build + push to ACR. Argo CD = GitOps sync to AKS. Drift detection included.</p></div>
-      <div class="adr-card"><span class="adr-status decided">DECIDED</span><h4>AKS topology: single cluster, namespace-separated</h4><p>gl-dev / gl-staging / gl-prod namespaces. Second cluster added for world-record multi-region events.</p></div>
-      <div class="adr-card"><span class="adr-status decided">DECIDED</span><h4>Cache/token store: Valkey (Redis-compatible)</h4><p>BSD-licensed Redis fork. Production: consider Azure Cache for Redis for managed HA. Code unchanged either way.</p></div>
-      <div class="adr-card"><span class="adr-status decided">DECIDED</span><h4>Object storage: MinIO in AKS (S3-compatible)</h4><p>S3 API compatibility means swapping to actual S3 / Azure Blob is a config-only change.</p></div>
-      <div class="adr-card"><span class="adr-status pending">PENDING</span><h4>JWT algorithm: HS256 → RS256 upgrade</h4><p>Current Phase 1 uses HS256 (symmetric). Phase 2 should migrate to RS256 so services only hold public keys, not the signing secret.</p></div>
-      <div class="adr-card"><span class="adr-status pending">PENDING</span><h4>SMS / push notifications (Phase 4)</h4><p>Twilio vs self-hosted vs Azure Communication Services. Evaluate in Phase 4 when notification-service is scoped.</p></div>
-      <div class="adr-card"><span class="adr-status pending">PENDING</span><h4>Microsoft Partner enrollment</h4><p>🔴 CRITICAL — CSP procurement is blocked until enrollment completes. 2–4 week timeline. Blocks Phase 3 lab provisioning.</p></div>
-      <div class="adr-card"><span class="adr-status pending">PENDING</span><h4>Analytics service scope (Phase 4)</h4><p>"Report" service referenced in early diagrams. Formally tracked as analytics-service in Phase 4. Scope TBD.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-green);color:var(--chip-green-c);border:1px solid var(--chip-green-t)">DECIDED</span><h4>Agent deployment: each agent = own container</h4><p>Independent scaling. KEDA scales scoring-agent independently during events.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-green);color:var(--chip-green-c);border:1px solid var(--chip-green-t)">DECIDED</span><h4>Single PostgreSQL, multiple databases</h4><p>Self-managed in AKS. Cloud-agnostic. Logical isolation at DB user level.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-green);color:var(--chip-green-c);border:1px solid var(--chip-green-t)">DECIDED</span><h4>CI/CD: GitHub Actions + Argo CD</h4><p>Actions builds + pushes to ACR. Argo CD GitOps-syncs AKS. Drift detection included.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-green);color:var(--chip-green-c);border:1px solid var(--chip-green-t)">DECIDED</span><h4>Cluster topology: Dev+Stage shared, Prod dedicated</h4><p>Shared cluster for non-prod cuts cost. Prod cluster is fully isolated with independent scaling.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-green);color:var(--chip-green-c);border:1px solid var(--chip-green-t)">DECIDED</span><h4>Cache: Redis (replacing Valkey)</h4><p>Same redis.asyncio client. Azure Cache for Redis for managed production HA. Code unchanged.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-green);color:var(--chip-green-c);border:1px solid var(--chip-green-t)">DECIDED</span><h4>Object storage: cloud-managed per provider</h4><p>Azure Blob on Azure, S3 on AWS, GCS on GCP. S3-compatible API across all three — config-only swap.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-green);color:var(--chip-green-c);border:1px solid var(--chip-green-t)">DECIDED</span><h4>Alerting: Grafana path-based routing</h4><p>Grafana manages all alert rules and routing. Prometheus + CloudWatch as metric sources. PagerDuty for critical path.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-amber);color:var(--chip-amber-c);border:1px solid var(--chip-amber-t)">PENDING</span><h4>JWT algorithm: HS256 → RS256 upgrade</h4><p>Phase 1 uses HS256 (symmetric). Phase 2 should migrate to RS256 — services hold only public keys.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-red);color:var(--chip-red-c);border:1px solid var(--chip-red-t)">CRITICAL</span><h4>Microsoft Partner enrollment</h4><p>CSP procurement blocked until enrollment completes. 2–4 week timeline. Blocks Phase 3 lab provisioning.</p></div>
+      <div class="adr-card"><span class="adr-status" style="background:var(--chip-amber);color:var(--chip-amber-c);border:1px solid var(--chip-amber-t)">PENDING</span><h4>SMS / Push notifications</h4><p>Twilio vs self-hosted vs Azure Communication Services. Evaluate in Phase 4.</p></div>
     </div>
   </div>
 
-  <div style="text-align:center; padding:48px 0; color:var(--text3); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; border-top:1px solid var(--border); margin-top:40px;">
+  <div style="text-align:center;padding:48px 0;color:var(--text3);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;border-top:1px solid var(--border);margin-top:40px">
     GRAVITY LABS · ARCHITECTURE REFERENCE · v1.0 · MAY 2026 · CONSTEL GLOBAL
   </div>
 
-</div><!-- /page -->
+</div><!-- /main-content -->
+</div><!-- /page-wrap -->
 
 <script>
-function toggleLayer(el) {
-  el.classList.toggle('active');
-}
-
-const THEME_STORAGE_KEY = 'gravitylabs-theme';
-const themeToggle = document.getElementById('themeToggle');
-const LUCIDE_SUN_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>';
-const LUCIDE_MOON_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a7.5 7.5 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>';
-
-function applyTheme(theme) {
-  document.body.setAttribute('data-theme', theme);
-  const nextAria = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
-  themeToggle.innerHTML = theme === 'dark' ? LUCIDE_SUN_ICON : LUCIDE_MOON_ICON;
-  themeToggle.setAttribute('aria-label', nextAria);
-  themeToggle.setAttribute('title', nextAria);
-}
-
-const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-const initialTheme = savedTheme === 'light' ? 'light' : 'dark';
-applyTheme(initialTheme);
-
-themeToggle.addEventListener('click', () => {
-  const currentTheme = document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  applyTheme(nextTheme);
-  localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
-});
+function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
+(function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
+function toggleLayer(el){el.classList.toggle('open')}
+function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+// Sidebar active state on scroll
+const sections=document.querySelectorAll('.doc-section');
+const links=document.querySelectorAll('.sb-link');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes(id))l.classList.add('active')});}});},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s=>obs.observe(s));
 </script>
 </body>
 </html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gravity Labs — Platform Flows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--transition:0.3s cubic-bezier(0.4,0,0.2,1)}
+[data-theme="dark"]{
+  --bg:#0a0e1a;--bg2:#111520;--nav-bg:rgba(10,14,26,0.92);
+  --border:rgba(255,255,255,0.07);--border-active:rgba(255,255,255,0.16);
+  --text:#e8edf8;--text2:#7a85a8;--text3:#3e4660;
+  --accent:#2563eb;--accent-soft:rgba(37,99,235,0.12);--tag-bg:rgba(255,255,255,0.05);
+  --sidebar-bg:#0d1120;--sidebar-active:rgba(37,99,235,0.12);
+  /* flow diagram */
+  --f-bg:#0d1120;--f-process:#1a2540;--f-process-s:rgba(37,99,235,0.4);
+  --f-decision:#1c2040;--f-decision-s:rgba(167,139,250,0.4);
+  --f-terminal-s:#16a34a;--f-terminal-f:#1a2a1a;
+  --f-terminal-e-s:#dc2626;--f-terminal-e-f:#2a1a1a;
+  --f-hitl-s:#d97706;--f-hitl-f:#2a2010;
+  --f-agent-s:rgba(167,139,250,0.5);--f-agent-f:#1a1830;
+  --f-text:#c8d0e8;--f-text2:#6b7599;
+  --f-arrow:#2563eb;--f-arrow-y:#d97706;--f-arrow-g:#16a34a;
+}
+[data-theme="light"]{
+  --bg:#f0f5fc;--bg2:#ffffff;--nav-bg:rgba(240,245,252,0.92);
+  --border:rgba(37,99,235,0.1);--border-active:rgba(37,99,235,0.28);
+  --text:#0d1830;--text2:#3d5080;--text3:#8090b8;
+  --accent:#2563eb;--accent-soft:rgba(37,99,235,0.07);--tag-bg:rgba(37,99,235,0.06);
+  --sidebar-bg:#e8effa;--sidebar-active:rgba(37,99,235,0.1);
+  --f-bg:#f5f8ff;--f-process:#ddeaff;--f-process-s:rgba(37,99,235,0.35);
+  --f-decision:#ede8ff;--f-decision-s:rgba(109,40,217,0.3);
+  --f-terminal-s:#16a34a;--f-terminal-f:#dcfce7;
+  --f-terminal-e-s:#dc2626;--f-terminal-e-f:#fee2e2;
+  --f-hitl-s:#d97706;--f-hitl-f:#fef3c7;
+  --f-agent-s:rgba(109,40,217,0.4);--f-agent-f:#ede8ff;
+  --f-text:#1a2040;--f-text2:#5a6888;
+  --f-arrow:#2563eb;--f-arrow-y:#d97706;--f-arrow-g:#16a34a;
+}
+body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh}
+.topnav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 32px;gap:24px;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(37,99,235,0.3)}
+.logo-icon svg{width:16px;height:16px}
+.logo-wordmark{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.02em;transition:color var(--transition)}
+.logo-wordmark span{color:var(--accent)}
+.nav-tabs{display:flex;align-items:center;gap:2px;margin-left:24px}
+.nav-tab{font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;color:var(--text2);transition:all var(--transition);border:1px solid transparent}
+.nav-tab:hover{color:var(--text);background:var(--accent-soft)}
+.nav-tab.active{color:var(--accent);background:var(--accent-soft);border-color:var(--border-active)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.version-badge{font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);color:var(--text3)}
+.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--tag-bg);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all var(--transition)}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.theme-btn svg{width:14px;height:14px}
+.i-sun{display:none}.i-moon{display:block}
+[data-theme="light"] .i-sun{display:block}[data-theme="light"] .i-moon{display:none}
+
+.page-wrap{display:flex;min-height:100vh;padding-top:56px}
+.sidebar{width:240px;flex-shrink:0;position:fixed;top:56px;bottom:0;left:0;overflow-y:auto;background:var(--sidebar-bg);border-right:1px solid var(--border);padding:24px 0 48px;transition:background var(--transition),border-color var(--transition)}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sb-section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:0 20px;margin:20px 0 6px}
+.sb-link{display:flex;align-items:center;gap:10px;padding:7px 20px;font-size:13px;color:var(--text2);text-decoration:none;transition:all var(--transition);border-left:2px solid transparent;cursor:pointer}
+.sb-link:hover{color:var(--text);background:var(--accent-soft)}
+.sb-link.active{color:var(--accent);background:var(--sidebar-active);border-left-color:var(--accent);font-weight:500}
+.sb-link .sb-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);min-width:22px}
+.sb-link.active .sb-num{color:var(--accent)}
+
+.main-content{margin-left:240px;flex:1;padding:48px 64px 120px;max-width:960px}
+.page-intro{margin-bottom:56px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+.page-intro h1{font-family:'Sora',sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.025em;color:var(--text);margin-bottom:12px}
+.page-intro p{color:var(--text2);font-size:15px;max-width:600px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+
+.flow-section{margin-bottom:80px;scroll-margin-top:80px}
+.flow-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em}
+.flow-desc{color:var(--text2);font-size:14px;margin-bottom:24px}
+.flow-card{background:var(--f-bg);border:1px solid var(--border);border-radius:12px;padding:28px;overflow-x:auto;transition:all var(--transition)}
+.flow-card svg{min-width:500px;width:100%;height:auto;display:block}
+.divider{border:none;border-top:1px solid var(--border);margin:80px 0}
+
+/* Legend */
+.flow-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.fl-item{display:flex;align-items:center;gap:7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2)}
+.fl-box{width:14px;height:14px;border-radius:3px;border:1px solid}
+.fl-diamond{width:14px;height:14px;transform:rotate(45deg);border:1px solid;border-radius:2px}
+
+@media(max-width:900px){.sidebar{display:none}.main-content{margin-left:0;padding:32px 24px 80px}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a class="logo" href="index.html">
+    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+    <span class="logo-wordmark">Gravity<span>Labs</span></span>
+  </a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Documentation</a>
+    <a class="nav-tab" href="diagram.html">Architecture</a>
+    <a class="nav-tab active" href="flows.html">Flows</a>
+  </div>
+  <div class="nav-right">
+    <span class="version-badge">v1.0 · May 2026</span>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<aside class="sidebar">
+  <div class="sb-section-label">Platform Flows</div>
+  <a class="sb-link active" onclick="goTo('f1')"><span class="sb-num">F1</span>Lab Provisioning</a>
+  <a class="sb-link" onclick="goTo('f2')"><span class="sb-num">F2</span>Authentication</a>
+  <a class="sb-link" onclick="goTo('f3')"><span class="sb-num">F3</span>Lab Grading</a>
+  <a class="sb-link" onclick="goTo('f4')"><span class="sb-num">F4</span>Lab Destruction</a>
+  <a class="sb-link" onclick="goTo('f5')"><span class="sb-num">F5</span>Event Launch</a>
+  <a class="sb-link" onclick="goTo('f6')"><span class="sb-num">F6</span>AI Agent Pipeline</a>
+  <a class="sb-link" onclick="goTo('f7')"><span class="sb-num">F7</span>CI/CD Deploy</a>
+</aside>
+
+<div class="main-content">
+  <div class="page-intro">
+    <div class="eyebrow">Platform Flows</div>
+    <h1>Flow Diagrams</h1>
+    <p>Block diagrams for every major platform flow — from lab provisioning to CI/CD deployment. Each flow maps to the architecture layers described in the documentation.</p>
+  </div>
+
+  <!-- LEGEND (global) -->
+  <div class="flow-legend" style="margin-bottom:40px">
+    <div class="fl-item"><div class="fl-box" style="background:var(--f-process);border-color:var(--f-process-s)"></div>Process / Step</div>
+    <div class="fl-item"><div class="fl-diamond" style="background:var(--f-decision);border-color:var(--f-decision-s)"></div>Decision</div>
+    <div class="fl-item"><div class="fl-box" style="background:var(--f-terminal-f);border-color:var(--f-terminal-s)"></div>Start / End</div>
+    <div class="fl-item"><div class="fl-box" style="background:var(--f-hitl-f);border-color:var(--f-hitl-s)"></div>HITL Gate (Human)</div>
+    <div class="fl-item"><div class="fl-box" style="background:var(--f-agent-f);border-color:var(--f-agent-s)"></div>AI Agent</div>
+  </div>
+
+  <!-- ═══════════════════════ F1: Lab Provisioning ═══════════════════════ -->
+  <div class="flow-section" id="f1">
+    <div class="eyebrow">F1 / Lab Provisioning</div>
+    <h2 class="flow-title">Lab Provisioning Workflow</h2>
+    <p class="flow-desc">End-to-end flow from admin lab request through AI pipeline, 3 HITL gates, and participant delivery. Orchestrated by Temporal — crash-safe at every step.</p>
+    <div class="flow-card">
+      <svg viewBox="0 0 720 860" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" class="f-arr"/></marker>
+          <marker id="a1g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round"/></marker>
+          <marker id="a1r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .f-arr{stroke:var(--f-arrow)}
+          .f-proc{fill:var(--f-process);stroke:var(--f-process-s);stroke-width:1}
+          .f-agent{fill:var(--f-agent-f);stroke:var(--f-agent-s);stroke-width:1}
+          .f-hitl{fill:var(--f-hitl-f);stroke:var(--f-hitl-s);stroke-width:1.5;stroke-dasharray:4,2}
+          .f-term{fill:var(--f-terminal-f);stroke:var(--f-terminal-s);stroke-width:1.5}
+          .f-term-e{fill:var(--f-terminal-e-f);stroke:var(--f-terminal-e-s);stroke-width:1.5}
+          .f-dec{fill:var(--f-decision);stroke:var(--f-decision-s);stroke-width:1}
+          .f-line{fill:none;stroke:var(--f-arrow);stroke-width:1.5}
+          .f-line-g{fill:none;stroke:#16a34a;stroke-width:1.5}
+          .f-line-r{fill:none;stroke:#dc2626;stroke-width:1.5}
+          .f-line-y{fill:none;stroke:var(--f-arrow-y);stroke-width:1.5}
+          .ft{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-text);text-anchor:middle}
+          .fts{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}
+          .ft-g{font-family:'DM Mono',monospace;font-size:10.5px;fill:#16a34a;text-anchor:middle}
+          .ft-r{font-family:'DM Mono',monospace;font-size:10.5px;fill:#dc2626;text-anchor:middle}
+          .ft-y{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-arrow-y);text-anchor:middle}
+          .ft-p{font-family:'DM Mono',monospace;font-size:10.5px;fill:#a78bfa;text-anchor:middle}
+          .lbl{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}
+        </style>
+
+        <!-- START -->
+        <rect x="260" y="10" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="32" class="ft-g">Admin submits lab request</text>
+
+        <line x1="360" y1="46" x2="360" y2="70" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- Step 1: lab-architect-agent -->
+        <rect x="220" y="70" width="280" height="52" rx="7" class="f-agent"/>
+        <text x="360" y="90" class="ft-p">lab-architect-agent</text>
+        <text x="360" y="106" class="fts">NL → IaC template + scoring rubric (LangGraph + Claude API)</text>
+
+        <line x1="360" y1="122" x2="360" y2="146" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- HITL Gate 1 -->
+        <rect x="200" y="146" width="320" height="44" rx="7" class="f-hitl"/>
+        <text x="360" y="162" class="ft-y">HITL Gate 1 — Blueprint Review</text>
+        <text x="360" y="178" class="fts">Admin reviews lab manifest, tasks, rubric · Temporal waits on signal</text>
+
+        <line x1="360" y1="190" x2="360" y2="214" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- Decision: Approved? -->
+        <polygon points="360,214 440,244 360,274 280,244" class="f-dec"/>
+        <text x="360" y="248" class="ft">Approved?</text>
+
+        <!-- No branch -->
+        <line x1="280" y1="244" x2="120" y2="244" class="f-line-r" marker-end="url(#a1r)"/>
+        <text x="200" y="238" class="lbl">No</text>
+        <rect x="40" y="220" width="80" height="48" rx="18" class="f-term-e"/>
+        <text x="80" y="246" class="ft-r">Rejected</text>
+        <text x="80" y="258" class="fts">Archived</text>
+
+        <!-- Yes -->
+        <line x1="360" y1="274" x2="360" y2="298" class="f-line-g" marker-end="url(#a1g)"/>
+        <text x="374" y="290" class="lbl">Yes</text>
+
+        <!-- Step 2: dataset-forge-agent -->
+        <rect x="220" y="298" width="280" height="52" rx="7" class="f-agent"/>
+        <text x="360" y="318" class="ft-p">dataset-forge-agent</text>
+        <text x="360" y="334" class="fts">Generates N unique synthetic datasets (Faker + Pandas)</text>
+
+        <line x1="360" y1="350" x2="360" y2="374" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- HITL Gate 2 -->
+        <rect x="200" y="374" width="320" height="44" rx="7" class="f-hitl"/>
+        <text x="360" y="390" class="ft-y">HITL Gate 2 — Procurement Review</text>
+        <text x="360" y="406" class="fts">Admin approves subscription list + per-user cost</text>
+
+        <line x1="360" y1="418" x2="360" y2="442" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- Step 3: provisioning-agent -->
+        <rect x="220" y="442" width="280" height="52" rx="7" class="f-agent"/>
+        <text x="360" y="462" class="ft-p">provisioning-agent</text>
+        <text x="360" y="478" class="fts">Terraform/Bicep → VMSS · Graph API → licenses · Entra ID users</text>
+
+        <line x1="360" y1="494" x2="360" y2="518" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- Step 4: qa-validator-agent -->
+        <rect x="220" y="518" width="280" height="52" rx="7" class="f-agent"/>
+        <text x="360" y="538" class="ft-p">qa-validator-agent</text>
+        <text x="360" y="554" class="fts">Dry-run: connectivity, subscriptions, dataset, network isolation</text>
+
+        <line x1="360" y1="570" x2="360" y2="594" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- Decision: QA pass? -->
+        <polygon points="360,594 450,624 360,654 270,624" class="f-dec"/>
+        <text x="360" y="628" class="ft">QA Pass?</text>
+
+        <!-- No: re-provision -->
+        <line x1="270" y1="624" x2="130" y2="624" class="f-line-y"/>
+        <text x="200" y="618" class="lbl">No (retry)</text>
+        <line x1="130" y1="624" x2="130" y2="462" class="f-line-y"/>
+        <line x1="130" y1="462" x2="218" y2="462" class="f-line-y" marker-end="url(#a1)"/>
+
+        <!-- Yes -->
+        <line x1="360" y1="654" x2="360" y2="678" class="f-line-g" marker-end="url(#a1g)"/>
+        <text x="374" y="670" class="lbl">Yes</text>
+
+        <!-- HITL Gate 3 -->
+        <rect x="200" y="678" width="320" height="44" rx="7" class="f-hitl"/>
+        <text x="360" y="694" class="ft-y">HITL Gate 3 — Pre-Launch</text>
+        <text x="360" y="710" class="fts">Admin reviews QA report + final cost · One click to go live</text>
+
+        <line x1="360" y1="722" x2="360" y2="746" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- Step 5: deliver -->
+        <rect x="220" y="746" width="280" height="44" rx="7" class="f-proc"/>
+        <text x="360" y="764" class="ft">Deliver credentials to participant</text>
+        <text x="360" y="780" class="fts">Guacamole URL + temp UPN + password via notification-service</text>
+
+        <line x1="360" y1="790" x2="360" y2="814" class="f-line" marker-end="url(#a1)"/>
+
+        <!-- END -->
+        <rect x="260" y="814" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="836" class="ft-g">Lab live · live-observer-agent starts</text>
+      </svg>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════════════════════ F2: Authentication ═══════════════════════ -->
+  <div class="flow-section" id="f2">
+    <div class="eyebrow">F2 / Authentication</div>
+    <h2 class="flow-title">User Authentication Flow</h2>
+    <p class="flow-desc">Covers both SSO (Google / Microsoft / GitHub) and email/password paths. JWT issued on success, stored in Redis with JTI for revocation.</p>
+    <div class="flow-card">
+      <svg viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" class="f-arr"/></marker>
+          <marker id="a2g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round"/></marker>
+          <marker id="a2r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .f-arr{stroke:var(--f-arrow)}
+          .f-proc{fill:var(--f-process);stroke:var(--f-process-s);stroke-width:1}
+          .f-agent{fill:var(--f-agent-f);stroke:var(--f-agent-s);stroke-width:1}
+          .f-term{fill:var(--f-terminal-f);stroke:var(--f-terminal-s);stroke-width:1.5}
+          .f-term-e{fill:var(--f-terminal-e-f);stroke:var(--f-terminal-e-s);stroke-width:1.5}
+          .f-dec{fill:var(--f-decision);stroke:var(--f-decision-s);stroke-width:1}
+          .f-line{fill:none;stroke:var(--f-arrow);stroke-width:1.5}
+          .f-line-g{fill:none;stroke:#16a34a;stroke-width:1.5}
+          .f-line-r{fill:none;stroke:#dc2626;stroke-width:1.5}
+          .ft{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-text);text-anchor:middle}
+          .fts{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}
+          .ft-g{font-family:'DM Mono',monospace;font-size:10.5px;fill:#16a34a;text-anchor:middle}
+          .ft-r{font-family:'DM Mono',monospace;font-size:10.5px;fill:#dc2626;text-anchor:middle}
+          .lbl{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}
+        </style>
+
+        <rect x="260" y="10" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="32" class="ft-g">User visits login page</text>
+        <line x1="360" y1="46" x2="360" y2="70" class="f-line" marker-end="url(#a2)"/>
+
+        <!-- Decision: SSO or Email -->
+        <polygon points="360,70 460,104 360,138 260,104" class="f-dec"/>
+        <text x="360" y="108" class="ft">Login method?</text>
+
+        <!-- SSO branch (left) -->
+        <line x1="260" y1="104" x2="140" y2="104" class="f-line"/>
+        <text x="200" y="98" class="lbl">SSO</text>
+        <rect x="60" y="88" width="80" height="32" rx="5" class="f-proc"/>
+        <text x="100" y="108" class="ft">Redirect to</text>
+
+        <line x1="100" y1="120" x2="100" y2="170" class="f-line" marker-end="url(#a2)"/>
+        <rect x="40" y="170" width="120" height="44" rx="5" class="f-proc"/>
+        <text x="100" y="188" class="ft">OAuth callback</text>
+        <text x="100" y="202" class="fts">state validated in Redis</text>
+
+        <line x1="100" y1="214" x2="100" y2="260" class="f-line" marker-end="url(#a2)"/>
+        <rect x="40" y="260" width="120" height="44" rx="5" class="f-proc"/>
+        <text x="100" y="278" class="ft">auth-service</text>
+        <text x="100" y="292" class="fts">upsert user record</text>
+
+        <line x1="160" y1="282" x2="260" y2="360" class="f-line-g" marker-end="url(#a2g)"/>
+
+        <!-- Email branch (right) -->
+        <line x1="460" y1="104" x2="580" y2="104" class="f-line"/>
+        <text x="520" y="98" class="lbl">Email / Password</text>
+        <rect x="540" y="88" width="120" height="32" rx="5" class="f-proc"/>
+        <text x="600" y="108" class="ft">Submit credentials</text>
+
+        <line x1="600" y1="120" x2="600" y2="170" class="f-line" marker-end="url(#a2)"/>
+        <polygon points="600,170 660,200 600,230 540,200" class="f-dec"/>
+        <text x="600" y="204" class="ft">Rate limited?</text>
+
+        <line x1="600" y1="230" x2="600" y2="260" class="f-line-g" marker-end="url(#a2g)"/>
+        <text x="614" y="248" class="lbl">No</text>
+        <rect x="540" y="260" width="120" height="44" rx="5" class="f-proc"/>
+        <text x="600" y="278" class="ft">Verify password</text>
+        <text x="600" y="292" class="fts">dummy bcrypt on unknown email</text>
+
+        <!-- Rate limited → error -->
+        <line x1="660" y1="200" x2="700" y2="200" class="f-line-r"/>
+        <rect x="690" y="184" width="22" height="32" rx="5" class="f-term-e"/>
+        <text x="701" y="204" class="ft-r" style="font-size:8px">429</text>
+
+        <line x1="600" y1="304" x2="600" y2="360" class="f-line" marker-end="url(#a2)"/>
+        <polygon points="600,360 660,390 600,420 540,390" class="f-dec"/>
+        <text x="600" y="394" class="ft">Valid?</text>
+
+        <line x1="540" y1="390" x2="460" y2="390" class="f-line-r" marker-end="url(#a2r)"/>
+        <text x="500" y="384" class="lbl">No</text>
+        <rect x="390" y="374" width="70" height="32" rx="18" class="f-term-e"/>
+        <text x="425" y="394" class="ft-r">401 Error</text>
+
+        <line x1="600" y1="420" x2="460" y2="420" class="f-line-g" marker-end="url(#a2g)"/>
+        <text x="530" y="414" class="lbl">Yes</text>
+
+        <!-- Issue JWT (center) -->
+        <rect x="260" y="360" width="200" height="80" rx="7" class="f-proc"/>
+        <text x="360" y="383" class="ft">Issue JWT pair</text>
+        <text x="360" y="399" class="fts">access token (15min) + refresh (7d)</text>
+        <text x="360" y="413" class="fts">store refresh JTI in Redis</text>
+        <text x="360" y="427" class="fts">blocklist checked on every request</text>
+
+        <line x1="360" y1="440" x2="360" y2="474" class="f-line" marker-end="url(#a2)"/>
+
+        <rect x="220" y="474" width="280" height="36" rx="7" class="f-proc"/>
+        <text x="360" y="490" class="ft">Return tokens to client</text>
+        <text x="360" y="504" class="fts">Set secure httpOnly cookie / localStorage</text>
+
+        <line x1="360" y1="510" x2="360" y2="534" class="f-line" marker-end="url(#a2)"/>
+        <rect x="260" y="514" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="536" class="ft-g">Authenticated — redirect to dashboard</text>
+      </svg>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════════════════════ F3: Grading ═══════════════════════ -->
+  <div class="flow-section" id="f3">
+    <div class="eyebrow">F3 / Lab Grading</div>
+    <h2 class="flow-title">Live Lab Grading Flow</h2>
+    <p class="flow-desc">Triggered on participant submission or time expiry. scoring-agent runs 5-dimension analysis. cross-validator-agent tests against reserve datasets to confirm genuine skill.</p>
+    <div class="flow-card">
+      <svg viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" class="f-arr"/></marker><marker id="a3g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+        <style>.f-arr{stroke:var(--f-arrow)}.f-proc{fill:var(--f-process);stroke:var(--f-process-s);stroke-width:1}.f-agent{fill:var(--f-agent-f);stroke:var(--f-agent-s);stroke-width:1}.f-term{fill:var(--f-terminal-f);stroke:var(--f-terminal-s);stroke-width:1.5}.f-dec{fill:var(--f-decision);stroke:var(--f-decision-s);stroke-width:1}.f-line{fill:none;stroke:var(--f-arrow);stroke-width:1.5}.f-line-g{fill:none;stroke:#16a34a;stroke-width:1.5}.ft{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-text);text-anchor:middle}.fts{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}.ft-g{font-family:'DM Mono',monospace;font-size:10.5px;fill:#16a34a;text-anchor:middle}.ft-p{font-family:'DM Mono',monospace;font-size:10.5px;fill:#a78bfa;text-anchor:middle}.lbl{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}</style>
+
+        <rect x="260" y="10" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="32" class="ft-g">Submission received / time expired</text>
+        <line x1="360" y1="46" x2="360" y2="70" class="f-line" marker-end="url(#a3)"/>
+        <rect x="220" y="70" width="280" height="36" rx="7" class="f-proc"/>
+        <text x="360" y="86" class="ft">lab-service publishes to score queue</text>
+        <text x="360" y="100" class="fts">RabbitMQ → scoring-agent picks up</text>
+        <line x1="360" y1="106" x2="360" y2="130" class="f-line" marker-end="url(#a3)"/>
+        <rect x="220" y="130" width="280" height="52" rx="7" class="f-agent"/>
+        <text x="360" y="150" class="ft-p">scoring-agent</text>
+        <text x="360" y="166" class="fts">Runs grading scripts against live cloud resources</text>
+        <line x1="360" y1="182" x2="360" y2="206" class="f-line" marker-end="url(#a3)"/>
+        <!-- 5 dimensions -->
+        <rect x="100" y="206" width="520" height="80" rx="7" class="f-proc"/>
+        <text x="360" y="226" class="ft">5-Dimension Scoring</text>
+        <text x="180" y="248" class="fts">Correctness 40%</text>
+        <text x="310" y="248" class="fts">Architecture 20%</text>
+        <text x="440" y="248" class="fts">Efficiency 15%</text>
+        <text x="220" y="268" class="fts">Robustness 15%</text>
+        <text x="400" y="268" class="fts">Speed &amp; Independence 10%</text>
+        <line x1="360" y1="286" x2="360" y2="310" class="f-line" marker-end="url(#a3)"/>
+        <rect x="220" y="310" width="280" height="52" rx="7" class="f-agent"/>
+        <text x="360" y="330" class="ft-p">cross-validator-agent</text>
+        <text x="360" y="346" class="fts">Tests submission against 2–3 unseen reserve datasets</text>
+        <line x1="360" y1="362" x2="360" y2="386" class="f-line" marker-end="url(#a3)"/>
+        <polygon points="360,386 450,416 360,446 270,416" class="f-dec"/>
+        <text x="360" y="420" class="ft">Genuine skill?</text>
+        <line x1="450" y1="416" x2="560" y2="416" class="f-line"/>
+        <text x="505" y="410" class="lbl">No (anomaly)</text>
+        <rect x="540" y="400" width="100" height="32" rx="5" class="f-proc"/>
+        <text x="590" y="420" class="ft">Flag for review</text>
+        <line x1="360" y1="446" x2="360" y2="470" class="f-line-g" marker-end="url(#a3g)"/>
+        <text x="374" y="462" class="lbl">Yes</text>
+        <rect x="220" y="470" width="280" height="52" rx="7" class="f-proc"/>
+        <text x="360" y="490" class="ft">Store score + AI commentary</text>
+        <text x="360" y="506" class="fts">analytics-service · leaderboard update · certificate trigger</text>
+        <line x1="360" y1="522" x2="360" y2="546" class="f-line" marker-end="url(#a3)"/>
+        <rect x="260" y="526" width="200" height="26" rx="13" class="f-term"/>
+        <text x="360" y="543" class="ft-g">Score published</text>
+      </svg>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════════════════════ F4: Destruction ═══════════════════════ -->
+  <div class="flow-section" id="f4">
+    <div class="eyebrow">F4 / Lab Destruction</div>
+    <h2 class="flow-title">Lab Destruction &amp; Cleanup</h2>
+    <p class="flow-desc">Atomic teardown orchestrated by Temporal. Revokes licenses, deletes users, tears down infrastructure, logs final cost. Partial teardown is impossible by design.</p>
+    <div class="flow-card">
+      <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" class="f-arr"/></marker></defs>
+        <style>.f-arr{stroke:var(--f-arrow)}.f-proc{fill:var(--f-process);stroke:var(--f-process-s);stroke-width:1}.f-agent{fill:var(--f-agent-f);stroke:var(--f-agent-s);stroke-width:1}.f-term{fill:var(--f-terminal-f);stroke:var(--f-terminal-s);stroke-width:1.5}.f-term-e{fill:var(--f-terminal-e-f);stroke:var(--f-terminal-e-s);stroke-width:1.5}.f-line{fill:none;stroke:var(--f-arrow);stroke-width:1.5}.ft{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-text);text-anchor:middle}.fts{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}.ft-g{font-family:'DM Mono',monospace;font-size:10.5px;fill:#16a34a;text-anchor:middle}</style>
+
+        <rect x="260" y="10" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="32" class="ft-g">Lab TTL expired / admin triggers destroy</text>
+        <line x1="360" y1="46" x2="360" y2="70" class="f-line" marker-end="url(#a4)"/>
+        <rect x="220" y="70" width="280" height="36" rx="7" class="f-proc"/>
+        <text x="360" y="86" class="ft">Temporal DestroyLabWorkflow starts</text>
+        <text x="360" y="100" class="fts">All steps checkpointed — crash-safe</text>
+        <line x1="360" y1="106" x2="360" y2="130" class="f-line" marker-end="url(#a4)"/>
+        <!-- parallel steps -->
+        <rect x="80" y="130" width="180" height="160" rx="7" class="f-proc"/>
+        <text x="170" y="150" class="ft">Revoke licenses</text>
+        <text x="170" y="166" class="fts">Graph API</text>
+        <text x="170" y="182" class="fts">Remove M365 assignments</text>
+        <text x="170" y="214" class="ft">Delete Entra ID users</text>
+        <text x="170" y="230" class="fts">Graph API bulk delete</text>
+        <text x="170" y="246" class="fts">Temp UPN cleaned up</text>
+        <text x="170" y="270" class="ft">Clear Redis keys</text>
+        <text x="170" y="284" class="fts">lab_status · session data</text>
+
+        <rect x="280" y="130" width="180" height="160" rx="7" class="f-proc"/>
+        <text x="370" y="150" class="ft">Terraform destroy</text>
+        <text x="370" y="166" class="fts">VMSS teardown</text>
+        <text x="370" y="182" class="fts">Network interfaces deleted</text>
+        <text x="370" y="214" class="ft">Storage cleanup</text>
+        <text x="370" y="230" class="fts">Lab datasets deleted</text>
+        <text x="370" y="246" class="fts">Temp blobs removed</text>
+        <text x="370" y="270" class="ft">Update lab status DB</text>
+        <text x="370" y="284" class="fts">gravitylabs_labs → DESTROYED</text>
+
+        <rect x="480" y="130" width="160" height="160" rx="7" class="f-proc"/>
+        <text x="560" y="150" class="ft">Log final cost</text>
+        <text x="560" y="166" class="fts">Compute + license</text>
+        <text x="560" y="182" class="fts">duration × price</text>
+        <text x="560" y="214" class="ft">Emit analytics event</text>
+        <text x="560" y="230" class="fts">analytics-service</text>
+        <text x="560" y="246" class="fts">billing record created</text>
+        <text x="560" y="270" class="ft">Notify participants</text>
+        <text x="560" y="284" class="fts">lab ended notification</text>
+
+        <line x1="360" y1="130" x2="170" y2="130" class="f-line"/>
+        <line x1="360" y1="130" x2="370" y2="130" class="f-line"/>
+        <line x1="360" y1="130" x2="560" y2="130" class="f-line"/>
+
+        <line x1="170" y1="290" x2="360" y2="330" class="f-line" marker-end="url(#a4)"/>
+        <line x1="370" y1="290" x2="360" y2="330" class="f-line" marker-end="url(#a4)"/>
+        <line x1="560" y1="290" x2="360" y2="330" class="f-line" marker-end="url(#a4)"/>
+
+        <rect x="220" y="330" width="280" height="30" rx="15" class="f-term"/>
+        <text x="360" y="349" class="ft-g">Lab fully destroyed · resources released</text>
+      </svg>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════════════════════ F5: Event Launch ═══════════════════════ -->
+  <div class="flow-section" id="f5">
+    <div class="eyebrow">F5 / Event Launch</div>
+    <h2 class="flow-title">Event Launch Flow</h2>
+    <p class="flow-desc">Admin creates an event, participants enroll, labs are bulk-provisioned. All participants receive credentials simultaneously on event start.</p>
+    <div class="flow-card">
+      <svg viewBox="0 0 720 440" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" class="f-arr"/></marker></defs>
+        <style>.f-arr{stroke:var(--f-arrow)}.f-proc{fill:var(--f-process);stroke:var(--f-process-s);stroke-width:1}.f-hitl{fill:var(--f-hitl-f);stroke:var(--f-hitl-s);stroke-width:1.5;stroke-dasharray:4,2}.f-term{fill:var(--f-terminal-f);stroke:var(--f-terminal-s);stroke-width:1.5}.f-line{fill:none;stroke:var(--f-arrow);stroke-width:1.5}.ft{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-text);text-anchor:middle}.fts{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}.ft-g{font-family:'DM Mono',monospace;font-size:10.5px;fill:#16a34a;text-anchor:middle}.ft-y{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-arrow-y);text-anchor:middle}</style>
+
+        <rect x="260" y="10" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="32" class="ft-g">Admin creates event in portal</text>
+        <line x1="360" y1="46" x2="360" y2="70" class="f-line" marker-end="url(#a5)"/>
+        <rect x="220" y="70" width="280" height="44" rx="7" class="f-proc"/>
+        <text x="360" y="90" class="ft">event-service: configure event</text>
+        <text x="360" y="104" class="fts">Lab template · capacity · start time · TTL</text>
+        <line x1="360" y1="114" x2="360" y2="138" class="f-line" marker-end="url(#a5)"/>
+        <rect x="220" y="138" width="280" height="44" rx="7" class="f-proc"/>
+        <text x="360" y="158" class="ft">Participants enroll</text>
+        <text x="360" y="172" class="fts">Registration link · SSO / email signup · seat limits enforced</text>
+        <line x1="360" y1="182" x2="360" y2="206" class="f-line" marker-end="url(#a5)"/>
+        <rect x="200" y="206" width="320" height="44" rx="7" class="f-hitl"/>
+        <text x="360" y="226" class="ft-y">Admin confirms launch — HITL</text>
+        <text x="360" y="240" class="fts">Final participant count · budget sign-off · go / no-go</text>
+        <line x1="360" y1="250" x2="360" y2="274" class="f-line" marker-end="url(#a5)"/>
+        <rect x="220" y="274" width="280" height="44" rx="7" class="f-proc"/>
+        <text x="360" y="294" class="ft">Bulk ProvisionLabWorkflow × N</text>
+        <text x="360" y="308" class="fts">Temporal fans out one workflow per participant in parallel</text>
+        <line x1="360" y1="318" x2="360" y2="342" class="f-line" marker-end="url(#a5)"/>
+        <rect x="220" y="342" width="280" height="44" rx="7" class="f-proc"/>
+        <text x="360" y="362" class="ft">Credentials delivered simultaneously</text>
+        <text x="360" y="376" class="fts">notification-service · email + in-app · Guacamole URLs</text>
+        <line x1="360" y1="386" x2="360" y2="410" class="f-line" marker-end="url(#a5)"/>
+        <rect x="260" y="394" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="416" class="ft-g">Event live · all participants active</text>
+      </svg>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════════════════════ F6: AI Agent Pipeline ═══════════════════════ -->
+  <div class="flow-section" id="f6">
+    <div class="eyebrow">F6 / AI Agent Pipeline</div>
+    <h2 class="flow-title">AI Agent Communication Pipeline</h2>
+    <p class="flow-desc">Shows how agents chain together through Temporal and RabbitMQ. Each agent is an independent pod — failure in one does not block others unless they are in sequence.</p>
+    <div class="flow-card">
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" class="f-arr"/></marker><marker id="a6p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+        <style>.f-arr{stroke:var(--f-arrow)}.f-proc{fill:var(--f-process);stroke:var(--f-process-s);stroke-width:1}.f-agent{fill:var(--f-agent-f);stroke:var(--f-agent-s);stroke-width:1}.f-term{fill:var(--f-terminal-f);stroke:var(--f-terminal-s);stroke-width:1.5}.f-line{fill:none;stroke:var(--f-arrow);stroke-width:1.5}.f-line-p{fill:none;stroke:#a78bfa;stroke-width:1.5;stroke-dasharray:5,3}.ft{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-text);text-anchor:middle}.fts{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}.ft-g{font-family:'DM Mono',monospace;font-size:10.5px;fill:#16a34a;text-anchor:middle}.ft-p{font-family:'DM Mono',monospace;font-size:10.5px;fill:#a78bfa;text-anchor:middle}</style>
+
+        <!-- Temporal orchestrator (top) -->
+        <rect x="220" y="10" width="280" height="44" rx="7" class="f-proc"/>
+        <text x="360" y="30" class="ft">Temporal Workflow</text>
+        <text x="360" y="46" class="fts">Orchestrates agent sequence · checkpoints every activity</text>
+
+        <!-- Sequential agents (left column - design time) -->
+        <text x="170" y="84" class="ft-p" style="font-size:9px">SEQUENTIAL (design time)</text>
+        <rect x="60" y="90" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="170" y="108" class="ft-p">lab-architect-agent</text>
+        <text x="170" y="122" class="fts">LangGraph + Claude API · IaC + rubric</text>
+        <line x1="170" y1="126" x2="170" y2="150" class="f-line-p" marker-end="url(#a6p)"/>
+        <rect x="60" y="150" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="170" y="168" class="ft-p">dataset-forge-agent</text>
+        <text x="170" y="182" class="fts">Faker + Pandas · N unique datasets</text>
+        <line x1="170" y1="186" x2="170" y2="210" class="f-line-p" marker-end="url(#a6p)"/>
+        <rect x="60" y="210" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="170" y="228" class="ft-p">provisioning-agent</text>
+        <text x="170" y="242" class="fts">Terraform + Graph API</text>
+        <line x1="170" y1="246" x2="170" y2="270" class="f-line-p" marker-end="url(#a6p)"/>
+        <rect x="60" y="270" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="170" y="288" class="ft-p">qa-validator-agent</text>
+        <text x="170" y="302" class="fts">dry-run validation</text>
+
+        <!-- Parallel agents (right column - runtime) -->
+        <text x="530" y="84" class="ft-p" style="font-size:9px">PARALLEL (runtime per participant)</text>
+        <rect x="440" y="90" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="550" y="108" class="ft-p">live-observer-agent</text>
+        <text x="550" y="122" class="fts">idle detection · progress estimation · credit burn</text>
+        <rect x="440" y="150" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="550" y="168" class="ft-p">hint-dispenser-agent</text>
+        <text x="550" y="182" class="fts">contextual hints on request · 2% score deduction</text>
+        <rect x="440" y="210" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="550" y="228" class="ft-p">scoring-agent</text>
+        <text x="550" y="242" class="fts">5-dimension scoring · Claude API commentary</text>
+        <rect x="440" y="270" width="220" height="36" rx="6" class="f-agent"/>
+        <text x="550" y="288" class="ft-p">cross-validator-agent</text>
+        <text x="550" y="302" class="fts">reserve dataset validation · anomaly detection</text>
+
+        <!-- Temporal connects to both columns -->
+        <line x1="280" y1="54" x2="170" y2="88" class="f-line" marker-end="url(#a6)"/>
+        <line x1="440" y1="54" x2="550" y2="88" class="f-line" marker-end="url(#a6)"/>
+
+        <!-- RabbitMQ in middle -->
+        <rect x="308" y="170" width="104" height="60" rx="7" style="fill:rgba(245,158,11,0.08);stroke:rgba(245,158,11,0.3);stroke-width:1"/>
+        <text x="360" y="192" class="ft" style="font-size:9.5px;fill:#f59e0b">RabbitMQ</text>
+        <text x="360" y="208" class="fts">async event bus</text>
+        <text x="360" y="222" class="fts">agent ↔ service</text>
+        <line x1="282" y1="200" x2="306" y2="200" class="f-line" style="stroke-dasharray:4,2"/>
+        <line x1="414" y1="200" x2="438" y2="200" class="f-line" style="stroke-dasharray:4,2"/>
+
+        <!-- Legend note -->
+        <rect x="60" y="330" width="600" height="22" rx="5" style="fill:rgba(37,99,235,0.05);stroke:rgba(37,99,235,0.12);stroke-width:0.5"/>
+        <text x="360" y="345" style="font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle">Each agent is a separate AKS pod · KEDA scales independently based on queue depth · Temporal retries on agent failure</text>
+      </svg>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- ═══════════════════════ F7: CI/CD ═══════════════════════ -->
+  <div class="flow-section" id="f7">
+    <div class="eyebrow">F7 / CI/CD Deploy</div>
+    <h2 class="flow-title">CI/CD Deployment Pipeline</h2>
+    <p class="flow-desc">GitHub Actions handles build and push to ACR. Argo CD handles GitOps sync to AKS. Auto-sync for Dev/Stage, manual approval gate for Production.</p>
+    <div class="flow-card">
+      <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" class="f-arr"/></marker><marker id="a7r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+        <style>.f-arr{stroke:var(--f-arrow)}.f-proc{fill:var(--f-process);stroke:var(--f-process-s);stroke-width:1}.f-hitl{fill:var(--f-hitl-f);stroke:var(--f-hitl-s);stroke-width:1.5;stroke-dasharray:4,2}.f-term{fill:var(--f-terminal-f);stroke:var(--f-terminal-s);stroke-width:1.5}.f-term-e{fill:var(--f-terminal-e-f);stroke:var(--f-terminal-e-s);stroke-width:1.5}.f-dec{fill:var(--f-decision);stroke:var(--f-decision-s);stroke-width:1}.f-line{fill:none;stroke:var(--f-arrow);stroke-width:1.5}.f-line-r{fill:none;stroke:#dc2626;stroke-width:1.5}.ft{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-text);text-anchor:middle}.fts{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}.ft-g{font-family:'DM Mono',monospace;font-size:10.5px;fill:#16a34a;text-anchor:middle}.ft-r{font-family:'DM Mono',monospace;font-size:10.5px;fill:#dc2626;text-anchor:middle}.ft-y{font-family:'DM Mono',monospace;font-size:10.5px;fill:var(--f-arrow-y);text-anchor:middle}.lbl{font-family:'DM Mono',monospace;font-size:9px;fill:var(--f-text2);text-anchor:middle}</style>
+
+        <rect x="260" y="10" width="200" height="36" rx="18" class="f-term"/>
+        <text x="360" y="32" class="ft-g">Dev merges PR to main</text>
+        <line x1="360" y1="46" x2="360" y2="70" class="f-line" marker-end="url(#a7)"/>
+        <rect x="220" y="70" width="280" height="52" rx="7" class="f-proc"/>
+        <text x="360" y="90" class="ft">GitHub Actions — CI</text>
+        <text x="360" y="106" class="fts">Run tests → lint → build Docker image</text>
+        <text x="360" y="118" class="fts">push to ACR with git SHA tag</text>
+        <line x1="360" y1="122" x2="360" y2="146" class="f-line" marker-end="url(#a7)"/>
+        <polygon points="360,146 440,172 360,198 280,172" class="f-dec"/>
+        <text x="360" y="176" class="ft">Tests pass?</text>
+        <line x1="440" y1="172" x2="560" y2="172" class="f-line-r" marker-end="url(#a7r)"/>
+        <text x="500" y="166" class="lbl">No</text>
+        <rect x="540" y="156" width="90" height="32" rx="18" class="f-term-e"/>
+        <text x="585" y="176" class="ft-r">PR blocked</text>
+        <line x1="360" y1="198" x2="360" y2="222" class="f-line" marker-end="url(#a7)"/>
+        <text x="374" y="214" class="lbl">Yes</text>
+        <rect x="220" y="222" width="280" height="44" rx="7" class="f-proc"/>
+        <text x="360" y="242" class="ft">Actions updates Helm values</text>
+        <text x="360" y="256" class="fts">commits new image tag to charts/*/values.yaml</text>
+        <line x1="360" y1="266" x2="360" y2="290" class="f-line" marker-end="url(#a7)"/>
+        <rect x="220" y="290" width="280" height="36" rx="7" class="f-proc"/>
+        <text x="360" y="308" class="ft">Argo CD detects OutOfSync</text>
+        <text x="360" y="322" class="fts">watches Helm chart repo · compares desired vs actual</text>
+        <line x1="360" y1="326" x2="360" y2="350" class="f-line" marker-end="url(#a7)"/>
+        <polygon points="360,350 450,376 360,402 270,376" class="f-dec"/>
+        <text x="360" y="380" class="ft">Target env?</text>
+        <line x1="270" y1="376" x2="120" y2="376" class="f-line"/>
+        <text x="195" y="370" class="lbl">Dev / Stage</text>
+        <rect x="40" y="360" width="80" height="32" rx="5" class="f-proc"/>
+        <text x="80" y="376" class="ft">Auto-sync</text>
+        <line x1="450" y1="376" x2="560" y2="376" class="f-line"/>
+        <text x="505" y="370" class="lbl">Production</text>
+        <rect x="540" y="356" width="140" height="40" rx="7" class="f-hitl"/>
+        <text x="610" y="374" class="ft-y">Manual approval</text>
+        <text x="610" y="388" class="fts">Lead engineer approves in Argo CD UI</text>
+      </svg>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:48px 0;color:var(--text3);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;border-top:1px solid var(--border);margin-top:40px">
+    GRAVITY LABS · PLATFORM FLOWS · v1.0 · MAY 2026 · CONSTEL GLOBAL
+  </div>
+
+</div>
+</div>
+
+<script>
+function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
+(function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
+function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+const sections=document.querySelectorAll('.flow-section');
+const links=document.querySelectorAll('.sb-link');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes(id))l.classList.add('active')})}})},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
