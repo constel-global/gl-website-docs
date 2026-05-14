@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gravity Labs — FSD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav class="topnav">
+  <a class="logo" href="index.html"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><span class="logo-wm">Gravity<span>Labs</span></span></a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Architecture</a>
+    <a class="nav-tab" href="diagram.html">Diagram</a>
+    <a class="nav-tab" href="flows.html">Flows</a>
+    <a class="nav-tab" href="brd.html">BRD</a>
+    <a class="nav-tab active" href="fsd.html">FSD</a>
+    <a class="nav-tab" href="cursor.html">Cursor Guide</a>
+  </div>
+  <div class="nav-search-wrap" role="search">
+    <label class="sr-only" for="gl-doc-search">Search this page</label>
+    <input type="search" id="gl-doc-search" class="nav-search-input" placeholder="Search this page…" autocomplete="off" />
+    <div id="gl-doc-search-results" class="nav-search-results" hidden></div>
+  </div>
+  <button type="button" class="nav-mtoggle" onclick="glToggleNav()" aria-label="Open section menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <span class="vbadge">v1.0 · May 2026</span>
+    <button class="tbtn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="page-wrap">
+<div class="sb-backdrop" id="sb-backdrop" onclick="glCloseNav()" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-lbl">Architecture</div>
+  <a class="sb-a active" onclick="goTo('s1')"><span class="n">01</span>System Architecture</a>
+  <a class="sb-a" onclick="goTo('s2')"><span class="n">02</span>Cloud Abstraction Layer</a>
+  <a class="sb-a" onclick="goTo('s3')"><span class="n">03</span>Config File</a>
+  <div class="sb-lbl">Engine</div>
+  <a class="sb-a" onclick="goTo('s4')"><span class="n">04</span>Subscription Engine</a>
+  <a class="sb-a" onclick="goTo('s5')"><span class="n">05</span>Azure Portal Sandbox</a>
+  <a class="sb-a" onclick="goTo('s6')"><span class="n">06</span>Credit Metering</a>
+  <div class="sb-lbl">AI &amp; Workflows</div>
+  <a class="sb-a" onclick="goTo('s7')"><span class="n">07</span>LangGraph State Machine</a>
+  <a class="sb-a" onclick="goTo('s8')"><span class="n">08</span>Agent Specifications</a>
+  <a class="sb-a" onclick="goTo('s9')"><span class="n">09</span>Scoring Dimensions</a>
+  <div class="sb-lbl">API &amp; Data</div>
+  <a class="sb-a" onclick="goTo('s10')"><span class="n">10</span>API Specification</a>
+  <a class="sb-a" onclick="goTo('s11')"><span class="n">11</span>Data Models</a>
+  <a class="sb-a" onclick="goTo('s12')"><span class="n">12</span>On-Premises Requirements</a>
+  <div class="sb-lbl">Security</div>
+  <a class="sb-a" onclick="goTo('s13')"><span class="n">13</span>Security Model</a>
+  <a class="sb-a" onclick="goTo('s14')"><span class="n">14</span>Data Layer</a>
+</aside>
+<div class="main" id="gl-search-scope">
+  <div class="intro">
+    <div class="eyebrow">Functional Specification &amp; Technical Design · Final Edition</div>
+    <h1>Gravity Labs FSD</h1>
+    <p>Complete functional specification and technical design for the Gravity Labs platform. Covers architecture, cloud abstraction, subscription engine, AI agent implementation, API design, and data models.</p>
+    <div class="intro-meta">
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>March 2026</span>
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Engineering · Architects · DevOps · Product</span>
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Confidential</span>
+    </div>
+  </div>
+
+  <!-- S1: System Architecture -->
+  <div class="sec" id="s1">
+    <div class="eyebrow">01 / System Architecture Overview</div>
+    <h2 class="sec-title">System Architecture Overview</h2>
+    <p class="sec-lead">Cloud-native, horizontally scalable platform built around a cloud-abstraction layer enabling deployment on Azure, AWS, GCP, or on-premises Kubernetes. All application logic is cloud-agnostic; cloud-specific behaviour is encapsulated in adapter modules selected at startup.</p>
+    <table class="tbl">
+      <tr><th>Layer</th><th>Components</th><th>Technology Options</th></tr>
+      <tr><td>Presentation</td><td>Participant Portal, Admin Portal, Super Admin, Public Site</td><td>React 18 + TypeScript + Tailwind CSS. White-label themeable via CSS variables.</td></tr>
+      <tr><td>API Gateway</td><td>Rate limiting, auth, routing, API key management</td><td>Nginx Ingress (current) · Azure APIM (Azure) · Kong (on-prem)</td></tr>
+      <tr><td>Application Backend</td><td>REST API, business logic, HITL workflow state, RBAC</td><td>FastAPI (Python 3.11), async, 3+ replicas via Kubernetes Deployment</td></tr>
+      <tr><td>AI Agent Orchestration</td><td>8 agents, HITL gates, LangGraph stateful pipelines</td><td>LangGraph (Python). Claude API (primary) / Azure OpenAI GPT-4o (MLP-compliant)</td></tr>
+      <tr><td>Subscription Engine</td><td>License Manager, Subscription Monitor, credit metering</td><td>FastAPI microservice. Microsoft Graph API, GitHub API, Databricks API, CSP REST API</td></tr>
+      <tr><td>Lab Orchestration</td><td>Provisioning queue, warm pool manager, environment lifecycle</td><td>Temporal.io (on-prem portable) · Azure Service Bus / AWS SQS / RabbitMQ</td></tr>
+      <tr><td>Compute — Containers</td><td>Code-Server, GPU notebook labs</td><td>AKS / EKS / GKE / vanilla K8s. KEDA autoscaling.</td></tr>
+      <tr><td>Compute — VMs</td><td>Full Windows/Linux VM labs, warm pool</td><td>Azure VMSS / AWS EC2 ASG / GCP GCE MIGs / VMware vSphere. Packer for images.</td></tr>
+      <tr><td>Compute — Azure Sandbox</td><td>Ephemeral Azure tenant, capped subscription per participant</td><td>Azure Subscription Pool. ARM/Bicep deployment. Azure Budget + Policy hard deny cap.</td></tr>
+      <tr><td>Streaming Gateway</td><td>Browser-to-desktop streaming for VM and GUI labs</td><td>Apache Guacamole (RDP/VNC/SSH) + Neko WebRTC (GPU/GUI) + Code-Server HTTPS</td></tr>
+      <tr><td>Data</td><td>User data, event data, scores, subscriptions</td><td>PostgreSQL (OLTP) + Redis (session cache, warm pool) + Cloud Object Storage</td></tr>
+      <tr><td>Observability</td><td>Metrics, logs, traces, alerts</td><td>Prometheus + Grafana + Loki (AKS) · Azure Monitor / CloudWatch (cloud-managed)</td></tr>
+    </table>
+    <div class="callout ex" style="margin-top:16px"><div class="cl">Network Topology</div><p>All workloads run inside a private VNet/VPC. No workload has a direct public IP. VM lab networks are fully isolated from each other and from the application network. Azure Portal Sandbox tenants are completely separate Azure tenants — zero network connectivity to the GL platform tenant.</p></div>
+  </div>
+  <hr class="divider">
+
+  <!-- S2: Cloud Abstraction -->
+  <div class="sec" id="s2">
+    <div class="eyebrow">02 / Cloud Abstraction Layer</div>
+    <h2 class="sec-title">Cloud Abstraction Layer</h2>
+    <p class="sec-lead">Python abstract base classes define all cloud-dependent operations. At startup the deployment target is read from <code>gravity-labs.config.yaml</code> and the correct adapter implementations are loaded dynamically.</p>
+    <div class="code">from abc import ABC, abstractmethod
+
+class IComputeProvider(ABC):
+    async def provision_container(self, spec: ContainerSpec) -> EnvironmentHandle: ...
+    async def provision_vm(self, spec: VMSpec) -> EnvironmentHandle: ...
+    async def terminate_environment(self, handle: EnvironmentHandle) -> None: ...
+    async def get_streaming_url(self, handle: EnvironmentHandle) -> str: ...
+
+class IIdentityProvider(ABC):
+    async def create_ephemeral_user(self, event_id: str) -> EphemeralUser: ...
+    async def revoke_user(self, user_id: str) -> None: ...
+
+class ISubscriptionProvider(ABC):
+    async def provision_azure_sandbox(self, cap_usd: float) -> AzureSandbox: ...
+    async def claim_license(self, license_type: str, quantity: int) -> LicenseClaim: ...
+    async def revoke_license(self, claim_id: str) -> None: ...
+    async def get_credit_usage(self, sandbox_id: str) -> CreditUsage: ...</div>
+    <table class="tbl" style="margin-top:16px">
+      <tr><th>Interface</th><th>Azure</th><th>AWS</th><th>On-Premises</th></tr>
+      <tr><td><code>IComputeProvider</code></td><td>AKS + VMSS; azure-mgmt-compute SDK</td><td>EKS + EC2 ASG; boto3</td><td>K8s Python client + pyVmomi (vSphere)</td></tr>
+      <tr><td><code>IIdentityProvider</code></td><td>Entra ID; MSAL Python + Graph API</td><td>AWS Cognito; boto3 cognito-idp</td><td>Keycloak 23; python-keycloak + ldap3</td></tr>
+      <tr><td><code>IStorageProvider</code></td><td>Azure Blob Storage; azure-storage-blob</td><td>S3; boto3 + presigned URLs</td><td>MinIO; minio Python client</td></tr>
+      <tr><td><code>ISecretStore</code></td><td>Azure Key Vault; azure-keyvault-secrets</td><td>AWS Secrets Manager; boto3</td><td>HashiCorp Vault 1.15; hvac Python</td></tr>
+      <tr><td><code>IMessageQueue</code></td><td>Azure Service Bus; azure-servicebus</td><td>SQS; boto3 sqs client</td><td>RabbitMQ; aio-pika · Kafka (high-throughput)</td></tr>
+      <tr><td><code>IObservability</code></td><td>Azure Monitor + App Insights; OTel exporter</td><td>CloudWatch; OTel AWS contrib</td><td>Prometheus + Grafana + Loki; OTel Prometheus</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S3: Config -->
+  <div class="sec" id="s3">
+    <div class="eyebrow">03 / Configuration File</div>
+    <h2 class="sec-title">gravity-labs.config.yaml</h2>
+    <p class="sec-lead">Single configuration file that controls all cloud-specific behaviour. Switching deployment targets requires only editing this file — no code changes required.</p>
+    <div class="code">deployment:
+  target: azure          # azure | aws | gcp | on_prem | hybrid
+  region: eastus
+
+compute:
+  container_backend: aks  # aks | eks | gke | kubernetes
+  vm_backend: vmss        # vmss | ec2_asg | gce_mig | vsphere
+
+identity:
+  provider: entra_id      # entra_id | cognito | cloud_iam | keycloak
+  tenant_id: ${TENANT_ID}
+
+storage:
+  provider: azure_blob    # azure_blob | s3 | gcs | minio
+
+secrets:
+  provider: key_vault     # key_vault | secrets_manager | secret_manager | vault
+
+queue:
+  provider: service_bus   # service_bus | sqs | pubsub | rabbitmq
+
+observability:
+  provider: azure_monitor # azure_monitor | cloudwatch | gcp_ops | prometheus
+
+subscription_management:
+  azure_csp_enabled: true
+  github_enabled: true
+  databricks_enabled: true</div>
+  </div>
+  <hr class="divider">
+
+  <!-- S4: Subscription Engine -->
+  <div class="sec" id="s4">
+    <div class="eyebrow">04 / Subscription Management Engine</div>
+    <h2 class="sec-title">Subscription Engine — Internal API</h2>
+    <p class="sec-lead">Dedicated FastAPI microservice (subscription-engine, 2+ replicas). PostgreSQL for records. Redis for real-time credit usage (30-second polling, served instantly to dashboards).</p>
+    <table class="tbl">
+      <tr><th>Endpoint</th><th>Method</th><th>Description</th></tr>
+      <tr><td><code>/api/v1/subscriptions/manifest</code></td><td>POST</td><td>Agent submits lab blueprint. Returns full subscription manifest with quantities and total event cost for admin HITL review.</td></tr>
+      <tr><td><code>/api/v1/subscriptions/approve</code></td><td>POST</td><td>Admin approves (or modifies) manifest. Triggers bulk procurement. Records approver and timestamp in audit log.</td></tr>
+      <tr><td><code>/api/v1/subscriptions/provision/{session_id}</code></td><td>POST</td><td>Called by Provisioning Agent on lab start. Activates all approved licenses for this participant session.</td></tr>
+      <tr><td><code>/api/v1/subscriptions/usage/{session_id}</code></td><td>GET</td><td>Returns real-time credit usage. Served from Redis. Polled every 30 seconds by participant Subscription Dashboard.</td></tr>
+      <tr><td><code>/api/v1/subscriptions/topup</code></td><td>POST</td><td>Participant submits top-up request. Fires admin notification within 30 seconds.</td></tr>
+      <tr><td><code>/api/v1/subscriptions/topup/{id}/approve</code></td><td>POST</td><td>Admin approves top-up. Increases credit cap via Azure Budget API. Refreshes Redis cache immediately.</td></tr>
+      <tr><td><code>/api/v1/subscriptions/revoke/{session_id}</code></td><td>POST</td><td>Called on session termination. Revokes all licenses, deactivates Azure subscription, destroys ephemeral Entra ID user. 100% within 5 minutes.</td></tr>
+    </table>
+    <div class="callout ex" style="margin-top:14px"><div class="cl">Microsoft CSP License Provisioning — Graph API</div>
+    <div class="code" style="margin-top:6px"># Assign M365 / Copilot license
+POST https://graph.microsoft.com/v1.0/users/{userId}/assignLicense
+{ "addLicenses": [{"skuId": "{COPILOT_FOR_M365_SKU_ID}"}], "removeLicenses": [] }
+
+# Revoke on session end
+POST https://graph.microsoft.com/v1.0/users/{userId}/assignLicense
+{ "addLicenses": [], "removeLicenses": ["{COPILOT_FOR_M365_SKU_ID}"] }</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S5: Azure Portal Sandbox -->
+  <div class="sec" id="s5">
+    <div class="eyebrow">05 / Azure Portal Sandbox</div>
+    <h2 class="sec-title">Azure Portal Sandbox Provisioning</h2>
+    <p class="sec-lead">Pool of pre-created Azure subscriptions. Each tagged with pool status. Auto-scales when available count drops below low-water mark. 30-minute quarantine after session end before returning to pool.</p>
+    <div class="code"># Azure Portal Sandbox — step by step
+
+1. Claim subscription from pool → mark status=in_use
+
+2. Deploy ARM/Bicep template:
+   az deployment sub create --template-file lab_template.bicep \
+     --parameters participantId={id} creditCap={cap}
+
+3. Create ephemeral Entra ID user:
+   POST https://graph.microsoft.com/v1.0/users
+   { userPrincipalName: user-{uuid}@{tenant}.onmicrosoft.com,
+     passwordProfile: { password: {generated}, forceChangePasswordNextSignIn: false } }
+
+4. Assign Contributor role on assigned resource group only
+
+5. Apply Azure Budget + Policy hard cap (deny effect)
+
+6. Deliver credential card to participant portal + email</div>
+    <div class="callout warn" style="margin-top:14px"><div class="cl">Hard Spending Cap via Azure Policy</div>
+    <div class="code" style="margin-top:6px">{
+  "mode": "All",
+  "policyRule": {
+    "if": { "field": "tags['gravity-session-id']", "equals": "{session_id}" },
+    "then": { "effect": "deny" }
+  }
+}
+# Budget alert at 80% fires admin notification.
+# Policy deny fires at 100% — no additional spend possible.</div>
+    </div>
+    <div class="cards" style="margin-top:16px">
+      <div class="card"><div class="card-lbl">Credential Card Delivered</div><ul><li>Portal URL: portal.azure.com</li><li>Username: user-[code]@[tenant].onmicrosoft.com</li><li>Temporary password (auto-generated)</li><li>Subscription ID + Resource Group name</li><li>Credit cap, current balance, session expiry time</li></ul></div>
+      <div class="card"><div class="card-lbl">Applicable Certifications</div><ul><li>AZ-104: Azure Administrator</li><li>AZ-305: Azure Solutions Architect</li><li>AZ-500: Azure Security Technologies</li><li>AZ-700: Azure Network Engineer</li><li>DP-203: Azure Data Engineer</li><li>SC-300: Identity &amp; Access Administrator</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S6: Credit Metering -->
+  <div class="sec" id="s6">
+    <div class="eyebrow">06 / Real-Time Credit Metering</div>
+    <h2 class="sec-title">Real-Time Credit Metering Pipeline</h2>
+    <p class="sec-lead">Asyncio background task polls all active sessions every 30 seconds. Results stored in Redis with 60-second TTL. Participant dashboard polls usage endpoint for near-real-time display.</p>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Data Sources per Provider</div><ul><li><span class="hl-b">Azure:</span> Cost Management REST API for subscription spend</li><li><span class="hl-b">GitHub:</span> Usage API for Actions minutes + Copilot seats</li><li><span class="hl-b">Databricks:</span> REST API for DBU consumption</li><li><span class="hl-b">Snowflake:</span> REST API for credit consumption</li></ul></div>
+      <div class="card"><div class="card-lbl">Alert Thresholds</div><ul><li><span class="hl-a">80% of credit cap:</span> Amber alert in participant dashboard + admin notification via WebSocket + email</li><li><span class="hl-r">100% of credit cap:</span> Red alert + "Request More Credits" prompt + admin notification. Azure Policy deny blocks all further spend.</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S7: LangGraph -->
+  <div class="sec" id="s7">
+    <div class="eyebrow">07 / LangGraph State Machine</div>
+    <h2 class="sec-title">HITL Agent Workflow — LangGraph Design</h2>
+    <p class="sec-lead">The lab creation workflow is a LangGraph stateful graph. Three HITL gate nodes pause execution, persist state to PostgreSQL, notify the admin, and await explicit human approval before resuming.</p>
+    <div class="code">class LabCreationState(TypedDict):
+    request: LabRequest
+    manifest: Optional[LabManifest]
+    gate1_approved: bool
+    gate1_edits: Optional[dict]
+    subscription_manifest: Optional[SubscriptionManifest]
+    gate2_approved: bool
+    datasets: Optional[list[DatasetRef]]
+    procurement_status: Optional[ProcurementStatus]
+    qa_result: Optional[QAResult]
+    gate3_approved: bool
+    event_id: Optional[str]
+    error: Optional[str]
+
+# Graph definition
+workflow = StateGraph(LabCreationState)
+workflow.add_node('lab_architect',           lab_architect_agent)
+workflow.add_node('hitl_gate_1',             hitl_gate_node)   # PAUSES
+workflow.add_node('dataset_forge_preview',   dataset_forge_preview_agent)
+workflow.add_node('hitl_gate_2',             hitl_gate_node)   # PAUSES
+workflow.add_node('bulk_procurement',        license_manager_agent)
+workflow.add_node('dataset_forge_generate',  dataset_forge_generate_agent)
+workflow.add_node('qa_validator',            qa_validator_agent)
+workflow.add_node('hitl_gate_3',             hitl_gate_node)   # PAUSES
+workflow.add_node('launch_event',            launch_event_node)</div>
+    <div class="code" style="margin-top:10px"># HITL Gate Node — Interrupt & Resume
+async def hitl_gate_node(state: LabCreationState, config: RunnableConfig):
+    gate_id   = config['configurable']['gate_id']   # gate_1 | gate_2 | gate_3
+    thread_id = config['configurable']['thread_id']
+    await db.update_workflow_state(thread_id, gate_id, state, 'AWAITING_APPROVAL')
+    await notify_admin(thread_id, gate_id, state)   # WebSocket + email
+    raise NodeInterrupt(f'Awaiting human approval at {gate_id}')
+
+# Admin approval endpoint — resumes the graph
+@router.post('/api/v1/workflows/{thread_id}/gates/{gate_id}/approve')
+async def approve_gate(thread_id, gate_id, edits, admin):
+    await graph.update_state(
+        {'configurable': {'thread_id': thread_id}},
+        {f'{gate_id}_approved': True, f'{gate_id}_edits': edits}
+    )
+    await graph.ainvoke(None, {'configurable': {'thread_id': thread_id}})
+    await audit_log.record(thread_id, gate_id, admin.id, 'APPROVED', edits)</div>
+  </div>
+  <hr class="divider">
+
+  <!-- S8: Agent Specs -->
+  <div class="sec" id="s8">
+    <div class="eyebrow">08 / Agent Specifications</div>
+    <h2 class="sec-title">Agent Technical Specifications</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Lab Architect Agent</div><p><strong style="color:var(--text)">Purpose:</strong> NL description → validated Lab Manifest for Gate 1.</p><p style="margin-top:6px"><strong style="color:var(--text)">RAG Index:</strong> Azure AI Search index of MS FY26 course catalogue (70+ cert tracks), known lab patterns, subscription SKU catalogue with pricing. Updated monthly.</p><p style="margin-top:6px"><strong style="color:var(--text)">Failure handling:</strong> Pydantic validation failure → retry up to 3 times with validation error fed back in prompt. After 3 failures: alert admin, return partial manifest for manual completion.</p></div>
+      <div class="card"><div class="card-lbl">Dataset Forge Agent</div><p><strong style="color:var(--text)">Generation:</strong> Faker 19 + Pandas 2 + NumPy 1.26. Unique seed per participant: <code>seed = hash(event_id + participant_id)</code>. Parallel via multiprocessing.Pool.</p><p style="margin-top:6px"><strong style="color:var(--text)">Uniqueness Check:</strong> Pairwise Pearson correlation on key numeric columns. If any pair has r &gt; 0.95: regenerate with adjusted seed. Max 3 retries.</p><p style="margin-top:6px"><strong style="color:var(--text)">Storage path:</strong> <code>datasets/{event_id}/{participant_id}/dataset.parquet</code></p></div>
+      <div class="card"><div class="card-lbl">Provisioning Agent</div><p><strong style="color:var(--text)">Routing logic:</strong></p><ul style="margin-top:6px"><li><code>code_workspace</code> → AKS + Code-Server</li><li><code>full_vm_windows</code> → VMSS + Guacamole RDP</li><li><code>full_vm_linux</code> → VMSS + Guacamole SSH</li><li><code>azure_portal_sandbox</code> → Subscription Pool</li><li><code>gpu_lab</code> → GPU AKS + Jupyter</li><li><code>browser_desktop</code> → container + Neko WebRTC</li></ul><p style="margin-top:6px"><strong style="color:var(--text)">Warm Pool:</strong> Atomic POP from Redis (&lt; 1 second). Cold provision fallback: 20–40 seconds.</p></div>
+      <div class="card"><div class="card-lbl">QA Validator Agent</div>
+        <table class="tbl">
+          <tr><th>Check</th><th>Pass Criteria</th></tr>
+          <tr><td>Connectivity</td><td>Streaming handshake &lt; 10s</td></tr>
+          <tr><td>Subscription</td><td>All licenses status=active</td></tr>
+          <tr><td>Dataset</td><td>DATASET_URL set, schema valid</td></tr>
+          <tr><td>Tool Install</td><td>All tools launchable</td></tr>
+          <tr><td>Network Isolation</td><td>Cannot reach other participant's IP</td></tr>
+        </table>
+        <p style="margin-top:8px;font-size:12.5px;color:var(--text2)">Output: Green / Amber / Red per check. Red = hard failure, Gate 3 blocked.</p>
+      </div>
+      <div class="card"><div class="card-lbl">Live Observer Agent</div><p><strong style="color:var(--text)">Activity signals:</strong> Container labs: shell command log stream. VM labs: Guacamole keystroke/mouse event stream. Azure sandbox: Azure Activity Log resource events.</p><p style="margin-top:6px"><strong style="color:var(--text)">Idle detection:</strong> No activity &gt; 5 minutes → trigger Hint Agent. Idle &gt; 15 minutes → admin alert in Proctor View.</p><p style="margin-top:6px"><strong style="color:var(--text)">Progress estimation:</strong> LLM estimates which task participant is working on. Updates Proctor Dashboard in real-time.</p></div>
+      <div class="card"><div class="card-lbl">Hint Dispensing Agent</div><p><strong style="color:var(--text)">Trigger:</strong> Live Observer idle threshold exceeded, or participant clicks "Get Hint".</p><p style="margin-top:6px"><strong style="color:var(--text)">Prompt principle:</strong> "Provide one specific, actionable hint. Do NOT give the answer. Max 2 sentences. Be contextual to what they appear to be attempting."</p><p style="margin-top:6px"><strong style="color:var(--text)">Score impact:</strong> Each hint deducts 2% from Independence dimension (max 10% total). Participant sees penalty warning and must confirm before hint is delivered.</p></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S9: Scoring -->
+  <div class="sec" id="s9">
+    <div class="eyebrow">09 / Scoring Dimensions</div>
+    <h2 class="sec-title">5-Dimension Scoring Model</h2>
+    <p class="sec-lead">Scoring &amp; Assessment Agent evaluates each submission against 5 dimensions. Cross-Validation Agent then tests the solution against 2–3 unseen reserve datasets to verify genuine skill generalisation.</p>
+    <table class="tbl">
+      <tr><th>Dimension</th><th>Weight</th><th>Evaluation Method</th></tr>
+      <tr><td><span class="hl">Functional Correctness</span></td><td><span class="tag green">40%</span></td><td>Automated test suite. Azure sandbox: Azure Resource Graph API to verify required resources exist with correct config. Code labs: test scripts against submitted code.</td></tr>
+      <tr><td><span class="hl">Architectural Quality</span></td><td><span class="tag blue">20%</span></td><td>LLM evaluation of architecture: least privilege, naming, resource organisation, tagging, service selection rationale. Scored against rubric from Lab Manifest.</td></tr>
+      <tr><td><span class="hl">Resource Efficiency</span></td><td><span class="tag">15%</span></td><td>Azure Advisor recommendations against participant's subscription. Score based on right-sizing, unused resources, and cost optimisation suggestions identified.</td></tr>
+      <tr><td><span class="hl">Robustness (Cross-Validation)</span></td><td><span class="tag">15%</span></td><td>Cross-Validation Agent tests submission against 2 additional unseen datasets. Pass rate = robustness score. Ensures solution generalises beyond participant's own dataset.</td></tr>
+      <tr><td><span class="hl">Speed &amp; Independence</span></td><td><span class="tag">10%</span></td><td>Time to complete minus hint penalty deductions. Normalised against event median completion time.</td></tr>
+    </table>
+    <div class="callout ex" style="margin-top:14px"><div class="cl">Cross-Validation Agent</div><p>Uses 2–3 reserve datasets per lab (generated by Dataset Forge but withheld from participants). Runs submitted solution against each reserve dataset. Pipeline completes within 3 minutes of submission. Results fed into final score calculation and narrative score report with certification exam objective mapping.</p></div>
+  </div>
+  <hr class="divider">
+
+  <!-- S10: API Spec -->
+  <div class="sec" id="s10">
+    <div class="eyebrow">10 / API Specification</div>
+    <h2 class="sec-title">API Specification</h2>
+    <div class="callout tip"><div class="cl">Authentication</div><p>Admin and Participant portals: JWT bearer tokens (RS256) issued by IIdentityProvider. External integrations: API key in <code>X-API-Key</code> header. LTI 1.3: OAuth 2.0 PKCE flow for grade passback. API returns HTTP 403 if a workflow advances to the next stage without passing all prior HITL gates — enforced at API layer, cannot be bypassed.</p></div>
+    <h3 style="font-family:'Sora',sans-serif;font-size:15px;color:var(--text);margin:18px 0 10px">Lab Lifecycle Endpoints</h3>
+    <table class="tbl">
+      <tr><th>Endpoint</th><th>Method</th><th>Request / Response</th></tr>
+      <tr><td><code>/api/v1/labs/start</code></td><td>POST</td><td>Body: <code>{ event_id, participant_id }</code> → <code>{ session_id, environment_type, access_url, credential_card?, expires_at }</code></td></tr>
+      <tr><td><code>/api/v1/labs/{session_id}/status</code></td><td>GET</td><td><code>{ status: provisioning|ready|active|terminated, progress_pct, streaming_url, subscription_summary }</code></td></tr>
+      <tr><td><code>/api/v1/labs/{session_id}/submit</code></td><td>POST</td><td>multipart/form-data <code>{ artifacts[], notes }</code> → <code>{ submission_id, estimated_score_ready_in_seconds }</code></td></tr>
+      <tr><td><code>/api/v1/labs/{session_id}/score</code></td><td>GET</td><td><code>{ dimensions: {correctness, architecture, efficiency, robustness, independence}, total_score, narrative_feedback, exam_objective_mapping }</code></td></tr>
+      <tr><td><code>/api/v1/labs/{session_id}/terminate</code></td><td>POST</td><td>Triggers environment cleanup, license revocation, subscription quarantine. → <code>{ status: terminating, cleanup_eta_seconds }</code></td></tr>
+      <tr><td><code>/api/v1/events/{event_id}/leaderboard</code></td><td>GET</td><td><code>{ rank, participant_display_name, total_score, completion_time, hint_count }[]</code></td></tr>
+    </table>
+    <h3 style="font-family:'Sora',sans-serif;font-size:15px;color:var(--text);margin:18px 0 10px">Admin / Workflow Endpoints</h3>
+    <table class="tbl">
+      <tr><th>Endpoint</th><th>Method</th><th>Description</th></tr>
+      <tr><td><code>/api/v1/admin/labs/generate</code></td><td>POST</td><td>Start HITL workflow. Body: <code>LabRequest</code> → <code>{ thread_id, status: awaiting_gate_1 }</code></td></tr>
+      <tr><td><code>/api/v1/admin/workflows/{id}/gates/1/approve</code></td><td>POST</td><td>Gate 1 approval with optional manifest edits. Triggers dataset preview + subscription manifest.</td></tr>
+      <tr><td><code>/api/v1/admin/workflows/{id}/gates/2/approve</code></td><td>POST</td><td>Gate 2 approval. Triggers procurement + dataset generation.</td></tr>
+      <tr><td><code>/api/v1/admin/workflows/{id}/gates/3/approve</code></td><td>POST</td><td>Gate 3 launch approval. Makes event live → <code>{ event_id, status: live }</code></td></tr>
+      <tr><td><code>/api/v1/admin/events/{event_id}/sessions</code></td><td>GET</td><td>All sessions with status, progress, subscription credit usage, hint count, current task estimate.</td></tr>
+      <tr><td><code>/api/v1/admin/events/{event_id}/cost</code></td><td>GET</td><td>Real-time cost: total, per-participant avg, by subscription type, budget vs actual.</td></tr>
+      <tr><td><code>/api/v1/admin/pool/resize</code></td><td>POST</td><td>Resize warm VM pool or Azure subscription pool.</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S11: Data Models -->
+  <div class="sec" id="s11">
+    <div class="eyebrow">11 / Data Models</div>
+    <h2 class="sec-title">Core PostgreSQL Schema</h2>
+    <div class="code">CREATE TABLE sessions (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    event_id        UUID NOT NULL REFERENCES events(id),
+    participant_id  UUID NOT NULL,
+    environment_type VARCHAR(32) NOT NULL,
+    status          VARCHAR(16) DEFAULT 'provisioning',
+    streaming_url   TEXT,
+    azure_sub_id    TEXT,
+    azure_user_upn  TEXT,
+    dataset_url     TEXT,
+    started_at      TIMESTAMPTZ DEFAULT NOW(),
+    expires_at      TIMESTAMPTZ,
+    terminated_at   TIMESTAMPTZ,
+    total_score     NUMERIC(5,2),
+    hint_count      INT DEFAULT 0
+);
+
+CREATE TABLE events (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    tenant_id       UUID NOT NULL,
+    title           TEXT NOT NULL,
+    lab_manifest    JSONB NOT NULL,
+    status          VARCHAR(16) DEFAULT 'draft',
+    participant_count INT,
+    starts_at       TIMESTAMPTZ,
+    ends_at         TIMESTAMPTZ,
+    total_cost_usd  NUMERIC(10,2),
+    created_by      UUID NOT NULL
+);
+
+CREATE TABLE subscription_claims (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id      UUID NOT NULL REFERENCES sessions(id),
+    vendor          VARCHAR(32) NOT NULL,
+    sku_id          TEXT,
+    status          VARCHAR(16) DEFAULT 'active',
+    claimed_at      TIMESTAMPTZ DEFAULT NOW(),
+    revoked_at      TIMESTAMPTZ,
+    credit_used_usd NUMERIC(10,4)
+);</div>
+    <div class="callout ex" style="margin-top:14px"><div class="cl">Redis Key Schema (Session &amp; Warm Pool)</div>
+    <div class="code" style="margin-top:6px">warm_pool:{cloud}:{region}:{type}  → List[vm_id]   # atomic LPOP for sub-second claim
+session:{session_id}:credits       → JSON          TTL 90s
+session:{session_id}:progress      → JSON          TTL 60s
+lab_status:{session_id}            → JSON          TTL 1h
+rate_limit:{service}:{ip}          → count         TTL 1m</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S12: On-Premises -->
+  <div class="sec" id="s12">
+    <div class="eyebrow">12 / On-Premises Requirements</div>
+    <h2 class="sec-title">On-Premises Deployment Requirements</h2>
+    <table class="tbl">
+      <tr><th>Component</th><th>Minimum Spec</th><th>Notes</th></tr>
+      <tr><td>Kubernetes Cluster</td><td>3 control-plane + 5+ worker nodes, 8 vCPU / 32GB RAM each</td><td>K8s 1.28+, OpenShift 4.12+, Rancher/RKE2. Helm 3.10+ required.</td></tr>
+      <tr><td>VMware vSphere</td><td>vSphere 7.0+; ESXi hosts with 32+ vCPU / 128GB RAM</td><td>pyVmomi SDK for VM provisioning/clone/destroy from golden OVA templates.</td></tr>
+      <tr><td>MinIO (Object Storage)</td><td>500GB NFS-backed PVC</td><td>S3-compatible API. Same IStorageProvider adapter code as AWS S3.</td></tr>
+      <tr><td>Keycloak (Identity)</td><td>2 clustered instances, 2 vCPU / 4GB RAM each</td><td>LDAP/AD federation. SAML/OIDC for portal SSO.</td></tr>
+      <tr><td>HashiCorp Vault (Secrets)</td><td>3-node HA Raft cluster</td><td>Auto-unseal via HSM if available. Kubernetes auth method for pod identity.</td></tr>
+      <tr><td>RabbitMQ / Kafka</td><td>3-node cluster</td><td>RabbitMQ for provisioning queues. Kafka for high-throughput agent telemetry.</td></tr>
+      <tr><td>Prometheus + Grafana + Loki</td><td>2 vCPU / 8GB RAM per node</td><td>Pre-built Gravity Labs dashboards included in Helm chart.</td></tr>
+      <tr><td>Container Registry</td><td>Harbor or JFrog Artifactory</td><td>Replaces ACR/ECR/GCR. All images pre-loaded for air-gapped operation.</td></tr>
+      <tr><td>PgBouncer</td><td>2 vCPU / 2GB RAM</td><td>Connection pooler in front of PostgreSQL. Transaction pooling mode. Essential for 1,000+ concurrent sessions. Set <code>statement_cache_size=0</code> in SQLAlchemy for PgBouncer compatibility.</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S13: Security -->
+  <div class="sec" id="s13">
+    <div class="eyebrow">13 / Security Model</div>
+    <h2 class="sec-title">Security Model</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Authentication</div><ul><li>JWT bearer tokens (RS256) — Phase 2 upgrade from HS256</li><li>Access token TTL: 15 minutes</li><li>Refresh token TTL: 7 days, JTI stored in Redis</li><li>JTI blocklist checked on every request</li><li>Dummy bcrypt on unknown email (prevents timing attacks)</li><li>Per-IP rate limiting via Redis SETNX + EXPIRE</li></ul></div>
+      <div class="card"><div class="card-lbl">Infrastructure Security</div><ul><li>All workloads in private VNet/VPC — no direct public IPs</li><li>Azure Key Vault / HashiCorp Vault for all secrets</li><li>Managed Identity for pod-to-service authentication</li><li>Network Security Groups (NSG) per subnet</li><li>Private Endpoints for all PaaS services</li><li>RBAC enforced at API layer AND Kubernetes RBAC</li></ul></div>
+      <div class="card"><div class="card-lbl">Lab Isolation</div><ul><li>Each participant lab in a separate private subnet</li><li>Azure Portal Sandbox: completely separate Azure tenant</li><li>Network isolation verified by QA Validator Agent before launch</li><li>Guacamole session recording for compliance labs</li><li>All agent decisions audit-logged with approver + timestamp</li><li>SOC 2 Type II + ISO 27001 compliance evidence packages</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S14: Data Layer -->
+  <div class="sec" id="s14">
+    <div class="eyebrow">14 / Data Layer</div>
+    <h2 class="sec-title">Data Layer — PostgreSQL + Redis + PgBouncer</h2>
+    <p class="sec-lead">Single PostgreSQL 16 instance in AKS, multiple logical databases (one per service). PgBouncer in front for connection pooling. Redis for all ephemeral stateful data.</p>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">PostgreSQL — Database Layout</div>
+        <div class="code" style="font-size:11px">gravitylabs_auth      ← auth-service
+gravitylabs_tenant    ← tenant-service
+gravitylabs_events    ← event-service
+gravitylabs_labs      ← lab-service
+gravitylabs_scoring   ← scoring-service
+gravitylabs_catalog   ← catalog-service
+gravitylabs_billing   ← billing-service
+gravitylabs_temporal  ← Temporal internal</div>
+      </div>
+      <div class="card"><div class="card-lbl">PgBouncer Configuration</div>
+        <div class="code" style="font-size:11px">[pgbouncer]
+pool_mode           = transaction
+max_client_conn     = 5000
+default_pool_size   = 20
+reserve_pool_size   = 5
+reserve_pool_timeout = 3
+server_idle_timeout = 600
+auth_type           = scram-sha-256</div>
+        <p style="margin-top:8px;font-size:12.5px;color:var(--text2)">SQLAlchemy compatibility: set <code>statement_cache_size=0</code> in <code>connect_args</code>.</p>
+      </div>
+      <div class="card"><div class="card-lbl">Why PgBouncer is Critical</div><ul><li>25K-user event: 2,000+ simultaneous app connections</li><li>PostgreSQL default <code>max_connections</code>: 100</li><li>PgBouncer multiplexes 2,000 app connections into 20 real Postgres connections</li><li>KEDA scale-out: 300 scoring-agent pods × 2 connections = 600 new connections in 90s — absorbed by PgBouncer without impacting Postgres</li><li>Without PgBouncer: world-record event cannot run on a single Postgres instance</li></ul></div>
+    </div>
+  </div>
+
+  <div class="pg-footer">GRAVITY LABS · FUNCTIONAL SPECIFICATION &amp; TECHNICAL DESIGN · FINAL EDITION · MARCH 2026 · CONSTEL GLOBAL · CONFIDENTIAL</div>
+</div>
+</div>
+<script>
+function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
+(function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'})}
+const _s=document.querySelectorAll('.sec'),_l=document.querySelectorAll('.sb-a');
+if(_s.length&&_l.length){const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){const id=e.target.id;_l.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+id+"'"))l.classList.add('active')})}})},{rootMargin:'-20% 0px -70% 0px'});_s.forEach(s=>o.observe(s))}
+</script>
+<script src="docs-nav.js"></script>
+<script src="docs-search.js"></script>
+</body>
+</html>

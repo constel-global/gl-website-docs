@@ -3,81 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gravity Labs — Architecture Diagram</title>
+<title>Gravity Labs — Diagram</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--transition:0.3s cubic-bezier(0.4,0,0.2,1)}
-[data-theme="dark"]{
-  --bg:#0a0e1a;--nav-bg:rgba(10,14,26,0.92);--border:rgba(255,255,255,0.07);--border-active:rgba(255,255,255,0.16);
-  --text:#e8edf8;--text2:#7a85a8;--text3:#3e4660;--accent:#2563eb;--accent-soft:rgba(37,99,235,0.12);
-  --tag-bg:rgba(255,255,255,0.05);
-  /* diagram colors */
-  --d-bg:#0d1120;--d-border:rgba(255,255,255,0.08);--d-text:#c8d0e8;--d-text2:#6b7599;
-  --d-layer-users:#1a2640;--d-layer-edge:#121a2e;--d-layer-app:#0f1828;--d-layer-compute:#141c2e;
-  --d-layer-msg:#111826;--d-layer-data:#101622;--d-layer-sec:#13182a;--d-layer-mon:#121820;
-  --d-layer-cicd:#0e1520;--d-box:#1e2a42;--d-box-border:rgba(255,255,255,0.1);
-  --d-accent:#2563eb;--d-teal:#14b8a6;--d-purple:#a78bfa;--d-amber:#f59e0b;--d-green:#4ade80;--d-coral:#f87171;--d-pink:#f472b6;
-}
-[data-theme="light"]{
-  --bg:#f0f5fc;--nav-bg:rgba(240,245,252,0.92);--border:rgba(37,99,235,0.1);--border-active:rgba(37,99,235,0.28);
-  --text:#0d1830;--text2:#3d5080;--text3:#8090b8;--accent:#2563eb;--accent-soft:rgba(37,99,235,0.07);
-  --tag-bg:rgba(37,99,235,0.06);
-  --d-bg:#f8faff;--d-border:rgba(37,99,235,0.12);--d-text:#1a2040;--d-text2:#5a6888;
-  --d-layer-users:#e8f0ff;--d-layer-edge:#f0f4ff;--d-layer-app:#eef3ff;--d-layer-compute:#e8f2ff;
-  --d-layer-msg:#f2f6ff;--d-layer-data:#edf2ff;--d-layer-sec:#eff3ff;--d-layer-mon:#eef3ff;
-  --d-layer-cicd:#f0f5ff;--d-box:#ffffff;--d-box-border:rgba(37,99,235,0.15);
-  --d-accent:#2563eb;--d-teal:#0d9488;--d-purple:#7c3aed;--d-amber:#d97706;--d-green:#16a34a;--d-coral:#dc2626;--d-pink:#db2777;
-}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh;overflow-x:hidden}
-.topnav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 32px;gap:24px;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:background var(--transition),border-color var(--transition)}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(37,99,235,0.3)}
-.logo-icon svg{width:16px;height:16px}
-.logo-wordmark{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.02em;transition:color var(--transition)}
-.logo-wordmark span{color:var(--accent)}
-.nav-tabs{display:flex;align-items:center;gap:2px;margin-left:24px}
-.nav-tab{font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;color:var(--text2);transition:all var(--transition);border:1px solid transparent}
-.nav-tab:hover{color:var(--text);background:var(--accent-soft)}
-.nav-tab.active{color:var(--accent);background:var(--accent-soft);border-color:var(--border-active)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.version-badge{font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);color:var(--text3)}
-.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--tag-bg);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all var(--transition)}
-.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-.theme-btn svg{width:14px;height:14px}
-.i-sun{display:none}.i-moon{display:block}
-[data-theme="light"] .i-sun{display:block}[data-theme="light"] .i-moon{display:none}
-
-.diagram-wrap{padding-top:56px;display:flex;flex-direction:column;align-items:center}
-.diagram-header{width:100%;max-width:1200px;padding:32px 32px 20px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.diagram-title{font-family:'Sora',sans-serif;font-size:18px;font-weight:600;color:var(--text);letter-spacing:-0.02em}
-.diagram-sub{font-size:13px;color:var(--text2);margin-top:4px}
-.legend{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.leg-item{display:flex;align-items:center;gap:7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2)}
-.leg-line{width:28px;height:2px;border-radius:1px}
-.leg-solid{background:var(--d-accent)}
-.leg-dashed{background:transparent;border-top:2px dashed var(--d-teal)}
-.leg-dotted{background:transparent;border-top:2px dotted var(--d-text2)}
-
-.svg-container{width:100%;max-width:1200px;padding:0 32px 64px;overflow:auto}
-.svg-container svg{width:100%;height:auto;min-width:900px}
-
-/* SVG text inherits font */
-svg text{font-family:'DM Mono',monospace}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="diagram-page.css">
 </head>
-<body>
+<body class="diagram-page">
+
 <nav class="topnav">
   <a class="logo" href="index.html">
-    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
     <span class="logo-wordmark">Gravity<span>Labs</span></span>
   </a>
   <div class="nav-tabs">
-    <a class="nav-tab" href="index.html">Documentation</a>
-    <a class="nav-tab active" href="diagram.html">Architecture</a>
+    <a class="nav-tab" href="index.html">Architecture</a>
+    <a class="nav-tab active" href="diagram.html">Diagram</a>
     <a class="nav-tab" href="flows.html">Flows</a>
+    <a class="nav-tab" href="brd.html">BRD</a>
+    <a class="nav-tab" href="fsd.html">FSD</a>
+    <a class="nav-tab" href="cursor.html">Cursor Guide</a>
   </div>
+  <div class="nav-search-wrap" role="search">
+    <label class="sr-only" for="gl-doc-search">Search this page</label>
+    <input type="search" id="gl-doc-search" class="nav-search-input" placeholder="Search this page…" autocomplete="off" />
+    <div id="gl-doc-search-results" class="nav-search-results" hidden></div>
+  </div>
+  <button type="button" class="nav-mtoggle" onclick="glToggleNav()" aria-label="Open section menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
   <div class="nav-right">
     <span class="version-badge">v1.0 · May 2026</span>
     <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -87,425 +43,505 @@ svg text{font-family:'DM Mono',monospace}
   </div>
 </nav>
 
-<div class="diagram-wrap">
-  <div class="diagram-header">
+<div class="page-wrap">
+<div class="sb-backdrop" id="sb-backdrop" onclick="glCloseNav()" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-lbl">Overview</div>
+  <a class="sb-a" href="index.html#s00"><span class="n">00</span>Users &amp; Actors</a>
+  <a class="sb-a" href="index.html#s01"><span class="n">01</span>Access &amp; Edge</a>
+  <a class="sb-a" href="index.html#s02"><span class="n">02</span>Full Stack</a>
+  <div class="sb-lbl">Application</div>
+  <a class="sb-a" href="index.html#s03"><span class="n">03</span>Client Layer</a>
+  <a class="sb-a" href="index.html#s04"><span class="n">04</span>API Gateway</a>
+  <a class="sb-a" href="index.html#s05"><span class="n">05</span>App Services</a>
+  <a class="sb-a" href="index.html#s06"><span class="n">06</span>AI Agents</a>
+  <a class="sb-a" href="index.html#s07"><span class="n">07</span>Workflow</a>
+  <div class="sb-lbl">Infrastructure</div>
+  <a class="sb-a" href="index.html#s08"><span class="n">08</span>Messaging &amp; Cache</a>
+  <a class="sb-a" href="index.html#s09"><span class="n">09</span>Data Layer &amp; PgBouncer</a>
+  <a class="sb-a" href="index.html#s10"><span class="n">10</span>CI/CD &amp; Clusters</a>
+  <a class="sb-a" href="index.html#s11"><span class="n">11</span>Monitoring</a>
+  <a class="sb-a" href="index.html#s12"><span class="n">12</span>Peripheral Services</a>
+  <div class="sb-lbl">Planning</div>
+  <a class="sb-a" href="index.html#s13"><span class="n">13</span>Scale Strategy</a>
+  <a class="sb-a" href="index.html#s14"><span class="n">14</span>Open Decisions</a>
+</aside>
+
+<div class="diagram-main" id="gl-search-scope">
+  <div class="sec" id="diagram-intro">
+  <div class="hdr">
     <div>
-      <div class="diagram-title">Gravity Labs — System Architecture</div>
-      <div class="diagram-sub">Simplified, Scalable and Cloud-Agnostic Architecture · MVP First</div>
+      <div class="hdr-eyebrow">System Architecture</div>
+      <div class="hdr-title">Gravity Labs — System Architecture</div>
+      <div class="hdr-sub">Simplified, scalable and cloud-agnostic · MVP First · Azure-native with multi-cloud portability. Diagram view: Nginx ingress, FastAPI services, RabbitMQ, PostgreSQL, Redis, VM labs, CI/CD, security, and monitoring blocks.</div>
     </div>
     <div class="legend">
-      <div class="leg-item"><div class="leg-line leg-solid"></div>Request / Response</div>
-      <div class="leg-item"><div class="leg-line leg-dashed"></div>Async Flow</div>
-      <div class="leg-item"><div class="leg-line leg-dotted"></div>Management / Monitoring</div>
+      <div class="leg"><div class="leg-l l-s"></div>Request / Response</div>
+      <div class="leg"><div class="leg-l l-d"></div>Async Flow</div>
+      <div class="leg"><div class="leg-l l-g"></div>Management</div>
     </div>
   </div>
-
-  <div class="svg-container">
-    <svg id="arch-svg" viewBox="0 0 1100 1020" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gravity Labs Architecture Diagram">
-      <defs>
-        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-          <path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="arr-stroke"/>
-        </marker>
-        <marker id="arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-          <path d="M1 1L9 5L1 9" fill="none" stroke="#14b8a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </marker>
-        <marker id="arr-gray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-          <path d="M1 1L9 5L1 9" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="arr-gray-stroke"/>
-        </marker>
-      </defs>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- USERS (left column) -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="16" y="16" width="120" height="400" rx="10" class="layer-users" stroke-width="1"/>
-      <text x="76" y="36" text-anchor="middle" class="layer-label-sm">USERS</text>
-
-      <!-- Participant -->
-      <rect x="28" y="50" width="96" height="72" rx="7" class="box"/>
-      <g transform="translate(76,72)">
-        <circle cx="0" cy="-4" r="8" class="icon-stroke" stroke-width="1.5" fill="none"/>
-        <path d="M-10 14c0-5.5 4.5-10 10-10s10 4.5 10 10" class="icon-stroke" stroke-width="1.5" fill="none"/>
-      </g>
-      <text x="76" y="102" text-anchor="middle" class="box-label">Participants</text>
-      <text x="76" y="114" text-anchor="middle" class="box-sub">/ Learners</text>
-
-      <!-- Trainers -->
-      <rect x="28" y="134" width="96" height="72" rx="7" class="box"/>
-      <g transform="translate(76,156)">
-        <circle cx="-6" cy="-4" r="7" class="icon-stroke" stroke-width="1.5" fill="none"/>
-        <path d="M-14 14c0-5 3.5-9 8-9" class="icon-stroke" stroke-width="1.5" fill="none"/>
-        <circle cx="6" cy="-6" r="5" class="icon-stroke-accent" stroke-width="1.5" fill="none"/>
-        <path d="M2 14c0-4 2.5-7.5 6-8" class="icon-stroke-accent" stroke-width="1.5" fill="none"/>
-      </g>
-      <text x="76" y="186" text-anchor="middle" class="box-label">Trainers /</text>
-      <text x="76" y="198" text-anchor="middle" class="box-sub">Evaluators</text>
-
-      <!-- Admins -->
-      <rect x="28" y="218" width="96" height="72" rx="7" class="box"/>
-      <g transform="translate(76,240)">
-        <rect x="-10" y="-10" width="20" height="16" rx="3" class="icon-stroke" stroke-width="1.5" fill="none"/>
-        <line x1="-6" y1="6" x2="-6" y2="12" class="icon-stroke" stroke-width="1.5"/>
-        <line x1="0" y1="6" x2="0" y2="14" class="icon-stroke" stroke-width="1.5"/>
-        <line x1="6" y1="6" x2="6" y2="10" class="icon-stroke" stroke-width="1.5"/>
-      </g>
-      <text x="76" y="270" text-anchor="middle" class="box-label">Platform</text>
-      <text x="76" y="282" text-anchor="middle" class="box-sub">Admins</text>
-
-      <!-- Sponsors -->
-      <rect x="28" y="302" width="96" height="72" rx="7" class="box"/>
-      <g transform="translate(76,326)">
-        <path d="M0 -12 L-10 4 L10 4 Z" class="icon-stroke" stroke-width="1.5" fill="none"/>
-        <rect x="-4" y="4" width="8" height="6" class="icon-stroke" stroke-width="1.5" fill="none"/>
-      </g>
-      <text x="76" y="354" text-anchor="middle" class="box-label">Sponsors /</text>
-      <text x="76" y="366" text-anchor="middle" class="box-sub">Partners</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 1. ACCESS & EDGE LAYER -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="154" y="16" width="572" height="100" rx="10" class="layer-edge" stroke-width="1"/>
-      <text x="174" y="34" class="layer-num">1.</text>
-      <text x="188" y="34" class="layer-label">ACCESS &amp; EDGE LAYER</text>
-
-      <!-- Nginx box -->
-      <rect x="174" y="44" width="220" height="58" rx="7" class="box"/>
-      <g transform="translate(194,68)">
-        <rect x="-8" y="-10" width="16" height="12" rx="2" class="icon-stroke" stroke-width="1.5" fill="none"/>
-        <line x1="-10" y1="4" x2="10" y2="4" class="icon-stroke" stroke-width="1"/>
-        <line x1="-10" y1="8" x2="6" y2="8" class="icon-stroke" stroke-width="1"/>
-      </g>
-      <text x="228" y="62" class="box-label-l">Nginx Ingress Controller</text>
-      <text x="228" y="74" class="box-sub-l">TLS Termination · URL Routing · Rate Limiting</text>
-      <text x="228" y="86" class="box-sub-l">Health Probes · AKS Network Policy</text>
-
-      <!-- Feature pills -->
-      <rect x="408" y="44" width="82" height="24" rx="5" class="pill-blue"/>
-      <text x="449" y="60" text-anchor="middle" class="pill-txt">DDoS Control</text>
-      <rect x="498" y="44" width="72" height="24" rx="5" class="pill-blue"/>
-      <text x="534" y="60" text-anchor="middle" class="pill-txt">TLS 1.2+</text>
-      <rect x="578" y="44" width="82" height="24" rx="5" class="pill-blue"/>
-      <text x="619" y="60" text-anchor="middle" class="pill-txt">URL Routing</text>
-      <rect x="408" y="76" width="100" height="24" rx="5" class="pill-blue"/>
-      <text x="458" y="92" text-anchor="middle" class="pill-txt">Rate Limiting (Nginx)</text>
-      <rect x="516" y="76" width="140" height="24" rx="5" class="pill-blue"/>
-      <text x="586" y="92" text-anchor="middle" class="pill-txt">AKS NetworkPolicy</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 2. APPLICATION LAYER (AKS) -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="154" y="132" width="420" height="300" rx="10" class="layer-app" stroke-width="1"/>
-      <text x="174" y="152" class="layer-num">2.</text>
-      <text x="188" y="152" class="layer-label">APPLICATION LAYER — AZURE KUBERNETES SERVICE (AKS)</text>
-
-      <!-- FastAPI Microservices -->
-      <rect x="170" y="162" width="185" height="130" rx="7" class="box"/>
-      <text x="263" y="180" text-anchor="middle" class="box-title">FastAPI Microservices</text>
-      <text x="263" y="194" text-anchor="middle" class="box-sub">Core Business Services</text>
-      <text x="182" y="212" class="box-item">· auth-service ✓ Phase 1</text>
-      <text x="182" y="226" class="box-item">· tenant-service</text>
-      <text x="182" y="240" class="box-item">· event-service</text>
-      <text x="182" y="254" class="box-item">· lab-service + Temporal</text>
-      <text x="182" y="268" class="box-item">· scoring / billing / catalog…</text>
-      <text x="182" y="282" class="box-item">· + more each sprint</text>
-
-      <!-- AI Agents -->
-      <rect x="366" y="162" width="185" height="130" rx="7" class="box-purple"/>
-      <text x="459" y="180" text-anchor="middle" class="box-title-purple">AI Agents Layer</text>
-      <text x="459" y="194" text-anchor="middle" class="box-sub">8 independent pods · KEDA</text>
-      <text x="378" y="212" class="box-item">· lab-architect-agent</text>
-      <text x="378" y="226" class="box-item">· dataset-forge-agent</text>
-      <text x="378" y="240" class="box-item">· provisioning-agent</text>
-      <text x="378" y="254" class="box-item">· qa-validator-agent</text>
-      <text x="378" y="268" class="box-item">· live-observer-agent</text>
-      <text x="378" y="282" class="box-item">· scoring / hint / cross-validator</text>
-
-      <!-- Temporal -->
-      <rect x="170" y="304" width="185" height="68" rx="7" class="box-coral"/>
-      <text x="263" y="322" text-anchor="middle" class="box-title-coral">Temporal Workers</text>
-      <text x="263" y="337" text-anchor="middle" class="box-sub">Durable workflow execution</text>
-      <text x="263" y="352" text-anchor="middle" class="box-sub">Provision · Grade · Destroy</text>
-
-      <!-- Guacamole -->
-      <rect x="366" y="304" width="185" height="68" rx="7" class="box"/>
-      <text x="459" y="322" text-anchor="middle" class="box-title">Guacamole Gateway</text>
-      <text x="459" y="337" text-anchor="middle" class="box-sub">RDP / SSH / VNC Access</text>
-      <text x="459" y="352" text-anchor="middle" class="box-sub">Browser-based · No client install</text>
-
-      <!-- AKS footer bar -->
-      <rect x="170" y="384" width="381" height="34" rx="5" class="aks-bar"/>
-      <text x="361" y="405" text-anchor="middle" class="aks-txt">AKS: Auto Scaling · Self Healing · Rolling Updates · Multi-Zone · KEDA</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 3. MESSAGING LAYER -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="590" y="132" width="196" height="300" rx="10" class="layer-msg" stroke-width="1"/>
-      <text x="610" y="152" class="layer-num">3.</text>
-      <text x="624" y="152" class="layer-label">MESSAGING</text>
-
-      <!-- RabbitMQ -->
-      <rect x="606" y="162" width="164" height="52" rx="7" class="box-amber"/>
-      <text x="688" y="180" text-anchor="middle" class="box-title-amber">RabbitMQ</text>
-      <text x="688" y="195" text-anchor="middle" class="box-sub">Async inter-service events</text>
-
-      <!-- Queues -->
-      <rect x="606" y="224" width="164" height="24" rx="4" class="queue-item"/>
-      <text x="688" y="240" text-anchor="middle" class="queue-txt">Lab Provisioning Queue</text>
-      <rect x="606" y="254" width="164" height="24" rx="4" class="queue-item"/>
-      <text x="688" y="270" text-anchor="middle" class="queue-txt">Lab Cleanup Queue</text>
-      <rect x="606" y="284" width="164" height="24" rx="4" class="queue-item"/>
-      <text x="688" y="300" text-anchor="middle" class="queue-txt">Notification Queue</text>
-      <rect x="606" y="314" width="164" height="24" rx="4" class="queue-item"/>
-      <text x="688" y="330" text-anchor="middle" class="queue-txt">Score Queue</text>
-      <rect x="606" y="344" width="164" height="24" rx="4" class="queue-item"/>
-      <text x="688" y="360" text-anchor="middle" class="queue-txt">Audit &amp; Logs Queue</text>
-      <rect x="606" y="384" width="164" height="34" rx="5" class="aks-bar"/>
-      <text x="688" y="405" text-anchor="middle" class="aks-txt">Managed in AKS</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 4. COMPUTE LAYER -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="802" y="16" width="282" height="416" rx="10" class="layer-compute" stroke-width="1"/>
-      <text x="822" y="36" class="layer-num">4.</text>
-      <text x="836" y="36" class="layer-label">COMPUTE LAYER</text>
-
-      <!-- VM Labs -->
-      <rect x="818" y="48" width="250" height="168" rx="7" class="box"/>
-      <text x="943" y="68" text-anchor="middle" class="box-title">VM Labs — Azure VMSS</text>
-      <text x="943" y="83" text-anchor="middle" class="box-sub">Windows / Linux VMs</text>
-      <text x="830" y="104" class="box-item">· Pre-built Lab Images</text>
-      <text x="830" y="120" class="box-item">· Warm Pool Enabled</text>
-      <text x="830" y="136" class="box-item">· Auto Scaling</text>
-      <text x="830" y="152" class="box-item">· Isolated Networks</text>
-      <text x="830" y="168" class="box-item">· Guacamole streaming (RDP/SSH)</text>
-      <text x="830" y="184" class="box-item">· GPU node pool (AI/ML labs)</text>
-      <text x="830" y="200" class="box-item">· Terraform-managed lifecycle</text>
-
-      <!-- Cluster topology box -->
-      <rect x="818" y="228" width="250" height="100" rx="7" class="box-teal"/>
-      <text x="943" y="248" text-anchor="middle" class="box-title-teal">Cluster Topology</text>
-      <text x="830" y="268" class="box-item">· Dev + Stage → Shared AKS</text>
-      <text x="830" y="284" class="box-item">· Production → Dedicated AKS</text>
-      <text x="830" y="300" class="box-item">· World Record → Multi-region</text>
-      <text x="830" y="316" class="box-item">· Namespaces: gl-dev / gl-staging / gl-prod</text>
-
-      <!-- Client -->
-      <rect x="818" y="340" width="250" height="78" rx="7" class="box"/>
-      <text x="943" y="360" text-anchor="middle" class="box-title">Client Layer</text>
-      <text x="943" y="375" text-anchor="middle" class="box-sub">React 18 · TypeScript · Tailwind</text>
-      <text x="830" y="394" class="box-item">· Zustand · Axios · Vite</text>
-      <text x="830" y="408" class="box-item">· Served from AKS static pod</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 5. DATA & STORAGE LAYER -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="154" y="448" width="572" height="116" rx="10" class="layer-data" stroke-width="1"/>
-      <text x="174" y="468" class="layer-num">5.</text>
-      <text x="188" y="468" class="layer-label">DATA &amp; STORAGE LAYER</text>
-
-      <!-- PostgreSQL -->
-      <rect x="170" y="478" width="158" height="72" rx="7" class="box-green"/>
-      <text x="249" y="496" text-anchor="middle" class="box-title-green">PostgreSQL 16</text>
-      <text x="249" y="511" text-anchor="middle" class="box-sub">Self-managed in AKS</text>
-      <text x="182" y="528" class="box-item">Single instance · multiple DBs</text>
-      <text x="182" y="542" class="box-item">Per-service isolation</text>
-
-      <!-- Redis -->
-      <rect x="340" y="478" width="132" height="72" rx="7" class="box"/>
-      <text x="406" y="496" text-anchor="middle" class="box-title">Redis</text>
-      <text x="406" y="511" text-anchor="middle" class="box-sub">Cache · Sessions · Tokens</text>
-      <text x="352" y="528" class="box-item">JWT blocklist · Rate limits</text>
-      <text x="352" y="542" class="box-item">SSO state · Lab status</text>
-
-      <!-- Object Storage -->
-      <rect x="484" y="478" width="224" height="72" rx="7" class="box"/>
-      <text x="596" y="496" text-anchor="middle" class="box-title">Object Storage</text>
-      <text x="596" y="511" text-anchor="middle" class="box-sub">Cloud-managed per provider</text>
-      <text x="496" y="528" class="box-item">Azure: Blob Storage</text>
-      <text x="496" y="542" class="box-item">AWS: Amazon S3 · GCP: Cloud Storage</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 6. SECURITY -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="802" y="448" width="130" height="248" rx="10" class="layer-sec" stroke-width="1"/>
-      <text x="822" y="468" class="layer-num-sm">6.</text>
-      <text x="836" y="468" class="layer-label-sm">SECURITY</text>
-
-      <rect x="814" y="478" width="106" height="30" rx="5" class="sec-item"/>
-      <text x="867" y="497" text-anchor="middle" class="sec-txt">Key Vault</text>
-      <rect x="814" y="514" width="106" height="30" rx="5" class="sec-item"/>
-      <text x="867" y="533" text-anchor="middle" class="sec-txt">Managed Identity</text>
-      <rect x="814" y="550" width="106" height="30" rx="5" class="sec-item"/>
-      <text x="867" y="569" text-anchor="middle" class="sec-txt">NSG (Firewall)</text>
-      <rect x="814" y="586" width="106" height="30" rx="5" class="sec-item"/>
-      <text x="867" y="605" text-anchor="middle" class="sec-txt">Private Endpoints</text>
-      <rect x="814" y="622" width="106" height="30" rx="5" class="sec-item"/>
-      <text x="867" y="641" text-anchor="middle" class="sec-txt">RBAC</text>
-      <rect x="814" y="658" width="106" height="22" rx="5" class="sec-item"/>
-      <text x="867" y="673" text-anchor="middle" class="sec-txt">JWT · RS256 (Phase 2)</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 7. MONITORING -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="948" y="448" width="136" height="248" rx="10" class="layer-mon" stroke-width="1"/>
-      <text x="968" y="468" class="layer-num-sm">7.</text>
-      <text x="982" y="468" class="layer-label-sm">MONITORING</text>
-
-      <rect x="960" y="478" width="112" height="30" rx="5" class="mon-item"/>
-      <text x="1016" y="497" text-anchor="middle" class="mon-txt">Prometheus</text>
-      <rect x="960" y="514" width="112" height="30" rx="5" class="mon-item"/>
-      <text x="1016" y="533" text-anchor="middle" class="mon-txt">Grafana Dashboards</text>
-      <rect x="960" y="550" width="112" height="30" rx="5" class="mon-item"/>
-      <text x="1016" y="569" text-anchor="middle" class="mon-txt">Grafana Alerts</text>
-      <rect x="960" y="586" width="112" height="30" rx="5" class="mon-item"/>
-      <text x="1016" y="605" text-anchor="middle" class="mon-txt">Path-based Routing</text>
-      <rect x="960" y="622" width="112" height="30" rx="5" class="mon-item"/>
-      <text x="1016" y="641" text-anchor="middle" class="mon-txt">Loki (Logs)</text>
-      <rect x="960" y="658" width="112" height="22" rx="5" class="mon-item"/>
-      <text x="1016" y="673" text-anchor="middle" class="mon-txt">CloudWatch (multi-cloud)</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- 8. CI/CD PIPELINE -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="154" y="580" width="630" height="100" rx="10" class="layer-cicd" stroke-width="1"/>
-      <text x="174" y="600" class="layer-num">8.</text>
-      <text x="188" y="600" class="layer-label">DEVOPS &amp; CI/CD PIPELINE</text>
-
-      <!-- Steps -->
-      <rect x="170" y="610" width="88" height="56" rx="6" class="cicd-box"/>
-      <text x="214" y="630" text-anchor="middle" class="cicd-label">GitHub</text>
-      <text x="214" y="645" text-anchor="middle" class="cicd-sub">Code Repo</text>
-
-      <path d="M260 638 L278 638" class="cicd-arrow" marker-end="url(#arr)"/>
-
-      <rect x="280" y="610" width="88" height="56" rx="6" class="cicd-box"/>
-      <text x="324" y="630" text-anchor="middle" class="cicd-label">GitHub Actions</text>
-      <text x="324" y="645" text-anchor="middle" class="cicd-sub">Build &amp; Test</text>
-
-      <path d="M370 638 L388 638" class="cicd-arrow" marker-end="url(#arr)"/>
-
-      <rect x="390" y="610" width="88" height="56" rx="6" class="cicd-box"/>
-      <text x="434" y="630" text-anchor="middle" class="cicd-label">ACR</text>
-      <text x="434" y="645" text-anchor="middle" class="cicd-sub">Container Registry</text>
-
-      <path d="M480 638 L498 638" class="cicd-arrow" marker-end="url(#arr)"/>
-
-      <rect x="500" y="610" width="88" height="56" rx="6" class="cicd-box"/>
-      <text x="544" y="630" text-anchor="middle" class="cicd-label">Helm Charts</text>
-      <text x="544" y="645" text-anchor="middle" class="cicd-sub">Packaging</text>
-
-      <path d="M590 638 L608 638" class="cicd-arrow" marker-end="url(#arr)"/>
-
-      <rect x="610" y="610" width="88" height="56" rx="6" class="cicd-box"/>
-      <text x="654" y="630" text-anchor="middle" class="cicd-label">Argo CD</text>
-      <text x="654" y="645" text-anchor="middle" class="cicd-sub">GitOps → AKS</text>
-
-      <path d="M700 638 L718 638" class="cicd-arrow" marker-end="url(#arr)"/>
-
-      <rect x="720" y="610" width="50" height="56" rx="6" class="cicd-box-green"/>
-      <text x="745" y="630" text-anchor="middle" class="cicd-label-g">Monitor</text>
-      <text x="745" y="645" text-anchor="middle" class="cicd-sub">Rollback</text>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- ARROWS -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- Users → Edge -->
-      <path d="M148 86 L152 86" class="arrow-solid" marker-end="url(#arr)"/>
-      <path d="M148 200 L152 160" class="arrow-solid" marker-end="url(#arr)"/>
-      <path d="M148 260 L152 200" class="arrow-solid" marker-end="url(#arr)"/>
-
-      <!-- Edge → App -->
-      <path d="M440 116 L440 130" class="arrow-solid" marker-end="url(#arr)"/>
-
-      <!-- App ↔ Messaging -->
-      <path d="M576 262 L588 262" class="arrow-async" stroke-dasharray="5,3" marker-end="url(#arr-teal)"/>
-      <path d="M576 320 L588 320" class="arrow-async" stroke-dasharray="5,3" marker-end="url(#arr-teal)"/>
-
-      <!-- App ↔ Compute -->
-      <path d="M724 226 L800 226" class="arrow-solid" marker-end="url(#arr)"/>
-
-      <!-- App → Data -->
-      <path d="M360 432 L360 446" class="arrow-solid" marker-end="url(#arr)"/>
-
-      <!-- Monitoring dotted -->
-      <path d="M948 548 L790 548" class="arrow-mgmt" stroke-dasharray="3,3" marker-end="url(#arr-gray)"/>
-
-      <!-- Security dotted to app -->
-      <path d="M868 446 L868 434" class="arrow-mgmt" stroke-dasharray="3,3" marker-end="url(#arr-gray)"/>
-
-      <!-- CI/CD → AKS -->
-      <path d="M654 608 L654 438" class="arrow-mgmt" stroke-dasharray="3,3" marker-end="url(#arr-gray)"/>
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <!-- FOOTNOTE -->
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <rect x="16" y="696" width="1068" height="28" rx="5" class="footnote-bar"/>
-      <text x="34" y="714" class="footnote-txt">This architecture is built for multi-cloud portability, high scalability, cost optimisation, and security — MVP First. Gravity Labs by Constel Global · v1.0 · May 2026</text>
-
-      <!-- CSS classes for theming -->
-      <style>
-        .layer-users { fill: var(--d-layer-users); stroke: var(--d-border); }
-        .layer-edge { fill: var(--d-layer-edge); stroke: var(--d-border); }
-        .layer-app { fill: var(--d-layer-app); stroke: var(--d-border); }
-        .layer-compute { fill: var(--d-layer-compute); stroke: var(--d-border); }
-        .layer-msg { fill: var(--d-layer-msg); stroke: var(--d-border); }
-        .layer-data { fill: var(--d-layer-data); stroke: var(--d-border); }
-        .layer-sec { fill: var(--d-layer-sec); stroke: var(--d-border); }
-        .layer-mon { fill: var(--d-layer-mon); stroke: var(--d-border); }
-        .layer-cicd { fill: var(--d-layer-cicd); stroke: var(--d-border); }
-        .box { fill: var(--d-box); stroke: var(--d-box-border); stroke-width: 1; }
-        .box-purple { fill: var(--d-box); stroke: var(--d-purple); stroke-width: 1; }
-        .box-coral { fill: var(--d-box); stroke: var(--d-coral); stroke-width: 1; }
-        .box-amber { fill: var(--d-box); stroke: var(--d-amber); stroke-width: 1; }
-        .box-green { fill: var(--d-box); stroke: var(--d-green); stroke-width: 1; }
-        .box-teal { fill: var(--d-box); stroke: var(--d-teal); stroke-width: 1; }
-        .layer-label { font-size: 10px; fill: var(--d-text2); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
-        .layer-label-sm { font-size: 9px; fill: var(--d-text2); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
-        .layer-num { font-size: 11px; fill: var(--d-accent); font-weight: 700; }
-        .layer-num-sm { font-size: 10px; fill: var(--d-accent); font-weight: 700; }
-        .box-label { font-size: 11px; fill: var(--d-text); font-weight: 600; }
-        .box-label-l { font-size: 11.5px; fill: var(--d-text); font-weight: 600; }
-        .box-sub { font-size: 9.5px; fill: var(--d-text2); }
-        .box-sub-l { font-size: 9.5px; fill: var(--d-text2); }
-        .box-title { font-size: 11px; fill: var(--d-text); font-weight: 600; }
-        .box-title-purple { font-size: 11px; fill: var(--d-purple); font-weight: 600; }
-        .box-title-coral { font-size: 11px; fill: var(--d-coral); font-weight: 600; }
-        .box-title-amber { font-size: 11px; fill: var(--d-amber); font-weight: 600; }
-        .box-title-green { font-size: 11px; fill: var(--d-green); font-weight: 600; }
-        .box-title-teal { font-size: 11px; fill: var(--d-teal); font-weight: 600; }
-        .box-item { font-size: 9.5px; fill: var(--d-text2); }
-        .icon-stroke { stroke: var(--d-text2); }
-        .icon-stroke-accent { stroke: var(--d-accent); }
-        .pill-blue { fill: rgba(37,99,235,0.12); stroke: rgba(37,99,235,0.25); stroke-width: 0.5; }
-        .pill-txt { font-size: 9px; fill: var(--d-accent); }
-        .queue-item { fill: rgba(245,158,11,0.06); stroke: rgba(245,158,11,0.18); stroke-width: 0.5; }
-        .queue-txt { font-size: 9.5px; fill: var(--d-amber); }
-        .aks-bar { fill: rgba(37,99,235,0.08); stroke: rgba(37,99,235,0.2); stroke-width: 0.5; }
-        .aks-txt { font-size: 9px; fill: var(--d-accent); }
-        .sec-item { fill: rgba(248,113,113,0.07); stroke: rgba(248,113,113,0.2); stroke-width: 0.5; }
-        .sec-txt { font-size: 9px; fill: var(--d-coral); }
-        .mon-item { fill: rgba(244,114,182,0.07); stroke: rgba(244,114,182,0.2); stroke-width: 0.5; }
-        .mon-txt { font-size: 9px; fill: var(--d-pink); }
-        .cicd-box { fill: var(--d-box); stroke: var(--d-box-border); stroke-width: 1; }
-        .cicd-box-green { fill: rgba(74,222,128,0.1); stroke: rgba(74,222,128,0.3); stroke-width: 1; }
-        .cicd-label { font-size: 10px; fill: var(--d-text); font-weight: 600; }
-        .cicd-label-g { font-size: 10px; fill: var(--d-green); font-weight: 600; }
-        .cicd-sub { font-size: 9px; fill: var(--d-text2); }
-        .cicd-arrow { fill: none; stroke: var(--d-accent); stroke-width: 1.5; }
-        .arrow-solid { fill: none; stroke: var(--d-accent); stroke-width: 1.5; }
-        .arrow-async { fill: none; stroke: var(--d-teal); stroke-width: 1.5; }
-        .arrow-mgmt { fill: none; stroke: var(--d-text2); stroke-width: 1; }
-        .arr-stroke { stroke: var(--d-accent); }
-        .arr-gray-stroke { stroke: var(--d-text2); }
-        .footnote-bar { fill: rgba(37,99,235,0.06); stroke: rgba(37,99,235,0.12); stroke-width: 0.5; }
-        .footnote-txt { font-size: 9.5px; fill: var(--d-text2); }
-      </style>
-    </svg>
   </div>
+
+  <div class="mob">Scroll horizontally for the full diagram. Pinch to zoom on touch screens.</div>
+
+  <div class="dg-wrap">
+    <div class="dg-card">
+      <div class="dg-scroll">
+
+<!--
+═══════════════════════════════════════════════════
+  SVG GRID  viewBox="0 0 1280 880"
+
+  Columns:
+    A  Users:    x=16   w=128  → x2=144
+    B  Main:     x=160  w=700  → x2=860   (gap 16 from A)
+       B1 App:   x=160  w=394  → x2=554
+       B2 Msg:   x=570  w=290  → x2=860   (gap 16 from B1)
+    C  Compute:  x=876  w=388  h≈638  bottom ≈654  (covers Sec/Mon + zero-trust bar)
+
+  Rows (within B and C):
+    R1 Edge:     y=16   h=98   → y2=114   (gap 8px to R2)
+    R2 App/Msg:  y=122  h=290  → y2=412
+    R3 Data:     y=428  h=100  → y2=528
+    R4 CICD:     y=544  h=98   → y2=642
+    R5 Footer:   y=658  h=24
+    Sec/Mon:     inside C, y=428 h=206  (same y as R3+R4)
+═══════════════════════════════════════════════════
+-->
+
+<svg viewBox="0 0 1280 880"
+     style="display:block;width:100%;max-width:100%;height:auto"
+     xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-label="Gravity Labs System Architecture">
+<defs>
+  <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+    <path d="M1 1.5L8 5L1 8.5" fill="none" stroke-width="1.5" class="mk-b" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="at" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+    <path d="M1 1.5L8 5L1 8.5" fill="none" stroke-width="1.5" class="mk-t" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+    <path d="M1 1.5L8 5L1 8.5" fill="none" stroke-width="1.5" class="mk-g" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ════ COL A: USERS ════ -->
+<rect x="16" y="16" width="128" height="370" rx="12" class="L-u"/>
+<text x="80" y="34" text-anchor="middle" class="ll-xs">USERS</text>
+
+<!-- Participant -->
+<rect x="26" y="42" width="108" height="76" rx="8" class="bx"/>
+<g transform="translate(80,67)">
+  <circle cx="0" cy="-4" r="9" class="ic" stroke-width="1.5" fill="none"/>
+  <path d="M-12 15c0-6.6 5.4-11 12-11s12 4.4 12 11" class="ic" stroke-width="1.5" fill="none"/>
+</g>
+<text x="80" y="104" text-anchor="middle" class="bl">Participants</text>
+<text x="80" y="116" text-anchor="middle" class="bs">/ Learners</text>
+
+<!-- Trainers -->
+<rect x="26" y="128" width="108" height="76" rx="8" class="bx"/>
+<g transform="translate(80,153)">
+  <circle cx="-7" cy="-4" r="8" class="ic" stroke-width="1.5" fill="none"/>
+  <path d="M-16 13c0-5 4-9 9-9" class="ic" stroke-width="1.5" fill="none"/>
+  <circle cx="7" cy="-6" r="6" class="ic-a" stroke-width="1.5" fill="none"/>
+  <path d="M3 13c0-4.5 3-8.5 7-9" class="ic-a" stroke-width="1.5" fill="none"/>
+</g>
+<text x="80" y="190" text-anchor="middle" class="bl">Trainers /</text>
+<text x="80" y="202" text-anchor="middle" class="bs">Evaluators</text>
+
+<!-- Admins -->
+<rect x="26" y="214" width="108" height="76" rx="8" class="bx"/>
+<g transform="translate(80,240)">
+  <rect x="-11" y="-12" width="22" height="18" rx="3" class="ic" stroke-width="1.5" fill="none"/>
+  <line x1="-7" y1="6" x2="-7" y2="14" class="ic" stroke-width="1.5"/>
+  <line x1="0"  y1="6" x2="0"  y2="16" class="ic" stroke-width="1.5"/>
+  <line x1="7"  y1="6" x2="7"  y2="12" class="ic" stroke-width="1.5"/>
+</g>
+<text x="80" y="274" text-anchor="middle" class="bl">Platform</text>
+<text x="80" y="286" text-anchor="middle" class="bs">Admins</text>
+
+<!-- Sponsors -->
+<rect x="26" y="300" width="108" height="76" rx="8" class="bx"/>
+<g transform="translate(80,326)">
+  <path d="M0-13L-12 5h24Z" class="ic" stroke-width="1.5" fill="none"/>
+  <rect x="-5" y="5" width="10" height="8" rx="1" class="ic" stroke-width="1.5" fill="none"/>
+</g>
+<text x="80" y="358" text-anchor="middle" class="bl">Sponsors /</text>
+<text x="80" y="370" text-anchor="middle" class="bs">Partners</text>
+
+<!-- ════ ROW 1: ACCESS & EDGE (spans B cols) ════ -->
+<rect x="160" y="16" width="700" height="98" rx="12" class="L-e"/>
+<text x="184" y="36" class="ln">1.</text>
+<text x="198" y="36" class="ll">ACCESS &amp; EDGE LAYER</text>
+
+<!-- Nginx — fixed left column; subtitles split so text never runs under pills -->
+<rect x="178" y="46" width="278" height="58" rx="8" class="bx"/>
+<g transform="translate(198,75)">
+  <rect x="-9" y="-12" width="18" height="14" rx="2" class="ic" stroke-width="1.4" fill="none"/>
+  <line x1="-11" y1="5" x2="11" y2="5" class="ic" stroke-width="1.1"/>
+  <line x1="-11" y1="10" x2="5"  y2="10" class="ic" stroke-width="1.1"/>
+</g>
+<text x="220" y="62" class="bt-l">Nginx Ingress Controller</text>
+<text x="220" y="76" class="bs-l">TLS termination · URL routing · Rate limits</text>
+<text x="220" y="90" class="bs-l">Health probes · AKS network policy</text>
+
+<!-- Pills — right column, 12px gap after nginx (nginx ends x=456 → start 468) -->
+<rect x="468" y="48" width="86" height="24" rx="6" class="pb"/><text x="511" y="64" text-anchor="middle" class="pt">DDoS Control</text>
+<rect x="566" y="48" width="68" height="24" rx="6" class="pb"/><text x="600" y="64" text-anchor="middle" class="pt">TLS 1.2+</text>
+<rect x="646" y="48" width="76" height="24" rx="6" class="pb"/><text x="684" y="64" text-anchor="middle" class="pt">URL Routing</text>
+<rect x="730" y="48" width="108" height="24" rx="6" class="pb"/><text x="784" y="64" text-anchor="middle" class="pt">AKS NetworkPolicy</text>
+
+<rect x="468" y="80" width="120" height="24" rx="6" class="pb"/><text x="528" y="96" text-anchor="middle" class="pt">Rate Limiting (Nginx)</text>
+<rect x="600" y="80" width="98" height="24" rx="6" class="pb"/><text x="649" y="96" text-anchor="middle" class="pt">Cert-Manager</text>
+<rect x="710" y="80" width="128" height="24" rx="6" class="pb"/><text x="774" y="96" text-anchor="middle" class="pt">WAF Integration</text>
+
+<!-- ════ ROW 2A: APPLICATION LAYER ════ -->
+<rect x="160" y="122" width="394" height="278" rx="12" class="L-a"/>
+<text x="178" y="140" class="ln">2.</text>
+<text x="192" y="140" class="ll">APPLICATION LAYER — AKS</text>
+
+<!-- FastAPI -->
+<rect x="174" y="150" width="178" height="130" rx="8" class="bx"/>
+<text x="263" y="168" text-anchor="middle" class="bt">FastAPI Microservices</text>
+<text x="263" y="182" text-anchor="middle" class="bs">Core Business Services</text>
+<text x="186" y="200" class="bi">· auth-service ✓ Phase 1</text>
+<text x="186" y="215" class="bi">· tenant-service</text>
+<text x="186" y="230" class="bi">· event-service</text>
+<text x="186" y="245" class="bi">· lab-service + Temporal</text>
+<text x="186" y="260" class="bi">· scoring / billing / catalog…</text>
+
+<!-- AI Agents -->
+<rect x="364" y="150" width="178" height="130" rx="8" class="bx-p"/>
+<text x="453" y="168" text-anchor="middle" class="bt-p">AI Agents Layer</text>
+<text x="453" y="182" text-anchor="middle" class="bs">8 independent pods · KEDA</text>
+<text x="376" y="200" class="bi">· lab-architect-agent</text>
+<text x="376" y="215" class="bi">· dataset-forge-agent</text>
+<text x="376" y="230" class="bi">· provisioning-agent</text>
+<text x="376" y="245" class="bi">· qa-validator-agent</text>
+<text x="376" y="260" class="bi">· live-observer-agent</text>
+
+<!-- Temporal Workers -->
+<rect x="174" y="292" width="178" height="70" rx="8" class="bx-c"/>
+<text x="263" y="311" text-anchor="middle" class="bt-c">Temporal Workers</text>
+<text x="263" y="326" text-anchor="middle" class="bs">Durable workflow execution</text>
+<text x="263" y="341" text-anchor="middle" class="bs">Provision · Grade · Destroy</text>
+
+<!-- Guacamole -->
+<rect x="364" y="292" width="178" height="70" rx="8" class="bx"/>
+<text x="453" y="311" text-anchor="middle" class="bt">Guacamole Gateway</text>
+<text x="453" y="326" text-anchor="middle" class="bs">RDP / SSH / VNC Access</text>
+<text x="453" y="341" text-anchor="middle" class="bs">Browser-based · No client install</text>
+
+<!-- AKS footer bar -->
+<rect x="174" y="374" width="368" height="18" rx="5" class="aks-bar"/>
+<text x="358" y="386" text-anchor="middle" class="aks-t">AKS · Auto Scaling · Self Healing · Rolling Updates · Multi-Zone · KEDA</text>
+
+<!-- ════ ROW 2B: MESSAGING ════ -->
+<rect x="570" y="122" width="290" height="278" rx="12" class="L-m"/>
+<text x="588" y="140" class="ln">3.</text>
+<text x="602" y="140" class="ll">MESSAGING</text>
+
+<!-- RabbitMQ -->
+<rect x="584" y="150" width="262" height="52" rx="8" class="bx-a"/>
+<text x="715" y="170" text-anchor="middle" class="bt-a">RabbitMQ</text>
+<text x="715" y="185" text-anchor="middle" class="bs">Async inter-service events</text>
+
+<!-- Queues — evenly spread with generous gaps -->
+<rect x="584" y="212" width="262" height="22" rx="5" class="qi"/><text x="715" y="227" text-anchor="middle" class="qt">Lab Provisioning Queue</text>
+<rect x="584" y="240" width="262" height="22" rx="5" class="qi"/><text x="715" y="255" text-anchor="middle" class="qt">Lab Cleanup Queue</text>
+<rect x="584" y="268" width="262" height="22" rx="5" class="qi"/><text x="715" y="283" text-anchor="middle" class="qt">Notification Queue</text>
+<rect x="584" y="296" width="262" height="22" rx="5" class="qi"/><text x="715" y="311" text-anchor="middle" class="qt">Score Queue</text>
+<rect x="584" y="324" width="262" height="22" rx="5" class="qi"/><text x="715" y="339" text-anchor="middle" class="qt">Audit &amp; Logs Queue</text>
+
+<!-- managed -->
+<rect x="584" y="358" width="262" height="18" rx="5" class="aks-bar"/>
+<text x="715" y="370" text-anchor="middle" class="aks-t">Managed in AKS</text>
+
+<!-- vertical spacer line between B1 and B2 -->
+<line x1="558" y1="134" x2="558" y2="388" class="sep-line"/>
+
+<!-- ════ COL C: COMPUTE LAYER (full height right column) — height fits zero-trust bar + padding -->
+<rect x="876" y="16" width="388" height="638" rx="12" class="L-c"/>
+<text x="896" y="34" class="ln">4.</text>
+<text x="910" y="34" class="ll">COMPUTE LAYER</text>
+
+<!-- VM Labs -->
+<rect x="890" y="44" width="360" height="210" rx="9" class="bx"/>
+<text x="1070" y="64" text-anchor="middle" class="bt">VM Labs — Azure VMSS</text>
+<text x="1070" y="79" text-anchor="middle" class="bs">Windows / Linux Virtual Machines</text>
+<text x="902" y="100" class="bi">· Pre-built Lab Images (Packer)</text>
+<text x="902" y="118" class="bi">· Warm Pool Enabled — fast spin-up</text>
+<text x="902" y="136" class="bi">· Auto Scaling · Isolated Networks</text>
+<text x="902" y="154" class="bi">· Guacamole streaming (RDP / SSH)</text>
+<text x="902" y="172" class="bi">· GPU node pool for AI / ML labs</text>
+<text x="902" y="190" class="bi">· Terraform-managed lifecycle</text>
+<text x="902" y="208" class="bi">· Snapshot-based rapid restore</text>
+<text x="902" y="226" class="bi">· Spot VMs for non-prod cost saving</text>
+
+<!-- Cluster Topology -->
+<rect x="890" y="266" width="360" height="120" rx="9" class="bx-tl"/>
+<text x="1070" y="286" text-anchor="middle" class="bt-tl">Cluster Topology</text>
+<text x="902" y="308" class="bi">· Dev + Staging → Shared AKS cluster</text>
+<text x="902" y="326" class="bi">· Production → Dedicated AKS cluster</text>
+<text x="902" y="344" class="bi">· World Record → Multi-region Active / Active</text>
+<text x="902" y="362" class="bi">· Namespaces: gl-dev / gl-staging / gl-prod</text>
+
+<!-- Client Layer -->
+<rect x="890" y="398" width="360" height="96" rx="9" class="bx"/>
+<text x="1070" y="418" text-anchor="middle" class="bt">Client Layer</text>
+<text x="1070" y="433" text-anchor="middle" class="bs">React 18 · TypeScript · Tailwind CSS</text>
+<text x="902" y="455" class="bi">· Zustand · Axios · Vite · React Query</text>
+<text x="902" y="473" class="bi">· Served from AKS static pod · CDN-ready</text>
+<text x="902" y="491" class="bi">· PWA support · WCAG 2.1 AA accessible</text>
+
+<!-- ─── Security block (bottom-left of Compute col) ─── -->
+<rect x="890" y="508" width="168" height="118" rx="8" class="L-sec"/>
+<text x="904" y="526" class="ln-sm">6.</text>
+<text x="918" y="526" class="ll-xs">SECURITY</text>
+<rect x="900" y="533" width="146" height="20" rx="4" class="si"/>
+<text x="973" y="547" text-anchor="middle" class="st">Key Vault</text>
+<rect x="900" y="558" width="146" height="20" rx="4" class="si"/>
+<text x="973" y="572" text-anchor="middle" class="st">Managed Identity</text>
+<rect x="900" y="583" width="146" height="20" rx="4" class="si"/>
+<text x="973" y="597" text-anchor="middle" class="st">NSG · Private Endpoints</text>
+<rect x="900" y="608" width="146" height="12" rx="4" class="si"/>
+<text x="973" y="618" text-anchor="middle" class="st">RBAC · JWT RS256</text>
+
+<!-- ─── Monitoring block (bottom-right of Compute col) ─── -->
+<rect x="1070" y="508" width="180" height="118" rx="8" class="L-mon"/>
+<text x="1084" y="526" class="ln-sm">7.</text>
+<text x="1098" y="526" class="ll-xs">MONITORING</text>
+<rect x="1080" y="533" width="158" height="20" rx="4" class="mi"/>
+<text x="1159" y="547" text-anchor="middle" class="mt">Prometheus</text>
+<rect x="1080" y="558" width="158" height="20" rx="4" class="mi"/>
+<text x="1159" y="572" text-anchor="middle" class="mt">Grafana Dashboards</text>
+<rect x="1080" y="583" width="158" height="20" rx="4" class="mi"/>
+<text x="1159" y="597" text-anchor="middle" class="mt">Loki (Logs)</text>
+<rect x="1080" y="608" width="158" height="12" rx="4" class="mi"/>
+<text x="1159" y="618" text-anchor="middle" class="mt">CloudWatch (multi-cloud)</text>
+
+<!-- Zero-trust footer bar — inside L-c bottom inset -->
+<rect x="890" y="630" width="360" height="22" rx="7" class="aks-bar"/>
+<text x="1070" y="645" text-anchor="middle" class="aks-t">Private Endpoints · Zero-Trust Network · mTLS between services</text>
+
+<!-- ════ ROW 3: DATA & STORAGE ════ -->
+<rect x="160" y="428" width="700" height="100" rx="12" class="L-d"/>
+<text x="178" y="447" class="ln">5.</text>
+<text x="192" y="447" class="ll">DATA &amp; STORAGE LAYER</text>
+
+<!-- PostgreSQL -->
+<rect x="174" y="456" width="204" height="60" rx="8" class="bx-g"/>
+<text x="276" y="474" text-anchor="middle" class="bt-g">PostgreSQL 16</text>
+<text x="276" y="489" text-anchor="middle" class="bs">Self-managed in AKS</text>
+<text x="186" y="505" class="bi">Single instance · per-service DBs · HA-ready</text>
+
+<!-- Redis -->
+<rect x="390" y="456" width="178" height="60" rx="8" class="bx"/>
+<text x="479" y="474" text-anchor="middle" class="bt">Redis</text>
+<text x="479" y="489" text-anchor="middle" class="bs">Cache · Sessions · Tokens</text>
+<text x="402" y="505" class="bi">JWT blocklist · Rate limits · SSO state</text>
+
+<!-- Object Storage -->
+<rect x="580" y="456" width="268" height="60" rx="8" class="bx"/>
+<text x="714" y="474" text-anchor="middle" class="bt">Object Storage</text>
+<text x="714" y="489" text-anchor="middle" class="bs">Cloud-managed per provider</text>
+<text x="592" y="505" class="bi">Azure: Blob · AWS: S3 · GCP: Cloud Storage</text>
+
+<!-- ════ ROW 4: CI/CD ════ -->
+<rect x="160" y="544" width="700" height="96" rx="12" class="L-ci"/>
+<text x="178" y="562" class="ln">8.</text>
+<text x="192" y="562" class="ll">DEVOPS &amp; CI/CD PIPELINE</text>
+
+<!-- Steps: 6 boxes, w=88, arrow=20, starts at 174 -->
+<!-- Positions: 174, 282, 390, 498, 606, 714 | monitor: 802 -->
+<rect x="174" y="572" width="88" height="56" rx="7" class="cd-bx"/>
+<text x="218" y="595" text-anchor="middle" class="cd-l">GitHub</text>
+<text x="218" y="609" text-anchor="middle" class="cd-s">Code Repo</text>
+
+<path d="M264 600 L280 600" class="ar-ci" marker-end="url(#ab)"/>
+
+<rect x="282" y="572" width="88" height="56" rx="7" class="cd-bx"/>
+<text x="326" y="595" text-anchor="middle" class="cd-l">GitHub Actions</text>
+<text x="326" y="609" text-anchor="middle" class="cd-s">Build &amp; Test</text>
+
+<path d="M372 600 L388 600" class="ar-ci" marker-end="url(#ab)"/>
+
+<rect x="390" y="572" width="88" height="56" rx="7" class="cd-bx"/>
+<text x="434" y="595" text-anchor="middle" class="cd-l">ACR</text>
+<text x="434" y="609" text-anchor="middle" class="cd-s">Container Registry</text>
+
+<path d="M480 600 L496 600" class="ar-ci" marker-end="url(#ab)"/>
+
+<rect x="498" y="572" width="88" height="56" rx="7" class="cd-bx"/>
+<text x="542" y="595" text-anchor="middle" class="cd-l">Helm Charts</text>
+<text x="542" y="609" text-anchor="middle" class="cd-s">Packaging</text>
+
+<path d="M588 600 L604 600" class="ar-ci" marker-end="url(#ab)"/>
+
+<rect x="606" y="572" width="88" height="56" rx="7" class="cd-bx"/>
+<text x="650" y="595" text-anchor="middle" class="cd-l">Argo CD</text>
+<text x="650" y="609" text-anchor="middle" class="cd-s">GitOps → AKS</text>
+
+<path d="M696 600 L712 600" class="ar-ci" marker-end="url(#ab)"/>
+
+<rect x="714" y="572" width="76" height="56" rx="7" class="cd-bx-g"/>
+<text x="752" y="595" text-anchor="middle" class="cd-l-g">Monitor</text>
+<text x="752" y="609" text-anchor="middle" class="cd-s">Rollback</text>
+
+<!-- ════ ARROWS — clean, non-overlapping routing ════ -->
+
+<!-- U → Edge: participants -->
+<path d="M146 80 L158 80" class="ar-b" marker-end="url(#ab)"/>
+<!-- U → App: trainers (slight bend into row 2) -->
+<path d="M146 166 C153 166 158 198 160 215" class="ar-b" marker-end="url(#ab)"/>
+<!-- U → App: admins direct -->
+<path d="M146 252 L158 252" class="ar-b" marker-end="url(#ab)"/>
+
+<!-- Edge → App: vertical center -->
+<path d="M510 114 L510 122" class="ar-b" marker-end="url(#ab)"/>
+
+<!-- App → Messaging: two horizontal dashed at row midpoints -->
+<path d="M554 230 L568 230" class="ar-t" stroke-dasharray="5,3" marker-end="url(#at)"/>
+<path d="M554 325 L568 325" class="ar-t" stroke-dasharray="5,3" marker-end="url(#at)"/>
+
+<!-- App → Compute: horizontal from App right edge at mid-row -->
+<path d="M862 272 L874 272" class="ar-b" marker-end="url(#ab)"/>
+
+<!-- App → Data: vertical down, from App layer center -->
+<path d="M358 402 L358 426" class="ar-b" marker-end="url(#ab)"/>
+
+<!-- Msg → Data: vertical down from Messaging center -->
+<path d="M715 402 L715 426" class="ar-t" stroke-dasharray="5,3" marker-end="url(#at)"/>
+
+<!-- Data → CICD: vertical down -->
+<path d="M358 530 L358 542" class="ar-b" marker-end="url(#ab)"/>
+
+<!-- Argo CD → AKS (CI/CD deploys up to App layer): routed cleanly up-left -->
+<path d="M650 570 L650 520 L510 520 L510 414" class="ar-g" stroke-dasharray="4,3" marker-end="url(#ag)"/>
+
+<!-- Security influences App (right → left dotted): goes left across bottom of compute col -->
+<path d="M876 556 L864 556 L864 470 L862 400" class="ar-g" stroke-dasharray="4,3" marker-end="url(#ag)"/>
+
+<!-- Monitoring → Data (dotted) -->
+<path d="M876 580 L862 580 L862 500 L862 428" class="ar-g" stroke-dasharray="4,3"/>
+
+<!-- ════ FOOTER ════ -->
+<rect x="16" y="658" width="1248" height="22" rx="6" class="ft-bar"/>
+<text x="632" y="673" text-anchor="middle" class="ft-t">Multi-cloud portability · High scalability · Cost optimised · Security-first · MVP First — Gravity Labs by Constel Global · v1.0 · May 2026</text>
+
+<!-- ════ EMBEDDED CSS ════ -->
+<style>
+svg text{font-family:'JetBrains Mono','DM Mono',monospace}
+
+/* Layers */
+.L-u  {fill:var(--lu);stroke:var(--border);stroke-width:1.2}
+.L-e  {fill:var(--le);stroke:var(--border);stroke-width:1.2}
+.L-a  {fill:var(--la);stroke:var(--border);stroke-width:1.2}
+.L-m  {fill:var(--lm);stroke:var(--border);stroke-width:1.2}
+.L-c  {fill:var(--lc);stroke:var(--border);stroke-width:1.2}
+.L-d  {fill:var(--ld);stroke:var(--border);stroke-width:1.2}
+.L-ci {fill:var(--lci);stroke:var(--border);stroke-width:1.2}
+.L-sec{fill:rgba(248,113,113,.04);stroke:rgba(248,113,113,.2);stroke-width:1}
+.L-mon{fill:rgba(244,114,182,.04);stroke:rgba(244,114,182,.2);stroke-width:1}
+
+/* Boxes */
+.bx    {fill:var(--card);stroke:var(--card-b);stroke-width:1}
+.bx-p  {fill:var(--card);stroke:var(--purple);stroke-width:1.2}
+.bx-c  {fill:var(--card);stroke:var(--coral);stroke-width:1.2}
+.bx-a  {fill:var(--card);stroke:var(--amber);stroke-width:1.2}
+.bx-g  {fill:var(--card);stroke:var(--green);stroke-width:1.2}
+.bx-tl {fill:var(--card);stroke:var(--teal);stroke-width:1.2}
+
+/* Layer labels */
+.ll   {font-size:9.5px;fill:var(--text2);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.ll-xs{font-size:8.5px;fill:var(--text3);font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.ln   {font-size:11px;fill:var(--blue);font-weight:700}
+.ln-sm{font-size:10px;fill:var(--blue);font-weight:700}
+
+/* Text */
+.bl  {font-size:11px;fill:var(--text);font-weight:600}
+.bt  {font-size:11px;fill:var(--text);font-weight:700}
+.bt-l{font-size:11.5px;fill:var(--text);font-weight:700}
+.bs  {font-size:9px;fill:var(--text2)}
+.bs-l{font-size:9px;fill:var(--text2)}
+.bi  {font-size:9px;fill:var(--text2)}
+.bt-p {font-size:11px;fill:var(--purple);font-weight:700}
+.bt-c {font-size:11px;fill:var(--coral);font-weight:700}
+.bt-a {font-size:11px;fill:var(--amber);font-weight:700}
+.bt-g {font-size:11px;fill:var(--green);font-weight:700}
+.bt-tl{font-size:11px;fill:var(--teal);font-weight:700}
+
+/* Icons */
+.ic  {stroke:var(--text2)}
+.ic-a{stroke:var(--blue)}
+
+/* Pills — extra padding / air */
+.pb{fill:rgba(79,124,255,.09);stroke:rgba(79,124,255,.2);stroke-width:.6}
+.pt{font-size:9px;fill:var(--blue);font-weight:500}
+
+/* Queues */
+.qi{fill:rgba(251,191,36,.06);stroke:rgba(251,191,36,.18);stroke-width:.5}
+.qt{font-size:9px;fill:var(--amber)}
+
+/* AKS bar */
+.aks-bar{fill:rgba(79,124,255,.06);stroke:rgba(79,124,255,.16);stroke-width:.5}
+.aks-t  {font-size:8px;fill:var(--blue)}
+
+/* Security */
+.si{fill:rgba(248,113,113,.07);stroke:rgba(248,113,113,.18);stroke-width:.5}
+.st{font-size:8.5px;fill:var(--coral)}
+
+/* Monitoring */
+.mi{fill:rgba(244,114,182,.07);stroke:rgba(244,114,182,.18);stroke-width:.5}
+.mt{font-size:8.5px;fill:var(--pink)}
+
+/* CICD */
+.cd-bx  {fill:var(--card);stroke:var(--card-b);stroke-width:1}
+.cd-bx-g{fill:rgba(74,222,128,.08);stroke:rgba(74,222,128,.24);stroke-width:1}
+.cd-l   {font-size:10px;fill:var(--text);font-weight:700}
+.cd-l-g {font-size:10px;fill:var(--green);font-weight:700}
+.cd-s   {font-size:8.5px;fill:var(--text2)}
+
+/* Separators */
+.sep-line{stroke:var(--border);stroke-width:1;stroke-dasharray:4,4}
+
+/* Arrows */
+.ar-ci{fill:none;stroke:var(--blue);stroke-width:1.5}
+.ar-b {fill:none;stroke:var(--blue);stroke-width:1.6}
+.ar-t {fill:none;stroke:var(--teal);stroke-width:1.4}
+.ar-g {fill:none;stroke:var(--text3);stroke-width:1}
+.mk-b {stroke:var(--blue)}
+.mk-t {stroke:var(--teal)}
+.mk-g {stroke:var(--text3)}
+
+/* Footer */
+.ft-bar{fill:rgba(79,124,255,.05);stroke:rgba(79,124,255,.1);stroke-width:.5}
+.ft-t  {font-size:8.5px;fill:var(--text3)}
+</style>
+</svg>
+
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 <script>
-function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
-(function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
+function toggleTheme(){
+  const h=document.documentElement;
+  const n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+  h.setAttribute('data-theme',n);
+  localStorage.setItem('gl-theme',n);
+}
+(function(){
+  const s=localStorage.getItem('gl-theme');
+  if(s){document.documentElement.setAttribute('data-theme',s);return}
+  if(window.matchMedia('(prefers-color-scheme:light)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+})();
 </script>
+<script src="docs-nav.js"></script>
+<script src="docs-search.js"></script>
 </body>
 </html>

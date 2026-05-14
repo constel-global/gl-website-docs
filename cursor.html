@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gravity Labs — Cursor Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav class="topnav">
+  <a class="logo" href="index.html"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><span class="logo-wm">Gravity<span>Labs</span></span></a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Architecture</a>
+    <a class="nav-tab" href="diagram.html">Diagram</a>
+    <a class="nav-tab" href="flows.html">Flows</a>
+    <a class="nav-tab" href="brd.html">BRD</a>
+    <a class="nav-tab" href="fsd.html">FSD</a>
+    <a class="nav-tab active" href="cursor.html">Cursor Guide</a>
+  </div>
+  <div class="nav-search-wrap" role="search">
+    <label class="sr-only" for="gl-doc-search">Search this page</label>
+    <input type="search" id="gl-doc-search" class="nav-search-input" placeholder="Search this page…" autocomplete="off" />
+    <div id="gl-doc-search-results" class="nav-search-results" hidden></div>
+  </div>
+  <button type="button" class="nav-mtoggle" onclick="glToggleNav()" aria-label="Open section menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <span class="vbadge">v1.0 · May 2026</span>
+    <button class="tbtn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="page-wrap">
+<div class="sb-backdrop" id="sb-backdrop" onclick="glCloseNav()" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-lbl">Getting Started</div>
+  <a class="sb-a active" onclick="goTo('s1')"><span class="n">01</span>Introduction</a>
+  <a class="sb-a" onclick="goTo('s2')"><span class="n">02</span>IDE Overview</a>
+  <a class="sb-a" onclick="goTo('s3')"><span class="n">03</span>Installation &amp; Setup</a>
+  <div class="sb-lbl">Models &amp; AI</div>
+  <a class="sb-a" onclick="goTo('s4')"><span class="n">04</span>Models &amp; When to Use</a>
+  <a class="sb-a" onclick="goTo('s5')"><span class="n">05</span>MCP Integration</a>
+  <div class="sb-lbl">Best Practices</div>
+  <a class="sb-a" onclick="goTo('s6')"><span class="n">06</span>Cursor Rules</a>
+  <a class="sb-a" onclick="goTo('s7')"><span class="n">07</span>Prompt Engineering</a>
+  <a class="sb-a" onclick="goTo('s8')"><span class="n">08</span>Development Workflow</a>
+  <a class="sb-a" onclick="goTo('s9')"><span class="n">09</span>Code Review</a>
+  <div class="sb-lbl">Standards</div>
+  <a class="sb-a" onclick="goTo('s10')"><span class="n">10</span>Security Practices</a>
+  <a class="sb-a" onclick="goTo('s11')"><span class="n">11</span>Git &amp; SCM</a>
+  <a class="sb-a" onclick="goTo('s12')"><span class="n">12</span>Shortcuts &amp; Productivity</a>
+  <a class="sb-a" onclick="goTo('s13')"><span class="n">13</span>Do's &amp; Don'ts</a>
+  <a class="sb-a" onclick="goTo('s14')"><span class="n">14</span>Quick Start Checklist</a>
+</aside>
+<div class="main" id="gl-search-scope">
+  <div class="intro">
+    <div class="eyebrow">Cursor IDE Engineering Onboarding Guide · AI-Assisted Development Standards</div>
+    <h1>Cursor Best Practices</h1>
+    <p>Constel Global engineering standards for AI-assisted development using Cursor IDE. Covers setup, model selection, prompt engineering, Cursor Rules, security, and team expectations.</p>
+    <div class="intro-meta">
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Version 1.0 · May 2026</span>
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Internal Use Only</span>
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Constel Global Engineering</span>
+    </div>
+  </div>
+
+  <!-- S1: Intro -->
+  <div class="sec" id="s1">
+    <div class="eyebrow">01 / Introduction</div>
+    <h2 class="sec-title">Introduction</h2>
+    <p class="sec-lead">Cursor IDE is an AI-native code editor built as a fork of Visual Studio Code. It integrates powerful large language models directly into the editing experience, enabling natural language interaction with your codebase.</p>
+    <div class="callout tip"><div class="cl">The Right Mindset</div><p>AI proposes; you dispose. Treat AI as a talented junior colleague — capable and fast, but occasionally overconfident or incorrect. You are always accountable for what ships to production. Verify all outputs against requirements, security standards, and performance needs. Maintain code ownership — you are ultimately responsible for every line that ships.</p></div>
+    <div class="cards" style="margin-top:16px">
+      <div class="card"><div class="card-lbl">Why Constel Global Uses Cursor</div><ul><li>2–5x faster feature implementation and bug fixing</li><li>Improved consistency across large codebases</li><li>Rapid test and documentation generation</li><li>Better onboarding for new team members</li><li>Enhanced ability to explore complex systems</li></ul></div>
+      <div class="card"><div class="card-lbl">Core Principles</div><ul><li>Code ownership remains with the author and reviewers — not with the AI</li><li>All changes undergo the standard PR and review process</li><li>Prioritise clarity, simplicity, and maintainability over clever AI solutions</li><li>Share effective rules and prompt templates with the team</li><li>AI collaboration is a core engineering competency — continuously improve it</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S2: IDE Overview -->
+  <div class="sec" id="s2">
+    <div class="eyebrow">02 / IDE Overview</div>
+    <h2 class="sec-title">Cursor IDE Core UI</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Editor Area</div><p>Standard VS Code editor enhanced with AI Tab completions and inline suggestions. Start typing and accept suggestions with <span class="kbd">Tab</span>. Full VS Code compatibility — extensions, keybindings, settings.</p></div>
+      <div class="card"><div class="card-lbl">Chat Panel <span class="kbd">Cmd/Ctrl + L</span></div><p>For questions, explanations, and lightweight tasks. Attach files with <code>@filename</code> to provide context. Best for focused Q&amp;A, quick lookups, and understanding existing code.</p></div>
+      <div class="card"><div class="card-lbl">Composer / Agent Mode <span class="kbd">Cmd/Ctrl + I</span></div><p>Multi-file editing agent capable of planning and executing complex changes across your codebase. Reviews diffs with you before applying. Use for feature implementation, refactoring, and generating boilerplate.</p></div>
+      <div class="card"><div class="card-lbl">Inline Edit Mode <span class="kbd">Cmd/Ctrl + K</span></div><p>Precise, localised changes within or across selected code. Use for targeted refactors, renaming, or quick fixes without opening the full Chat panel.</p></div>
+      <div class="card"><div class="card-lbl">Terminal Integration</div><p>The AI can run commands, interpret output, and iterate — closing the loop between code changes and their results. Use for running tests, checking logs, and debugging in context.</p></div>
+      <div class="card"><div class="card-lbl">Key Capabilities</div><ul><li>Context Awareness — auto-indexes workspace for semantic search</li><li>Codebase Indexing — fast local vector index for relevant retrieval</li><li>Multi-File Editing — Agent edits dozens of files with diff preview</li><li>MCP Tool Integration — connects to external services in real time</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S3: Setup -->
+  <div class="sec" id="s3">
+    <div class="eyebrow">03 / Installation &amp; Setup</div>
+    <h2 class="sec-title">Installation &amp; Initial Setup</h2>
+    <div class="pipeline">
+      <div class="ps"><div class="pn">1</div><div><div class="pm">Download Cursor</div><div class="pd">From cursor.com (macOS, Windows, or Linux)</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">2</div><div><div class="pm">Sign in with SSO</div><div class="pd">Use your Constel Global SSO credentials — never a personal account on company devices</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">3</div><div><div class="pm">Clone repositories</div><div class="pd">Via Git or GitHub Desktop and open the project folder</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">4</div><div><div class="pm">Install recommended extensions</div><div class="pd">GitLens, Docker, Terraform, Prettier, ESLint, language packs for Python/TypeScript/Go</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">5</div><div><div class="pm">Configure Git &amp; SSH</div><div class="pd">Set git config with your Constel Global email and name. Configure SSH keys.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">6</div><div><div class="pm">Configure approved MCP servers</div><div class="pd">Add to <code>.cursor/mcp.json</code> or via Cursor Settings. Only approved Constel Global MCP servers.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">7</div><div><div class="pm">Add Cursor Rules</div><div class="pd">Copy organisation Cursor Rules to <code>.cursor/rules/</code>. Verify indexing completes.</div></div></div>
+    </div>
+    <div class="callout warn" style="margin-top:14px"><div class="cl">Security</div><p>Always verify that cloned repositories do not contain unapproved secrets before opening in Cursor. Close large <code>node_modules</code> folders or add them to <code>.cursorignore</code> to prevent slow indexing.</p></div>
+    <div class="cards" style="margin-top:14px">
+      <div class="card"><div class="card-lbl">Python Setup</div><p>Use Ruff, Pylance, and Pyright. Configure <code>settings.json</code> for organisation-wide standards. Use Ruff for linting and formatting (replaces flake8 + black).</p></div>
+      <div class="card"><div class="card-lbl">TypeScript / React Setup</div><p>ESLint + Prettier + Tailwind IntelliSense. Enable TypeScript strict mode. Configure Prettier for consistent formatting across the team.</p></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S4: Models -->
+  <div class="sec" id="s4">
+    <div class="eyebrow">04 / Models &amp; Usage Guide</div>
+    <h2 class="sec-title">Model Selection Guide</h2>
+    <p class="sec-lead">Use Auto mode for most day-to-day work — it routes to the most suitable model based on task complexity. Only switch when you have a specific reason.</p>
+    <table class="tbl">
+      <tr><th>Model</th><th>Best For</th><th>Strengths</th><th>Weaknesses</th></tr>
+      <tr><td><span class="hl-p">Claude Opus / Sonnet</span></td><td>Complex reasoning, architecture, security reviews</td><td>Superior code understanding, long coherent plans, fewer hallucinations</td><td>Slightly slower, higher cost</td></tr>
+      <tr><td><span class="hl-b">GPT-5.x family</span></td><td>General coding, creative tasks, documentation, writing tests</td><td>Fast, strong generation, broad knowledge</td><td>Can be verbose or over-optimistic</td></tr>
+      <tr><td><span class="hl-g">Gemini models</span></td><td>Long-context analysis (1M+ tokens), SQL/data tasks</td><td>Excellent long context, strong on data-heavy tasks, multimodal</td><td>Weaker on nuanced code style</td></tr>
+      <tr><td><span class="hl">Cursor Fast models</span></td><td>Quick edits, inline Tab suggestions</td><td>Very fast, cost-effective</td><td>Lower reasoning depth</td></tr>
+      <tr><td><span class="hl-a">Reasoning models</span></td><td>Debugging, optimisation, root cause analysis</td><td>Deep step-by-step thinking</td><td>Slower response time</td></tr>
+    </table>
+    <h3 style="font-family:'Sora',sans-serif;font-size:15px;color:var(--text);margin:18px 0 10px">Task-Specific Recommendations</h3>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Use Claude for</div><ul><li>Bug fixing and root cause analysis</li><li>Architecture discussions and design reviews</li><li>Refactoring for readability and correctness</li><li>Security reviews (with human oversight)</li><li>Understanding large, complex codebases</li></ul></div>
+      <div class="card"><div class="card-lbl">Use GPT-5.x for</div><ul><li>Writing test suites (boilerplate generation)</li><li>Documentation and README writing</li><li>Creative or exploratory coding tasks</li><li>Infrastructure and DevOps scripts</li></ul></div>
+      <div class="card"><div class="card-lbl">When NOT to use AI</div>
+        <div class="callout crit" style="margin-top:6px"><div class="cl">Avoid AI for</div><ul><li>Highly sensitive security / compliance logic</li><li>Novel cryptographic implementations</li><li>Business-critical financial calculations without rigorous testing</li><li>Any area where you lack the domain expertise to validate the output</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S5: MCP -->
+  <div class="sec" id="s5">
+    <div class="eyebrow">05 / MCP Integration</div>
+    <h2 class="sec-title">MCP — Model Context Protocol</h2>
+    <p class="sec-lead">MCP is an open standard that allows Cursor to securely connect to external tools, data sources, and services. Think of it as a standardised plugin system — "USB-C for AI agents" — that turns the AI from a static knowledge model into a dynamic agent.</p>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">What MCP Enables</div><ul><li>Read the latest Jira / Linear ticket details directly in Composer</li><li>Query production database schemas before writing queries</li><li>Check CI status or deployment history without leaving the IDE</li><li>Pull architecture decision records from Confluence or Notion</li><li>Connect to GitHub for PR context and issue details</li></ul></div>
+      <div class="card"><div class="card-lbl">MCP Architecture</div>
+        <div class="code" style="font-size:11px">Cursor IDE (MCP Client)
+       ↕ MCP Protocol
+MCP Servers (local or remote)
+  ├── GitHub / GitLab
+  ├── Jira / Linear
+  ├── Database Query (Postgres)
+  └── Custom Constel Global tools</div>
+      </div>
+      <div class="card"><div class="card-lbl">Best Practices</div><ul><li>Use only approved Constel Global MCP servers</li><li>Configure servers in <code>.cursor/mcp.json</code> or via Cursor Settings</li><li>Test integrations in a non-production workspace first</li><li>Review all tool permissions carefully — MCP calls require explicit user consent</li><li>Never connect MCP servers that can modify production systems without safeguards</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S6: Cursor Rules -->
+  <div class="sec" id="s6">
+    <div class="eyebrow">06 / Cursor Rules</div>
+    <h2 class="sec-title">Cursor Rules</h2>
+    <p class="sec-lead">Cursor Rules are persistent, project-specific instructions stored in Markdown files that are automatically injected into every AI conversation and agent interaction. They are the primary mechanism for enforcing Constel Global engineering standards across all AI-assisted work.</p>
+    <div class="callout tip"><div class="cl">Pro Tip</div><p>Well-written Rules dramatically reduce hallucinations and improve output consistency. Invest time here — it pays dividends on every AI interaction. Rules are committed to Git so the whole team benefits automatically.</p></div>
+    <table class="tbl" style="margin-top:14px">
+      <tr><th>File</th><th>Purpose</th></tr>
+      <tr><td><code>.cursor/rules/coding-standards.md</code></td><td>TypeScript strict mode, functional patterns, public API requirements</td></tr>
+      <tr><td><code>.cursor/rules/api-design.md</code></td><td>OpenAPI documentation expectations, REST conventions, versioning strategy</td></tr>
+      <tr><td><code>.cursor/rules/security.md</code></td><td>Input sanitisation, sensitive data handling, authentication patterns</td></tr>
+      <tr><td><code>.cursor/rules/testing.md</code></td><td>Vitest/Jest conventions, minimum 80% coverage on new code, test naming</td></tr>
+      <tr><td><code>.cursor/rules/commit-conventions.md</code></td><td>Conventional Commits format, branch naming strategy, PR template</td></tr>
+    </table>
+    <div class="cards" style="margin-top:14px">
+      <div class="card"><div class="card-lbl">Writing Effective Rules</div><ul><li>Keep rules concise and actionable — use bullet points and code examples</li><li>Review and update rules during architecture reviews</li><li>Version rules with the codebase — commit to Git</li><li>Avoid verbose, contradictory, or micromanaging rules</li><li>Use Prettier/ESLint for style enforcement — not Cursor Rules</li><li>Project rules override global rules where they conflict</li></ul></div>
+      <div class="card"><div class="card-lbl">Gravity Labs Recommended Rules</div><ul><li>Always use async/await patterns in FastAPI services</li><li>All endpoints must have Pydantic request/response models</li><li>Use structlog for all logging — JSON format required</li><li>No hardcoded secrets — always reference Key Vault or env vars</li><li>Every microservice must expose <code>/health</code> and <code>/metrics</code> endpoints</li><li>Use <code>redis.asyncio</code> client — never sync Redis in async FastAPI</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S7: Prompts -->
+  <div class="sec" id="s7">
+    <div class="eyebrow">07 / Prompt Engineering</div>
+    <h2 class="sec-title">Prompt Engineering Best Practices</h2>
+    <p class="sec-lead">Effective prompting is a core engineering skill in the AI era. A well-crafted prompt can be the difference between a useful, production-ready suggestion and a hallucinated dead-end.</p>
+    <div class="cards cards-2" style="margin-bottom:16px">
+      <div class="card"><div class="card-lbl" style="color:var(--red-t)">Too Vague — Avoid</div><div class="code" style="background:var(--crit-bg);border-color:var(--crit-border);font-size:12px">Fix this bug.</div><p style="margin-top:8px;font-size:13px;color:var(--text2)">No context. No file references. No expected behaviour. The AI has nothing to work with and will guess.</p></div>
+      <div class="card"><div class="card-lbl" style="color:var(--green-t)">Clear and Specific — Use This</div><div class="code" style="background:var(--tip-bg);border-color:var(--tip-border);font-size:12px">The login endpoint returns 500 on invalid 
+credentials. Analyse the stack trace in 
+@auth.service.ts, identify the root cause 
+following our error handling policy, and 
+propose a fix with test cases. Use 
+structured logging.</div></div>
+    </div>
+    <h3 style="font-family:'Sora',sans-serif;font-size:15px;color:var(--text);margin:18px 0 10px">Reusable Prompt Templates</h3>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Debugging Template</div><div class="code" style="font-size:11px">Analyse this error: [paste error].
+Relevant files: @auth.ts @database.ts
+Steps:
+1. Reproduce mentally
+2. Identify root cause
+3. Suggest minimal fix
+4. Provide test cases</div></div>
+      <div class="card"><div class="card-lbl">Refactoring Template</div><div class="code" style="font-size:11px">Refactor the following code to improve 
+readability and performance, adhering to 
+our architecture guidelines in 
+.cursor/rules/.
+Maintain exact functionality.
+Highlight any behaviour changes.</div></div>
+      <div class="card"><div class="card-lbl">Architecture Template</div><div class="code" style="font-size:11px">Propose a solution for [requirement].
+Consider:
+- Scalability to 25K concurrent users
+- Security per .cursor/rules/security.md
+- Multi-cloud portability
+- Existing patterns in @existing-service.ts</div></div>
+      <div class="card"><div class="card-lbl">Test Generation Template</div><div class="code" style="font-size:11px">Generate unit tests for @auth.service.ts.
+Requirements:
+- Use Pytest + pytest-asyncio
+- Cover happy path + edge cases
+- Mock external dependencies
+- Minimum 80% coverage
+- Follow .cursor/rules/testing.md</div></div>
+      <div class="card"><div class="card-lbl">Code Review Template</div><div class="code" style="font-size:11px">Review this PR diff for:
+1. Security vulnerabilities
+2. Performance issues
+3. Adherence to .cursor/rules/
+4. Missing error handling
+5. Test coverage gaps
+Flag any concerns with severity: 
+critical / high / low</div></div>
+      <div class="card"><div class="card-lbl">Gravity Labs Specific</div><div class="code" style="font-size:11px">Implement a FastAPI endpoint for 
+[feature] following our microservice 
+pattern. Requirements:
+- Async handlers only
+- Pydantic request/response models
+- structlog logging
+- Redis rate limiting
+- Health + metrics endpoints
+- Temporal workflow integration if 
+  long-running operation</div></div>
+    </div>
+    <div class="callout ex" style="margin-top:14px"><div class="cl">Reducing Hallucinations</div><p>Provide concrete examples. Ensure Cursor Rules are up to date. Ask for step-by-step reasoning before generating code. Always validate the output against your tests and requirements. If the AI is consistently wrong, add a rule to <code>.cursor/rules/</code> — it means the standard isn't captured yet.</p></div>
+  </div>
+  <hr class="divider">
+
+  <!-- S8: Workflow -->
+  <div class="sec" id="s8">
+    <div class="eyebrow">08 / AI-Assisted Development Workflow</div>
+    <h2 class="sec-title">Feature Development Workflow</h2>
+    <div class="pipeline">
+      <div class="ps"><div class="pn">1</div><div><div class="pm">Review ticket requirements</div><div class="pd">Read the Jira ticket / requirements carefully before touching Cursor.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">2</div><div><div class="pm">Pull ticket into Composer via MCP</div><div class="pd">Use MCP to pull the latest ticket details directly into Composer context.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">3</div><div><div class="pm">Plan in Composer first</div><div class="pd">Ask: "Create an implementation plan for [feature]". Review the plan before proceeding.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">4</div><div><div class="pm">Implement incrementally</div><div class="pd">Approve each Agent step individually. Never let the Agent run uninterrupted through a large change.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">5</div><div><div class="pm">Generate and review tests</div><div class="pd">Use AI to generate test boilerplate, then review and enhance. Run the full test suite.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">6</div><div><div class="pm">Local validation</div><div class="pd">Lint, run all tests, manual check. Never skip local validation.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">7</div><div><div class="pm">Create PR with AI-assisted description</div><div class="pd">AI can draft the PR description. Always review before submitting — you own it.</div></div></div>
+    </div>
+    <div class="callout tip" style="margin-top:14px"><div class="cl">Pair Programming Mode</div><p>Discuss architecture in Chat before coding in Composer. Practice prompt chaining — get a plan first, then execute step by step. This prevents the AI from going off-track on complex features.</p></div>
+  </div>
+  <hr class="divider">
+
+  <!-- S9: Code Review -->
+  <div class="sec" id="s9">
+    <div class="eyebrow">09 / Code Review with AI</div>
+    <h2 class="sec-title">AI-Assisted Code Review</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Using AI for Reviews</div><ul><li>Use Chat to review your own diff before raising a PR — catch issues early</li><li>Ask for security review of authentication or data-handling code</li><li>Check for missing error handling or edge cases</li><li>Ask for performance analysis on database queries or hot paths</li><li>Human review is still required for all PRs — AI review is supplementary</li></ul></div>
+      <div class="card"><div class="card-lbl">Validating AI-Generated Code</div><ul><li>Read it carefully line by line — never skim AI output</li><li>Run the full test suite after every significant change</li><li>Check edge cases the AI may have missed</li><li>Perform manual testing in the UI for frontend changes</li><li>Request a peer review before merging — code ownership is shared</li><li>For Gravity Labs: verify all FastAPI endpoints have Pydantic models and structlog</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S10: Security -->
+  <div class="sec" id="s10">
+    <div class="eyebrow">10 / Security Practices</div>
+    <h2 class="sec-title">Security Practices</h2>
+    <div class="callout crit"><div class="cl">Never Share with AI</div><ul><li>API keys, tokens, passwords, or secrets of any kind</li><li>Personal or customer identifiable information (PII)</li><li>Confidential business logic or unreleased features</li><li>Production secrets or environment variables</li><li>Database connection strings with credentials</li></ul></div>
+    <div class="cards" style="margin-top:14px">
+      <div class="card"><div class="card-lbl">Secure Prompting</div><ul><li>Describe problems abstractly — use anonymised or placeholder data</li><li>Use MCP for safe, structured data retrieval where possible</li><li>Review all tool permissions before granting access</li><li>Describe the issue without pasting actual production data</li></ul></div>
+      <div class="card"><div class="card-lbl">Pre-Merge Security Checklist</div><ul><li>Does this change touch authentication or authorisation?</li><li>Are secrets or environment variables involved?</li><li>Does it process or store user data?</li><li>Does it make external service calls?</li><li>Has input validation been added for all user-supplied data?</li><li>Are rate limits in place for new endpoints?</li></ul></div>
+    </div>
+    <div class="callout warn" style="margin-top:14px"><div class="cl">Remember</div><p>AI tools may retain conversation history. Treat all inputs as potentially logged. Adhere to Constel Global security policy, SOC2 / GDPR requirements, and internal code review standards at all times.</p></div>
+  </div>
+  <hr class="divider">
+
+  <!-- S11: Git -->
+  <div class="sec" id="s11">
+    <div class="eyebrow">11 / Git &amp; SCM Best Practices</div>
+    <h2 class="sec-title">Git &amp; Source Control</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Branch Naming</div>
+        <div class="code" style="font-size:11.5px">feature/lab-provisioning-temporal
+bugfix/auth-token-refresh-race
+refactor/scoring-agent-keda
+chore/update-dependencies
+docs/cursor-rules-update</div>
+      </div>
+      <div class="card"><div class="card-lbl">Conventional Commits</div>
+        <div class="code" style="font-size:11.5px">feat(auth): implement OAuth2 login flow
+fix(scoring): resolve race condition in
+  cross-validator agent
+refactor(lab-service): extract temporal
+  workflow into separate module
+chore(deps): upgrade FastAPI to 0.111
+docs(api): update OpenAPI spec for v2</div>
+      </div>
+      <div class="card"><div class="card-lbl">Safe Git Workflows</div><ul><li>Commit frequently — small, focused commits are easier to review and revert</li><li>Prefer rebase over merge for feature branches</li><li>Always stash or branch before large Agent-driven operations</li><li>Use <code>git worktree</code> for parallel tasks</li><li>AI-generated commit messages are acceptable drafts — always review and edit</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S12: Shortcuts -->
+  <div class="sec" id="s12">
+    <div class="eyebrow">12 / Shortcuts &amp; Productivity</div>
+    <h2 class="sec-title">Essential Shortcuts &amp; Productivity Tips</h2>
+    <table class="tbl">
+      <tr><th>Shortcut</th><th>Action</th></tr>
+      <tr><td><span class="kbd">Tab</span></td><td>Accept inline AI suggestion</td></tr>
+      <tr><td><span class="kbd">Cmd / Ctrl + K</span></td><td>Inline edit (current selection or file)</td></tr>
+      <tr><td><span class="kbd">Cmd / Ctrl + L</span></td><td>Open Chat panel</td></tr>
+      <tr><td><span class="kbd">Cmd / Ctrl + I</span></td><td>Open Composer (Agent mode)</td></tr>
+      <tr><td><span class="kbd">Cmd / Ctrl + Shift + L</span></td><td>Add current file to context</td></tr>
+      <tr><td><span class="kbd">Cmd / Ctrl + Shift + I</span></td><td>Open Composer in new window</td></tr>
+    </table>
+    <div class="cards" style="margin-top:14px">
+      <div class="card"><div class="card-lbl">Workflow Tips</div><ul><li>Use multiple Cursor windows or worktrees for parallel tasks</li><li>Master context management — be selective with <code>@mentions</code> to keep prompts focused</li><li>Combine AI with strong local testing habits</li><li>Discuss architecture in Chat before coding in Composer</li><li>Practice prompt chaining — get a plan first, then execute step by step</li></ul></div>
+      <div class="card"><div class="card-lbl">Cost Optimisation</div><ul><li>Use Auto or fast models for simple edits and Tab completions</li><li>Reserve Claude Opus and reasoning models for complex architecture, root cause analysis, and security reviews</li><li>Close large folders (node_modules, .venv) via <code>.cursorignore</code> to keep indexing fast</li><li>Start a new conversation when context gets large — it improves quality and reduces cost</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S13: Do's and Don'ts -->
+  <div class="sec" id="s13">
+    <div class="eyebrow">13 / Do's &amp; Don'ts</div>
+    <h2 class="sec-title">Do's &amp; Don'ts</h2>
+    <div class="cards cards-2">
+      <div class="card" style="border-color:var(--green-b)">
+        <div class="card-lbl" style="color:var(--green-t)">Do</div>
+        <ul>
+          <li>Verify every AI suggestion before committing</li>
+          <li>Use Cursor Rules to enforce team standards</li>
+          <li>Break tasks into small, verifiable steps</li>
+          <li>Run tests after every significant change</li>
+          <li>Document architectural decisions (ADRs)</li>
+          <li>Use MCP for dynamic context (Jira, DB schemas, CI)</li>
+          <li>Share effective rules and prompt templates with the team</li>
+          <li>Review AI-generated PR descriptions before submitting</li>
+          <li>Use <code>@filename</code> references to give the AI accurate context</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:var(--red-b)">
+        <div class="card-lbl" style="color:var(--red-t)">Don't</div>
+        <ul>
+          <li>Blindly accept large AI-generated refactors</li>
+          <li>Repeat the same instruction every prompt — put it in Rules</li>
+          <li>Paste secrets, API keys, or PII into prompts</li>
+          <li>Ship code without human review</li>
+          <li>Rely solely on AI for novel or security-critical algorithms</li>
+          <li>Ignore context limits and token usage — start a fresh chat when needed</li>
+          <li>Use AI for code you cannot fully understand and validate</li>
+          <li>Let the Agent run uninterrupted through a large change</li>
+          <li>Submit PRs without reading every line of the diff</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S14: Checklist -->
+  <div class="sec" id="s14">
+    <div class="eyebrow">14 / Quick Start Checklist</div>
+    <h2 class="sec-title">First Day Quick Start Checklist</h2>
+    <p class="sec-lead">Complete all items before starting your first real task.</p>
+    <div class="card cards-1">
+      <div class="card-lbl">Setup Tasks</div>
+      <table class="tbl" style="margin-top:8px">
+        <tr><th style="width:40px">Done</th><th>Task</th></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Install latest Cursor and sign in with Constel Global SSO</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Clone primary Gravity Labs repositories</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Configure Git identity and SSH keys with Constel Global email</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Install recommended extensions (GitLens, Docker, Terraform, Prettier, ESLint)</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Configure approved MCP servers in <code>.cursor/mcp.json</code></td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Add organisation Cursor Rules to <code>.cursor/rules/</code></td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Verify workspace indexing completes successfully</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Run the application locally with Docker Compose</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Complete a sample task using Composer (Agent mode)</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Review team coding standards and this guide fully</td></tr>
+        <tr><td style="text-align:center;font-size:16px">☐</td><td>Introduce yourself in the engineering Slack channel</td></tr>
+      </table>
+    </div>
+    <div class="callout tip" style="margin-top:16px"><div class="cl">Reference Links</div><p>Official Cursor Documentation — cursor.com/docs &nbsp;·&nbsp; MCP Documentation — modelcontextprotocol.io &nbsp;·&nbsp; Constel Global Internal Wiki — (link in Slack pinned messages)</p></div>
+  </div>
+
+  <div class="pg-footer">GRAVITY LABS · CURSOR IDE ENGINEERING ONBOARDING GUIDE · V1.0 · MAY 2026 · CONSTEL GLOBAL · INTERNAL USE ONLY</div>
+</div>
+</div>
+<script>
+function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
+(function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'})}
+const _s=document.querySelectorAll('.sec'),_l=document.querySelectorAll('.sb-a');
+if(_s.length&&_l.length){const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){const id=e.target.id;_l.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+id+"'"))l.classList.add('active')})}})},{rootMargin:'-20% 0px -70% 0px'});_s.forEach(s=>o.observe(s))}
+</script>
+<script src="docs-nav.js"></script>
+<script src="docs-search.js"></script>
+</body>
+</html>

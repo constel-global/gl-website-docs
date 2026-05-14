@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gravity Labs — BRD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav class="topnav">
+  <a class="logo" href="index.html"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><span class="logo-wm">Gravity<span>Labs</span></span></a>
+  <div class="nav-tabs">
+    <a class="nav-tab" href="index.html">Architecture</a>
+    <a class="nav-tab" href="diagram.html">Diagram</a>
+    <a class="nav-tab" href="flows.html">Flows</a>
+    <a class="nav-tab active" href="brd.html">BRD</a>
+    <a class="nav-tab" href="fsd.html">FSD</a>
+    <a class="nav-tab" href="cursor.html">Cursor Guide</a>
+  </div>
+  <div class="nav-search-wrap" role="search">
+    <label class="sr-only" for="gl-doc-search">Search this page</label>
+    <input type="search" id="gl-doc-search" class="nav-search-input" placeholder="Search this page…" autocomplete="off" />
+    <div id="gl-doc-search-results" class="nav-search-results" hidden></div>
+  </div>
+  <button type="button" class="nav-mtoggle" onclick="glToggleNav()" aria-label="Open section menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <span class="vbadge">v1.0 · May 2026</span>
+    <button class="tbtn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="page-wrap">
+<div class="sb-backdrop" id="sb-backdrop" onclick="glCloseNav()" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-lbl">Executive</div>
+  <a class="sb-a active" onclick="goTo('s1')"><span class="n">01</span>Executive Summary</a>
+  <a class="sb-a" onclick="goTo('s2')"><span class="n">02</span>Strategic Pillars</a>
+  <a class="sb-a" onclick="goTo('s3')"><span class="n">03</span>Market Opportunity</a>
+  <a class="sb-a" onclick="goTo('s4')"><span class="n">04</span>Competitive Landscape</a>
+  <div class="sb-lbl">Platform</div>
+  <a class="sb-a" onclick="goTo('s5')"><span class="n">05</span>Multi-Cloud Deployment</a>
+  <a class="sb-a" onclick="goTo('s6')"><span class="n">06</span>Subscription Engine</a>
+  <a class="sb-a" onclick="goTo('s7')"><span class="n">07</span>HITL Workflow</a>
+  <a class="sb-a" onclick="goTo('s8')"><span class="n">08</span>AI Agent System</a>
+  <a class="sb-a" onclick="goTo('s9')"><span class="n">09</span>Lab Types</a>
+  <div class="sb-lbl">Requirements</div>
+  <a class="sb-a" onclick="goTo('s10')"><span class="n">10</span>User Personas</a>
+  <a class="sb-a" onclick="goTo('s11')"><span class="n">11</span>Portal Features</a>
+  <a class="sb-a" onclick="goTo('s12')"><span class="n">12</span>Functional Requirements</a>
+  <a class="sb-a" onclick="goTo('s13')"><span class="n">13</span>Non-Functional Requirements</a>
+  <a class="sb-a" onclick="goTo('s14')"><span class="n">14</span>Microsoft FY26 Alignment</a>
+</aside>
+<div class="main" id="gl-search-scope">
+  <div class="intro">
+    <div class="eyebrow">Business Requirements Document · Final Edition</div>
+    <h1>Gravity Labs BRD</h1>
+    <p>AI-Native Virtual Lab Platform by Constel Global. Consolidated final edition covering all business requirements, market context, and platform capabilities.</p>
+    <div class="intro-meta">
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>March 2026</span>
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Confidential</span>
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Product &amp; Strategy · Constel Global</span>
+    </div>
+  </div>
+
+  <!-- S1: Executive Summary -->
+  <div class="sec" id="s1">
+    <div class="eyebrow">01 / Executive Summary</div>
+    <h2 class="sec-title">Executive Summary</h2>
+    <p class="sec-lead">Gravity Labs is a next-generation, AI-native virtual lab platform that transforms how skills are built, assessed, and validated across hackathons, enterprise training programmes, Microsoft certification courses, college education, and any structured skilling initiative.</p>
+    <div class="callout ex"><div class="cl">Core Innovation — True Skill Emergence</div><p>Every participant faces a unique, non-copyable challenge backed by a unique synthetic dataset. Just as 30 students given 30 different examination papers all demonstrate genuine ability, Gravity Labs makes authentic skill measurement automatic and structurally guaranteed.</p></div>
+    <div class="card" style="margin-top:16px"><div class="card-lbl">Vision Statement</div><p style="color:var(--text);font-style:italic;font-size:15px">"To be the world's most intelligent, universally deployable lab platform — where any organisation, on any infrastructure, can deliver genuine skill validation through AI-powered, unique, real-world challenges."</p></div>
+    <div class="intro-meta" style="margin-top:16px">
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>Target: Microsoft FY26 Partner Skilling</span>
+      <span class="im-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Azure · AWS · GCP · On-Premises</span>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S2: Strategic Pillars -->
+  <div class="sec" id="s2">
+    <div class="eyebrow">02 / Strategic Pillars</div>
+    <h2 class="sec-title">The Five Strategic Pillars</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">1 — AI-Native Architecture</div><p>8 purpose-built AI agents orchestrate every stage of the lab lifecycle, from natural-language design through to scoring and cross-dataset validation.</p></div>
+      <div class="card"><div class="card-lbl">2 — True Skill Emergence</div><p>Every participant receives a unique synthetic dataset. The challenge theme is shared; the data is not. Copying is structurally impossible at a dataset level.</p></div>
+      <div class="card"><div class="card-lbl">3 — Multi-Cloud &amp; On-Premises</div><p>Deploy on Azure, AWS, GCP, or on-premises Kubernetes with no code changes. Air-gap capable. Helm + Terraform/Bicep IaC packages included.</p></div>
+      <div class="card"><div class="card-lbl">4 — Subscription Management Engine</div><p>Integrated procurement, installation, real-time monitoring, and auto-revocation of SaaS licenses and cloud credits inside lab environments.</p></div>
+      <div class="card"><div class="card-lbl">5 — Human-in-the-Loop (HITL)</div><p>Three mandatory human approval gates before any lab event launches. AI agents do the heavy lifting; humans retain full accountability over content, spend, and quality.</p></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S3: Market -->
+  <div class="sec" id="s3">
+    <div class="eyebrow">03 / Market Opportunity</div>
+    <h2 class="sec-title">Market Opportunity — Microsoft FY26 Partner Skilling</h2>
+    <p class="sec-lead">Microsoft's FY26 Partner Skilling Catalogue defines 9 solution areas requiring Project Ready hands-on labs for 70+ certification tracks. Gravity Labs is purpose-built to serve as the unified hands-on lab engine for this entire catalogue.</p>
+    <table class="tbl">
+      <tr><th>FY26 Solution Area</th><th>Key Certifications</th><th>Gravity Labs Role</th></tr>
+      <tr><td>Azure — AI Apps &amp; Agents</td><td>AI-102, AZ-204, AZ-400, DP-100, GH-100, GH-200</td><td>Azure AI Foundry labs, GitHub Copilot sandboxes, Agentic AI Hackathon environments</td></tr>
+      <tr><td>Azure — Migrate &amp; Modernize</td><td>AZ-104, AZ-305, AZ-700, AZ-800, AZ-801</td><td>VM migration labs, SAP/Oracle on Azure, security hardening</td></tr>
+      <tr><td>Azure — Unify Data Platform</td><td>DP-600, DP-700, DP-203, DP-300, PL-300</td><td>Microsoft Fabric, Databricks, Synapse, Power BI labs</td></tr>
+      <tr><td>Security</td><td>SC-100, SC-200, SC-300, SC-401, AZ-500</td><td>Security operations sandboxes, Defender labs, identity management</td></tr>
+      <tr><td>AI Business Process</td><td>MB-280, MB-310, MB-500, MB-800, PL-200</td><td>Dynamics 365, Power Platform, Copilot Studio labs</td></tr>
+      <tr><td>AI Workforce / Modern Work</td><td>MS-102, MS-700, MS-721, MD-102</td><td>Microsoft 365, Teams, Entra ID, endpoint management labs</td></tr>
+      <tr><td>GitHub / Developer Productivity</td><td>GH-100, GH-200, AZ-400, PL-400</td><td>GitHub Copilot, DevOps pipelines, repo migration labs</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S4: Competitive -->
+  <div class="sec" id="s4">
+    <div class="eyebrow">04 / Competitive Landscape</div>
+    <h2 class="sec-title">Competitive Landscape</h2>
+    <table class="tbl">
+      <tr><th>Provider</th><th>Strengths</th><th>Weaknesses</th><th>Gravity Labs Advantage</th></tr>
+      <tr><td><span class="hl">CloudLabs (Spektra)</span></td><td>Strong Azure sandbox, MLP compliant, LTI, 8+ years</td><td>Slow VM provisioning, no AI lab generation, no per-user dataset variation</td><td>Sub-5s warm pools, AI-generated unique labs &amp; datasets, HITL approval workflow</td></tr>
+      <tr><td><span class="hl">Skillable</span></td><td>G2 Leader, 99.99% uptime, scored labs</td><td>Not hackathon-native, limited AI, no per-user dataset variation</td><td>Hackathon-first design, agentic monitoring, AI-driven scoring &amp; hints, True Skill Emergence</td></tr>
+      <tr><td><span class="hl">A Cloud Guru</span></td><td>Excellent learning content, multi-cloud</td><td>Content-led, not a customisable lab engine, no enterprise provisioning</td><td>Fully API-driven, embeddable, white-label, multi-cloud deployable</td></tr>
+      <tr><td><span class="hl">Azure Lab Services (Retired 2024)</span></td><td>Native Azure integration</td><td>Retired — large market gap left open</td><td>Drop-in replacement with AI-native capabilities; MLP-compliant</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S5: Multi-Cloud -->
+  <div class="sec" id="s5">
+    <div class="eyebrow">05 / Multi-Cloud Deployment</div>
+    <h2 class="sec-title">Multi-Cloud &amp; On-Premises Deployment</h2>
+    <p class="sec-lead">Gravity Labs must be deployable on any cloud provider or on private on-premises infrastructure without re-engineering the application layer. Deployment target is defined by a single configuration file — no code changes required.</p>
+    <table class="tbl">
+      <tr><th>Mode</th><th>Infrastructure</th><th>Best For</th><th>Key Technology</th></tr>
+      <tr><td><span class="tag green">Azure (Primary)</span></td><td>Microsoft Azure</td><td>Microsoft FY26 labs, global training events, default SaaS offering</td><td>AKS, VMSS, Entra ID, Azure Monitor, Key Vault</td></tr>
+      <tr><td><span class="tag blue">AWS</span></td><td>Amazon Web Services</td><td>AWS certification partners, multi-cloud skill labs</td><td>EKS, EC2 ASG, Cognito, CloudWatch, S3, SQS</td></tr>
+      <tr><td><span class="tag blue">GCP</span></td><td>Google Cloud Platform</td><td>GCP certification partners, Southeast Asia deployments</td><td>GKE, Compute Engine MIGs, Cloud IAM, GCS, Pub/Sub</td></tr>
+      <tr><td><span class="tag">On-Premises</span></td><td>Customer data centre</td><td>Air-gapped environments, government, defence, regulated finance</td><td>Kubernetes, VMware vSphere, HashiCorp Vault, MinIO, Keycloak</td></tr>
+      <tr><td><span class="tag">Hybrid</span></td><td>Cloud + on-prem mix</td><td>Universities with HPC clusters, regulated enterprises</td><td>Kubernetes federation, VPN/ExpressRoute, federated identity</td></tr>
+    </table>
+    <div class="callout ex" style="margin-top:16px"><div class="cl">Cloud Abstraction Interfaces</div><p>All cloud-dependent operations are defined as Python abstract base classes: <code>IComputeProvider</code>, <code>IIdentityProvider</code>, <code>IStorageProvider</code>, <code>ISecretStore</code>, <code>IMessageQueue</code>, <code>IObservability</code>, <code>INetworkProxy</code>. Switching targets requires only changing <code>gravity-labs.config.yaml</code>.</p></div>
+  </div>
+  <hr class="divider">
+
+  <!-- S6: Subscription Engine -->
+  <div class="sec" id="s6">
+    <div class="eyebrow">06 / Subscription Management Engine</div>
+    <h2 class="sec-title">Software Subscription Management Engine</h2>
+    <p class="sec-lead">A first-class platform module governing the complete lifecycle of SaaS application licenses and cloud credits — from discovery through admin-approved procurement to real-time visibility and guaranteed auto-revocation.</p>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Subscription Categories</div><ul><li>Microsoft SaaS (M365, Copilot, Fabric, GitHub)</li><li>Azure Consumption Credits with hard cap</li><li>GitHub Licenses (Copilot Business, Actions)</li><li>Developer Tools (VS Enterprise, JetBrains)</li><li>Data Platform Credits (Databricks, Snowflake)</li><li>CRM / ERP Orgs (Salesforce, Dynamics 365)</li><li>Custom / Bring Your Own License</li></ul></div>
+      <div class="card"><div class="card-lbl">Participant Dashboard</div><ul><li>Active subscriptions list with status</li><li>Credit meter — total / used / remaining</li><li>Burn rate indicator (hourly spend)</li><li>Estimated time until credit exhaustion</li><li>Request More Credits button</li><li>Full subscription manifest with limits</li></ul></div>
+      <div class="card"><div class="card-lbl">Key Requirements</div><ul><li>All licenses auto-revoked within 5 min of session end</li><li>No purchases without HITL Gate 2 approval</li><li>Credit dashboard updates within 60 seconds</li><li>Azure Policy hard-deny at 100% spend cap</li><li>Admin notified of top-up requests within 30 sec</li><li>Complete audit trail per session</li></ul></div>
+    </div>
+    <h3 style="font-family:'Sora',sans-serif;font-size:15px;color:var(--text);margin:20px 0 10px">Subscription Lifecycle — 9 Stages</h3>
+    <div class="pipeline">
+      <div class="ps"><div class="pn">1</div><div><div class="pm">Template Definition</div><div class="pd">Admin defines subscriptions. Lab Architect Agent recommends additional ones based on use case.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">2</div><div><div class="pm">Agent Manifest Generation</div><div class="pd">Agent produces complete Subscription Manifest with quantities, unit costs, and total event cost estimate.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn" style="background:var(--warn-bg);border-color:var(--amber-b);color:var(--amber-t)">G2</div><div><div class="pm">HITL Gate — Subscription Approval</div><div class="pd">Admin reviews every item. Can add, remove, or modify. No purchasing happens before this gate.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">4</div><div><div class="pm">Bulk Purchase / Pool Allocation</div><div class="pd">License Manager purchases or claims licenses. Azure subscriptions claimed from pool.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">5</div><div><div class="pm">Activation at Lab Start</div><div class="pd">Provisioning Agent activates subscriptions per participant. Licenses injected via Graph API.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">6</div><div><div class="pm">Real-Time Monitoring</div><div class="pd">Subscription Monitor tracks credit consumption every 30 seconds. Alerts at 80% and 100%.</div></div></div>
+      <div class="pc"></div>
+      <div class="ps"><div class="pn">9</div><div><div class="pm">Auto-Revocation on Session End</div><div class="pd">ALL licenses revoked within 5 minutes. Zero orphaned licenses. Verified by automated post-session audit.</div></div></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S7: HITL -->
+  <div class="sec" id="s7">
+    <div class="eyebrow">07 / HITL Workflow</div>
+    <h2 class="sec-title">Human-in-the-Loop (HITL) Lab Request Workflow</h2>
+    <p class="sec-lead">A foundational principle: the AI agent system works with human administrators, not without them. Every agent action of consequence requires explicit human approval before proceeding.</p>
+    <table class="tbl">
+      <tr><th>#</th><th>Action</th><th>Actor</th><th>HITL Gate?</th></tr>
+      <tr><td>1</td><td>Natural language lab request submitted</td><td>Admin</td><td>—</td></tr>
+      <tr><td>2</td><td>Lab Architect Agent produces full Lab Manifest</td><td>AI Agent</td><td>—</td></tr>
+      <tr><td>3</td><td style="color:var(--amber-t);font-weight:500">★ Gate 1 — Blueprint Approval</td><td>Admin</td><td><span class="tag amber">Required</span></td></tr>
+      <tr><td>4</td><td>Dataset Forge Agent creates schema + 5-row preview</td><td>AI Agent</td><td>—</td></tr>
+      <tr><td>5</td><td style="color:var(--amber-t);font-weight:500">★ Gate 2 — Dataset &amp; Subscription Approval</td><td>Admin</td><td><span class="tag amber">Required</span></td></tr>
+      <tr><td>6</td><td>Bulk procurement + N unique datasets generated</td><td>System</td><td>—</td></tr>
+      <tr><td>7</td><td>QA Validator Agent — Dry Run</td><td>AI Agent</td><td>—</td></tr>
+      <tr><td>8</td><td style="color:var(--amber-t);font-weight:500">★ Gate 3 — Final Pre-Launch Approval</td><td>Admin</td><td><span class="tag amber">Required</span></td></tr>
+      <tr><td>9</td><td>Event live — participants provision automatically</td><td>System + Agents</td><td>—</td></tr>
+    </table>
+    <div class="cards" style="margin-top:16px">
+      <div class="card"><div class="card-lbl">Gate 1 — Blueprint</div><p>Admin reviews lab title, challenge, tasks, technologies, scoring rubric, difficulty, duration. Ensures AI content is accurate before any budget is committed.</p></div>
+      <div class="card"><div class="card-lbl">Gate 2 — Subscriptions &amp; Dataset</div><p>Admin reviews subscription list, quantities, per-participant cost, total event cost, dataset sample preview. No purchasing without explicit sign-off.</p></div>
+      <div class="card"><div class="card-lbl">Gate 3 — Pre-Launch</div><p>Admin reviews QA results, procurement status, final cost, dataset count, environment health. All items must show green. Last human gate — nothing goes live without it.</p></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S8: AI Agents -->
+  <div class="sec" id="s8">
+    <div class="eyebrow">08 / Multi-Agent AI System</div>
+    <h2 class="sec-title">Multi-Agent AI System</h2>
+    <p class="sec-lead">Eight specialised AI agents handle every stage of the lab lifecycle. Built with LangGraph (Python). LLM backbone: Anthropic Claude API (primary) and Azure OpenAI GPT-4o (MLP-compliant deployments).</p>
+    <table class="tbl">
+      <tr><th>#</th><th>Agent</th><th>Purpose</th><th>Key Tech</th></tr>
+      <tr><td>1</td><td><span class="hl-p">Lab Architect Agent</span></td><td>NL description → complete Lab Manifest (tasks, subscriptions, scoring rubric, dataset schema)</td><td>LangGraph, Claude API, RAG (Azure AI Search)</td></tr>
+      <tr><td>2</td><td><span class="hl-p">Dataset Forge Agent</span></td><td>Generates N statistically unique synthetic datasets — one per participant. Same theme, unique data.</td><td>Faker 19, Pandas 2, NumPy 1.26, multiprocessing.Pool</td></tr>
+      <tr><td>3</td><td><span class="hl-p">Provisioning Agent</span></td><td>Routes to correct compute, activates subscriptions, returns streaming URL</td><td>Temporal.io, Terraform/Bicep, Graph API</td></tr>
+      <tr><td>4</td><td><span class="hl-p">QA Validator Agent</span></td><td>Dry-run before launch: connectivity, subscriptions, datasets, tool install, network isolation</td><td>Environment health checks, Green/Amber/Red output</td></tr>
+      <tr><td>5</td><td><span class="hl-p">Live Observer Agent</span></td><td>Monitors participant activity, detects idle, estimates progress, watches credit burn</td><td>Guacamole audit log, Azure Activity Log, WebSocket</td></tr>
+      <tr><td>6</td><td><span class="hl-p">Hint Dispensing Agent</span></td><td>Contextual hints when stuck — 2% score deduction per hint, participant must confirm</td><td>Claude API, LangGraph</td></tr>
+      <tr><td>7</td><td><span class="hl-p">Scoring &amp; Assessment Agent</span></td><td>5-dimension grading: Correctness 40%, Architecture 20%, Efficiency 15%, Robustness 15%, Speed 10%</td><td>Azure Resource Graph, test suite execution, Claude API</td></tr>
+      <tr><td>8</td><td><span class="hl-p">Cross-Validation Agent</span></td><td>Tests submission against 2–3 unseen reserve datasets to confirm genuine skill</td><td>Dataset Forge reserve datasets, pass rate scoring</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S9: Lab Types -->
+  <div class="sec" id="s9">
+    <div class="eyebrow">09 / Lab Types</div>
+    <h2 class="sec-title">Lab Types Supported</h2>
+    <table class="tbl">
+      <tr><th>Lab Type</th><th>Use Case</th><th>Infrastructure</th><th>Applicable Certs</th></tr>
+      <tr><td><span class="tag blue">Code Workspace</span></td><td>Python, TypeScript, API development, data science</td><td>AKS + Code-Server (VS Code in browser)</td><td>AZ-204, AI-102, DP-100, GH-200</td></tr>
+      <tr><td><span class="tag blue">Full Windows VM</span></td><td>Power BI, Dynamics 365, SAP, Office apps</td><td>VMSS + Guacamole RDP</td><td>PL-300, MB-280, MB-500</td></tr>
+      <tr><td><span class="tag blue">Full Linux VM</span></td><td>Security, server admin, migration</td><td>VMSS + Guacamole SSH</td><td>SC-200, AZ-104, AZ-700</td></tr>
+      <tr><td><span class="tag amber">Azure Portal Sandbox</span></td><td>Real Azure Portal — isolated tenant per participant</td><td>Azure Subscription Pool, hard budget cap via Azure Policy</td><td>AZ-104, AZ-305, AZ-500, DP-203, SC-300</td></tr>
+      <tr><td><span class="tag blue">AI / GPU Lab</span></td><td>Model training, RAG, LLM fine-tuning</td><td>GPU AKS (NC-series) + Jupyter</td><td>AI-102, DP-100, Agentic AI Hackathon</td></tr>
+      <tr><td><span class="tag blue">Browser Desktop</span></td><td>GUI tools without full VM</td><td>Neko WebRTC + Guacamole VNC</td><td>PL-300, Copilot Studio, SAP GUI</td></tr>
+      <tr><td><span class="tag blue">Hackathon Sandbox</span></td><td>Unique datasets, multi-subscription challenges</td><td>Hybrid VM + container + agent orchestration</td><td>Agentic AI Hackathon (MS FY26)</td></tr>
+      <tr><td><span class="tag blue">Multi-Cloud Lab</span></td><td>Cross-cloud architecture, AWS+Azure migration</td><td>Multi-provider compute adapters (Azure + AWS simultaneous)</td><td>Multi-cloud security, architect certs</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S10: Personas -->
+  <div class="sec" id="s10">
+    <div class="eyebrow">10 / User Personas</div>
+    <h2 class="sec-title">User Personas</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Participant / Learner</div><p><strong style="color:var(--text)">Goal:</strong> Access a fully-configured lab instantly with real tools, full subscription visibility, and transparent multi-dimensional scoring.</p><p style="margin-top:8px"><strong style="color:var(--text)">Pain Points Today:</strong> Long wait for lab provisioning, broken environments, identical challenges enabling copying, opaque or binary scoring, zero subscription visibility.</p><p style="margin-top:8px"><strong style="color:var(--text)">GL Fix:</strong> Sub-5s access, Subscription Dashboard with live credit meters, unique datasets, AI-monitored performance, detailed score report with cert exam objective mapping.</p></div>
+      <div class="card"><div class="card-lbl">Event Organiser / Admin</div><p><strong style="color:var(--text)">Who:</strong> MCTs, Microsoft Partner L&amp;D teams, hackathon organisers, university faculty, corporate training administrators.</p><p style="margin-top:8px"><strong style="color:var(--text)">Goal:</strong> Describe use case in natural language, review AI-generated lab design through clear HITL gates, launch with confidence, monitor in real time, export graded results.</p><p style="margin-top:8px"><strong style="color:var(--text)">Key Feature:</strong> AI Lab Builder with 3 HITL gates, real-time Proctor View, cost dashboard, one-click event launch.</p></div>
+      <div class="card"><div class="card-lbl">Platform / Super Admin</div><p><strong style="color:var(--text)">Who:</strong> Constel Global or enterprise IT administrators.</p><p style="margin-top:8px"><strong style="color:var(--text)">Goal:</strong> Manage multi-tenant infrastructure, subscription pools, quota management, compliance reporting, and billing across all customer organisations.</p><p style="margin-top:8px"><strong style="color:var(--text)">Key Feature:</strong> Multi-cloud infrastructure dashboard, tenant management, warm pool management, audit export.</p></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S11: Portal Features -->
+  <div class="sec" id="s11">
+    <div class="eyebrow">11 / Portal Features</div>
+    <h2 class="sec-title">Portal Features</h2>
+    <div class="cards">
+      <div class="card"><div class="card-lbl">Participant Portal (B2C)</div><ul><li>Login / SSO — Azure AD B2C, Google, email/password, federated SSO from LMS</li><li>Lab Player — split screen: challenge guide (left) + live environment (right)</li><li>Subscription Dashboard Panel — embedded in Lab Player, live credit meters</li><li>Azure Portal Sandbox Credential Card</li><li>Contextual Hint System with score-impact warning</li><li>Submission Screen — upload artifacts, notes, submit for AI scoring</li><li>Score Report — dimensions breakdown, narrative feedback, cert objective mapping</li></ul></div>
+      <div class="card"><div class="card-lbl">Admin Portal</div><ul><li>AI Lab Builder — NL input → Manifest → 3 HITL Gates → Launch</li><li>Event Creation Wizard with subscription selections and budget caps</li><li>Proctor View — real-time participant progress, subscription usage, hint count</li><li>Cost Dashboard — total event spend, per-participant average, by subscription type</li><li>Azure Portal Sandbox Manager — subscription pools, tenant config, RBAC templates</li><li>Participant Management — bulk CSV import, invite links, real-time tracking</li><li>Warm Pool Management — per-cloud pool health, resize controls</li></ul></div>
+      <div class="card"><div class="card-lbl">Super Admin / Back Office</div><ul><li>Tenant Management — create, configure, suspend tenants</li><li>Multi-Cloud Infrastructure Dashboard — real-time health across all targets</li><li>Subscription Pool Management — global pool allocation and health</li><li>Billing &amp; Revenue Reporting — per-tenant revenue, cost breakdown</li><li>Compliance Audit Export — SOC 2, ISO 27001, MLP audit evidence packages</li><li>Lab Content Marketplace — template publishing and revenue share</li></ul></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <!-- S12: Functional Requirements -->
+  <div class="sec" id="s12">
+    <div class="eyebrow">12 / Functional Requirements</div>
+    <h2 class="sec-title">Key Functional Requirements</h2>
+    <table class="tbl">
+      <tr><th>BR-ID</th><th>Requirement</th><th>Acceptance Criteria</th></tr>
+      <tr><td><code>BR-SM-01</code></td><td>Admin shall explicitly approve all subscription procurement before any purchases are made</td><td>No license purchase occurs without HITL Gate 2 approval. Audit log records approver and timestamp.</td></tr>
+      <tr><td><code>BR-SM-02</code></td><td>Participants shall see real-time credit consumption for all active subscriptions</td><td>Dashboard updates within 60 seconds. Accurate to within 5% of actual cloud spend.</td></tr>
+      <tr><td><code>BR-SM-03</code></td><td>Participants shall be able to request additional credits mid-session</td><td>Admin notified within 30 seconds. Approved credits reflect in environment within 2 minutes.</td></tr>
+      <tr><td><code>BR-SM-04</code></td><td>All licenses shall be automatically revoked within 5 minutes of session termination</td><td>Zero orphaned licenses post-session. Verified by automated post-session audit.</td></tr>
+      <tr><td><code>BR-SM-05</code></td><td>Azure Portal Sandbox shall enforce hard spending caps via Azure Policy</td><td>No participant can exceed assigned credit cap. Policy enforcement verified in load test.</td></tr>
+      <tr><td><code>BR-HI-01</code></td><td>No lab event shall go live without all 3 HITL gate approvals</td><td>API returns HTTP 403 if workflow advances without prior gate approval.</td></tr>
+      <tr><td><code>BR-HI-03</code></td><td>Admin shall edit any part of the AI-generated lab blueprint before approval</td><td>All fields in Lab Manifest are editable before Gate 1 approval. All edits are audit-logged.</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S13: NFRs -->
+  <div class="sec" id="s13">
+    <div class="eyebrow">13 / Non-Functional Requirements</div>
+    <h2 class="sec-title">Non-Functional Requirements</h2>
+    <table class="tbl">
+      <tr><th>NFR-ID</th><th>Requirement</th><th>Target</th><th>Measurement</th></tr>
+      <tr><td><code>NFR-001</code></td><td>Container Lab Start (Warm Pool)</td><td>&lt; 5 seconds P95</td><td>Warm pool Redis POP latency + streaming URL response time</td></tr>
+      <tr><td><code>NFR-002</code></td><td>VM Lab Start (Warm Pool)</td><td>&lt; 30 seconds P95</td><td>VMSS claim + Guacamole handshake latency</td></tr>
+      <tr><td><code>NFR-003</code></td><td>Azure Portal Sandbox Provisioning</td><td>&lt; 3 minutes P98</td><td>Subscription API latency logs</td></tr>
+      <tr><td><code>NFR-004</code></td><td>Platform Availability</td><td>99.9% monthly uptime</td><td>Multi-cloud SLA monitoring</td></tr>
+      <tr><td><code>NFR-005</code></td><td>Concurrent Lab Capacity</td><td>5,000+ concurrent sessions</td><td>Load test + autoscale verification</td></tr>
+      <tr><td><code>NFR-006</code></td><td>Credit Dashboard Update Lag</td><td>&lt; 60 seconds</td><td>Participant portal telemetry</td></tr>
+      <tr><td><code>NFR-007</code></td><td>License Revocation on Session End</td><td>100% within 5 minutes</td><td>Post-session automated audit</td></tr>
+      <tr><td><code>NFR-008</code></td><td>Multi-Cloud Deployment Time from IaC</td><td>&lt; 4 hours on any supported target</td><td>Deployment pipeline test</td></tr>
+    </table>
+  </div>
+  <hr class="divider">
+
+  <!-- S14: FY26 -->
+  <div class="sec" id="s14">
+    <div class="eyebrow">14 / Microsoft FY26 Alignment</div>
+    <h2 class="sec-title">Microsoft FY26 Partner Skilling — Full Alignment</h2>
+    <div class="callout warn"><div class="cl">Critical Dependency</div><p>Constel Global has no Microsoft Partner enrollment yet — CSP procurement is blocked until enrollment completes (2–4 weeks). This blocks Phase 3 lab provisioning with Microsoft licenses. Priority: submit enrollment immediately.</p></div>
+    <div class="callout ex" style="margin-top:12px"><div class="cl">MLP Compliance Requirements</div><p>All Azure sandbox labs use isolated, dedicated tenant subscriptions per participant. No shared Azure environments between participants. Full audit log maintained per session. Required for Microsoft Learning Partner (MLP) certification labs.</p></div>
+    <table class="tbl" style="margin-top:16px">
+      <tr><th>Solution Area</th><th>Key Microsoft Motions</th><th>Certifications</th><th>Lab Type</th></tr>
+      <tr><td>Azure AI Apps &amp; Agents</td><td>AI Ready Workloads, GitHub Copilot adoption</td><td>AI-102, AZ-204, GH-100, GH-200</td><td>Code Workspace, GPU Lab, Hackathon Sandbox</td></tr>
+      <tr><td>Azure Migrate &amp; Modernize</td><td>SAP/Oracle on Azure, Secure Migration</td><td>AZ-104, AZ-305, AZ-700, AZ-120</td><td>Windows/Linux VM Lab, Azure Portal Sandbox</td></tr>
+      <tr><td>Unify Data Platform</td><td>Microsoft Fabric, Databricks, Purview</td><td>DP-600, DP-700, DP-203, PL-300</td><td>Code-Server, Power BI Desktop VM, Azure Portal Sandbox</td></tr>
+      <tr><td>Security</td><td>Modern SecOps, Data Security, Cloud</td><td>SC-100, SC-200, SC-300, AZ-500</td><td>Linux VM Lab, Azure Portal Sandbox</td></tr>
+      <tr><td>AI Business Process</td><td>Power Platform, Dynamics, Copilot Studio</td><td>MB-280, PL-200, PL-400, MB-820</td><td>Windows VM, Browser Desktop</td></tr>
+    </table>
+  </div>
+
+  <div class="pg-footer">GRAVITY LABS · BUSINESS REQUIREMENTS DOCUMENT · FINAL EDITION · MARCH 2026 · CONSTEL GLOBAL · CONFIDENTIAL</div>
+</div>
+</div>
+<script>
+function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
+(function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'})}
+const _s=document.querySelectorAll('.sec'),_l=document.querySelectorAll('.sb-a');
+if(_s.length&&_l.length){const o=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){const id=e.target.id;_l.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes("'"+id+"'"))l.classList.add('active')})}})},{rootMargin:'-20% 0px -70% 0px'});_s.forEach(s=>o.observe(s))}
+</script>
+<script src="docs-nav.js"></script>
+<script src="docs-search.js"></script>
+</body>
+</html>

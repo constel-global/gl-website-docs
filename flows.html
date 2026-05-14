@@ -6,90 +6,8 @@
 <title>Gravity Labs — Platform Flows</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--transition:0.3s cubic-bezier(0.4,0,0.2,1)}
-[data-theme="dark"]{
-  --bg:#0a0e1a;--bg2:#111520;--nav-bg:rgba(10,14,26,0.92);
-  --border:rgba(255,255,255,0.07);--border-active:rgba(255,255,255,0.16);
-  --text:#e8edf8;--text2:#7a85a8;--text3:#3e4660;
-  --accent:#2563eb;--accent-soft:rgba(37,99,235,0.12);--tag-bg:rgba(255,255,255,0.05);
-  --sidebar-bg:#0d1120;--sidebar-active:rgba(37,99,235,0.12);
-  /* flow diagram */
-  --f-bg:#0d1120;--f-process:#1a2540;--f-process-s:rgba(37,99,235,0.4);
-  --f-decision:#1c2040;--f-decision-s:rgba(167,139,250,0.4);
-  --f-terminal-s:#16a34a;--f-terminal-f:#1a2a1a;
-  --f-terminal-e-s:#dc2626;--f-terminal-e-f:#2a1a1a;
-  --f-hitl-s:#d97706;--f-hitl-f:#2a2010;
-  --f-agent-s:rgba(167,139,250,0.5);--f-agent-f:#1a1830;
-  --f-text:#c8d0e8;--f-text2:#6b7599;
-  --f-arrow:#2563eb;--f-arrow-y:#d97706;--f-arrow-g:#16a34a;
-}
-[data-theme="light"]{
-  --bg:#f0f5fc;--bg2:#ffffff;--nav-bg:rgba(240,245,252,0.92);
-  --border:rgba(37,99,235,0.1);--border-active:rgba(37,99,235,0.28);
-  --text:#0d1830;--text2:#3d5080;--text3:#8090b8;
-  --accent:#2563eb;--accent-soft:rgba(37,99,235,0.07);--tag-bg:rgba(37,99,235,0.06);
-  --sidebar-bg:#e8effa;--sidebar-active:rgba(37,99,235,0.1);
-  --f-bg:#f5f8ff;--f-process:#ddeaff;--f-process-s:rgba(37,99,235,0.35);
-  --f-decision:#ede8ff;--f-decision-s:rgba(109,40,217,0.3);
-  --f-terminal-s:#16a34a;--f-terminal-f:#dcfce7;
-  --f-terminal-e-s:#dc2626;--f-terminal-e-f:#fee2e2;
-  --f-hitl-s:#d97706;--f-hitl-f:#fef3c7;
-  --f-agent-s:rgba(109,40,217,0.4);--f-agent-f:#ede8ff;
-  --f-text:#1a2040;--f-text2:#5a6888;
-  --f-arrow:#2563eb;--f-arrow-y:#d97706;--f-arrow-g:#16a34a;
-}
-body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh}
-.topnav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 32px;gap:24px;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(37,99,235,0.3)}
-.logo-icon svg{width:16px;height:16px}
-.logo-wordmark{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.02em;transition:color var(--transition)}
-.logo-wordmark span{color:var(--accent)}
-.nav-tabs{display:flex;align-items:center;gap:2px;margin-left:24px}
-.nav-tab{font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;color:var(--text2);transition:all var(--transition);border:1px solid transparent}
-.nav-tab:hover{color:var(--text);background:var(--accent-soft)}
-.nav-tab.active{color:var(--accent);background:var(--accent-soft);border-color:var(--border-active)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.version-badge{font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);color:var(--text3)}
-.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--tag-bg);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all var(--transition)}
-.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-.theme-btn svg{width:14px;height:14px}
-.i-sun{display:none}.i-moon{display:block}
-[data-theme="light"] .i-sun{display:block}[data-theme="light"] .i-moon{display:none}
-
-.page-wrap{display:flex;min-height:100vh;padding-top:56px}
-.sidebar{width:240px;flex-shrink:0;position:fixed;top:56px;bottom:0;left:0;overflow-y:auto;background:var(--sidebar-bg);border-right:1px solid var(--border);padding:24px 0 48px;transition:background var(--transition),border-color var(--transition)}
-.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.sb-section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:0 20px;margin:20px 0 6px}
-.sb-link{display:flex;align-items:center;gap:10px;padding:7px 20px;font-size:13px;color:var(--text2);text-decoration:none;transition:all var(--transition);border-left:2px solid transparent;cursor:pointer}
-.sb-link:hover{color:var(--text);background:var(--accent-soft)}
-.sb-link.active{color:var(--accent);background:var(--sidebar-active);border-left-color:var(--accent);font-weight:500}
-.sb-link .sb-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);min-width:22px}
-.sb-link.active .sb-num{color:var(--accent)}
-
-.main-content{margin-left:240px;flex:1;padding:48px 64px 120px;max-width:960px}
-.page-intro{margin-bottom:56px;padding-bottom:40px;border-bottom:1px solid var(--border)}
-.page-intro h1{font-family:'Sora',sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.025em;color:var(--text);margin-bottom:12px}
-.page-intro p{color:var(--text2);font-size:15px;max-width:600px}
-.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-
-.flow-section{margin-bottom:80px;scroll-margin-top:80px}
-.flow-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em}
-.flow-desc{color:var(--text2);font-size:14px;margin-bottom:24px}
-.flow-card{background:var(--f-bg);border:1px solid var(--border);border-radius:12px;padding:28px;overflow-x:auto;transition:all var(--transition)}
-.flow-card svg{min-width:500px;width:100%;height:auto;display:block}
-.divider{border:none;border-top:1px solid var(--border);margin:80px 0}
-
-/* Legend */
-.flow-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
-.fl-item{display:flex;align-items:center;gap:7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2)}
-.fl-box{width:14px;height:14px;border-radius:3px;border:1px solid}
-.fl-diamond{width:14px;height:14px;transform:rotate(45deg);border:1px solid;border-radius:2px}
-
-@media(max-width:900px){.sidebar{display:none}.main-content{margin-left:0;padding:32px 24px 80px}}
-</style>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="flows.css">
 </head>
 <body>
 <nav class="topnav">
@@ -98,10 +16,19 @@ body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:
     <span class="logo-wordmark">Gravity<span>Labs</span></span>
   </a>
   <div class="nav-tabs">
-    <a class="nav-tab" href="index.html">Documentation</a>
-    <a class="nav-tab" href="diagram.html">Architecture</a>
+    <a class="nav-tab" href="index.html">Architecture</a>
+    <a class="nav-tab " href="diagram.html">Diagram</a>
     <a class="nav-tab active" href="flows.html">Flows</a>
+    <a class="nav-tab" href="brd.html">BRD</a>
+    <a class="nav-tab" href="fsd.html">FSD</a>
+    <a class="nav-tab" href="cursor.html">Cursor Guide</a>
   </div>
+  <div class="nav-search-wrap" role="search">
+    <label class="sr-only" for="gl-doc-search">Search this page</label>
+    <input type="search" id="gl-doc-search" class="nav-search-input" placeholder="Search this page…" autocomplete="off" />
+    <div id="gl-doc-search-results" class="nav-search-results" hidden></div>
+  </div>
+  <button type="button" class="nav-mtoggle" onclick="glToggleNav()" aria-label="Open section menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
   <div class="nav-right">
     <span class="version-badge">v1.0 · May 2026</span>
     <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -112,19 +39,20 @@ body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:
 </nav>
 
 <div class="page-wrap">
-<aside class="sidebar">
-  <div class="sb-section-label">Platform Flows</div>
-  <a class="sb-link active" onclick="goTo('f1')"><span class="sb-num">F1</span>Lab Provisioning</a>
-  <a class="sb-link" onclick="goTo('f2')"><span class="sb-num">F2</span>Authentication</a>
-  <a class="sb-link" onclick="goTo('f3')"><span class="sb-num">F3</span>Lab Grading</a>
-  <a class="sb-link" onclick="goTo('f4')"><span class="sb-num">F4</span>Lab Destruction</a>
-  <a class="sb-link" onclick="goTo('f5')"><span class="sb-num">F5</span>Event Launch</a>
-  <a class="sb-link" onclick="goTo('f6')"><span class="sb-num">F6</span>AI Agent Pipeline</a>
-  <a class="sb-link" onclick="goTo('f7')"><span class="sb-num">F7</span>CI/CD Deploy</a>
+<div class="sb-backdrop" id="sb-backdrop" onclick="glCloseNav()" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-lbl">Platform Flows</div>
+  <a class="sb-a active" href="#f1"><span class="n">F1</span>Lab Provisioning</a>
+  <a class="sb-a" href="#f2"><span class="n">F2</span>Authentication</a>
+  <a class="sb-a" href="#f3"><span class="n">F3</span>Lab Grading</a>
+  <a class="sb-a" href="#f4"><span class="n">F4</span>Lab Destruction</a>
+  <a class="sb-a" href="#f5"><span class="n">F5</span>Event Launch</a>
+  <a class="sb-a" href="#f6"><span class="n">F6</span>AI Agent Pipeline</a>
+  <a class="sb-a" href="#f7"><span class="n">F7</span>CI/CD Deploy</a>
 </aside>
 
-<div class="main-content">
-  <div class="page-intro">
+<div class="main-content" id="gl-search-scope">
+  <div class="page-intro-flow">
     <div class="eyebrow">Platform Flows</div>
     <h1>Flow Diagrams</h1>
     <p>Block diagrams for every major platform flow — from lab provisioning to CI/CD deployment. Each flow maps to the architecture layers described in the documentation.</p>
@@ -663,11 +591,12 @@ body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:
 <script>
 function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
 (function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
-function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
 const sections=document.querySelectorAll('.flow-section');
-const links=document.querySelectorAll('.sb-link');
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes(id))l.classList.add('active')})}})},{rootMargin:'-20% 0px -70% 0px'});
+const links=document.querySelectorAll('.sb-a');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+id)l.classList.add('active')})}})},{rootMargin:'-20% 0px -70% 0px'});
 sections.forEach(s=>obs.observe(s));
 </script>
+<script src="docs-nav.js"></script>
+<script src="docs-search.js"></script>
 </body>
 </html>

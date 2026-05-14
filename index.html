@@ -6,190 +6,8 @@
 <title>Gravity Labs — Architecture Reference</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-
-:root{--transition:0.3s cubic-bezier(0.4,0,0.2,1)}
-
-[data-theme="dark"]{
-  --bg:#0a0e1a;--bg2:#111520;--bg3:#181e2e;
-  --border:rgba(255,255,255,0.07);--border-active:rgba(255,255,255,0.16);
-  --text:#e8edf8;--text2:#7a85a8;--text3:#3e4660;
-  --accent:#2563eb;--accent-h:#3b74f8;--accent-soft:rgba(37,99,235,0.12);--accent-glow:rgba(37,99,235,0.22);
-  --tag-bg:rgba(255,255,255,0.05);--tag-border:rgba(255,255,255,0.1);
-  --sidebar-bg:#0d1120;--sidebar-active:rgba(37,99,235,0.12);
-  --nav-bg:rgba(10,14,26,0.92);
-  --code-bg:#0d1120;--code-text:#a5b4fc;
-  --chip-green:rgba(74,222,128,0.1);--chip-green-t:rgba(74,222,128,0.2);--chip-green-c:#4ade80;
-  --chip-amber:rgba(251,191,36,0.1);--chip-amber-t:rgba(251,191,36,0.2);--chip-amber-c:#fbbf24;
-  --chip-red:rgba(248,113,113,0.1);--chip-red-t:rgba(248,113,113,0.2);--chip-red-c:#f87171;
-  --table-stripe:rgba(255,255,255,0.02);
-  --example-bg:rgba(37,99,235,0.06);--example-border:rgba(37,99,235,0.18);
-}
-[data-theme="light"]{
-  --bg:#f0f5fc;--bg2:#ffffff;--bg3:#f7faff;
-  --border:rgba(37,99,235,0.1);--border-active:rgba(37,99,235,0.28);
-  --text:#0d1830;--text2:#3d5080;--text3:#8090b8;
-  --accent:#2563eb;--accent-h:#1d4ed8;--accent-soft:rgba(37,99,235,0.07);--accent-glow:rgba(37,99,235,0.14);
-  --tag-bg:rgba(37,99,235,0.06);--tag-border:rgba(37,99,235,0.14);
-  --sidebar-bg:#e8effa;--sidebar-active:rgba(37,99,235,0.1);
-  --nav-bg:rgba(240,245,252,0.92);
-  --code-bg:#e8effa;--code-text:#1d4ed8;
-  --chip-green:rgba(22,163,74,0.08);--chip-green-t:rgba(22,163,74,0.18);--chip-green-c:#16a34a;
-  --chip-amber:rgba(217,119,6,0.08);--chip-amber-t:rgba(217,119,6,0.18);--chip-amber-c:#d97706;
-  --chip-red:rgba(220,38,38,0.08);--chip-red-t:rgba(220,38,38,0.18);--chip-red-c:#dc2626;
-  --table-stripe:rgba(37,99,235,0.02);
-  --example-bg:rgba(37,99,235,0.04);--example-border:rgba(37,99,235,0.14);
-}
-
-body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);min-height:100vh}
-
-/* ── TOP NAV ── */
-.topnav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 32px;gap:24px;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:background var(--transition),border-color var(--transition)}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(37,99,235,0.3)}
-.logo-icon svg{width:16px;height:16px}
-.logo-wordmark{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.02em;transition:color var(--transition)}
-.logo-wordmark span{color:var(--accent)}
-.nav-tabs{display:flex;align-items:center;gap:2px;margin-left:24px}
-.nav-tab{font-size:13px;font-weight:500;padding:6px 14px;border-radius:6px;text-decoration:none;color:var(--text2);transition:all var(--transition);border:1px solid transparent}
-.nav-tab:hover{color:var(--text);background:var(--accent-soft)}
-.nav-tab.active{color:var(--accent);background:var(--accent-soft);border-color:var(--border-active)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.version-badge{font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);color:var(--text3);transition:all var(--transition)}
-.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--tag-bg);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all var(--transition)}
-.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-.theme-btn svg{width:14px;height:14px}
-.i-sun{display:none}.i-moon{display:block}
-[data-theme="light"] .i-sun{display:block}[data-theme="light"] .i-moon{display:none}
-
-/* ── PAGE LAYOUT ── */
-.page-wrap{display:flex;min-height:100vh;padding-top:56px}
-
-/* ── SIDEBAR ── */
-.sidebar{width:240px;flex-shrink:0;position:fixed;top:56px;bottom:0;left:0;overflow-y:auto;background:var(--sidebar-bg);border-right:1px solid var(--border);padding:24px 0 48px;transition:background var(--transition),border-color var(--transition)}
-.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.sb-section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:0 20px;margin:20px 0 6px;transition:color var(--transition)}
-.sb-link{display:flex;align-items:center;gap:10px;padding:7px 20px;font-size:13px;color:var(--text2);text-decoration:none;transition:all var(--transition);border-left:2px solid transparent;cursor:pointer}
-.sb-link:hover{color:var(--text);background:var(--accent-soft)}
-.sb-link.active{color:var(--accent);background:var(--sidebar-active);border-left-color:var(--accent);font-weight:500}
-.sb-link .sb-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);min-width:22px;transition:color var(--transition)}
-.sb-link.active .sb-num{color:var(--accent)}
-
-/* ── MAIN CONTENT ── */
-.main-content{margin-left:240px;flex:1;min-width:0;padding:48px 64px 120px;max-width:960px}
-
-/* ── SECTION ── */
-.doc-section{margin-bottom:80px;scroll-margin-top:80px}
-.section-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-.section-title{font-family:'Sora',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--text);margin-bottom:16px;transition:color var(--transition)}
-.section-lead{color:var(--text2);font-size:15px;line-height:1.75;max-width:680px;margin-bottom:28px}
-.divider{border:none;border-top:1px solid var(--border);margin:80px 0;transition:border-color var(--transition)}
-
-/* ── PAGE INTRO ── */
-.page-intro{margin-bottom:56px;padding-bottom:40px;border-bottom:1px solid var(--border)}
-.page-intro h1{font-family:'Sora',sans-serif;font-size:30px;font-weight:700;letter-spacing:-0.025em;color:var(--text);margin-bottom:12px}
-.page-intro p{color:var(--text2);font-size:15px;max-width:600px}
-.intro-meta{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
-.intro-meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
-.intro-meta-item svg{width:12px;height:12px;color:var(--accent)}
-
-/* ── CARDS GRID ── */
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
-.cards-2{grid-template-columns:repeat(2,1fr)}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;transition:all var(--transition)}
-.card:hover{border-color:var(--border-active)}
-.card-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
-.card p,.card ul{color:var(--text2);font-size:13.5px;line-height:1.65}
-.card ul{padding-left:16px}
-.card ul li{margin-bottom:5px}
-
-/* ── TAGS ── */
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
-.tag{font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:5px;border:1px solid var(--tag-border);background:var(--tag-bg);color:var(--text2)}
-.tag.blue{color:var(--accent);border-color:rgba(37,99,235,0.25);background:rgba(37,99,235,0.07)}
-.tag.green{color:var(--chip-green-c);border-color:var(--chip-green-t);background:var(--chip-green)}
-.tag.amber{color:var(--chip-amber-c);border-color:var(--chip-amber-t);background:var(--chip-amber)}
-.tag.red{color:var(--chip-red-c);border-color:var(--chip-red-t);background:var(--chip-red)}
-
-/* ── EXAMPLE BOX ── */
-.example{background:var(--example-bg);border:1px solid var(--example-border);border-radius:8px;padding:16px 18px;margin-top:14px}
-.example-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.example p{color:var(--text2);font-size:13.5px;line-height:1.65}
-
-/* ── CODE ── */
-.code{background:var(--code-bg);border:1px solid var(--border);border-radius:7px;padding:14px 18px;font-family:'DM Mono',monospace;font-size:12px;color:var(--code-text);overflow-x:auto;white-space:pre;margin:10px 0;transition:all var(--transition)}
-
-/* ── TABLE ── */
-.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
-.tbl th{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
-.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
-.tbl tr:last-child td{border-bottom:none}
-.tbl tr:nth-child(even) td{background:var(--table-stripe)}
-
-/* ── PIPELINE ── */
-.pipeline{display:flex;flex-direction:column;gap:2px;margin:14px 0}
-.pipe-stage{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;transition:all var(--transition)}
-.pipe-num{width:28px;height:28px;border-radius:6px;background:var(--accent-soft);border:1px solid var(--border-active);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);flex-shrink:0;margin-top:1px}
-.pipe-name{font-size:13.5px;font-weight:500;color:var(--text);min-width:180px}
-.pipe-detail{font-size:13px;color:var(--text2)}
-.pipe-connector{width:1px;height:10px;background:var(--border-active);margin-left:27px}
-
-/* ── LAYER STACK ── */
-.layer-stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
-.layer-item{border:1px solid var(--border);border-radius:9px;overflow:hidden;transition:border-color var(--transition)}
-.layer-item:hover{border-color:var(--border-active)}
-.layer-item.open{border-color:var(--border-active)}
-.layer-hd{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;background:var(--bg2);user-select:none}
-.layer-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.layer-name{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);min-width:200px}
-.layer-tags{display:flex;gap:5px;flex-wrap:wrap;flex:1}
-.layer-chev{margin-left:auto;color:var(--text3);transition:transform 0.25s;flex-shrink:0;font-size:16px}
-.layer-item.open .layer-chev{transform:rotate(180deg)}
-.layer-bd{display:none;padding:20px 20px 20px;background:var(--bg);border-top:1px solid var(--border)}
-.layer-item.open .layer-bd{display:block}
-
-/* ── ACTOR CHIPS ── */
-.actors{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
-.actor{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text2);transition:all var(--transition)}
-.actor:hover{border-color:var(--border-active);color:var(--text)}
-.actor svg{width:16px;height:16px;color:var(--accent);flex-shrink:0}
-
-/* ── SCALE ROW ── */
-.scale-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
-.scale-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px;text-align:center;transition:all var(--transition)}
-.scale-card:hover{border-color:var(--border-active)}
-.scale-num{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;margin-bottom:4px}
-.scale-sub{font-size:11px;color:var(--text2);line-height:1.5}
-
-/* ── ADR GRID ── */
-.adr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.adr-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 18px;transition:all var(--transition)}
-.adr-status{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;margin-bottom:8px}
-.adr-card h4{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:6px}
-.adr-card p{font-size:12.5px;color:var(--text2)}
-
-/* ── ALERT PATH ── */
-.alert-path{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin:12px 0}
-.ap-step{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:8px 14px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);white-space:nowrap}
-.ap-arrow{color:var(--text3);padding:0 6px;font-size:16px}
-
-/* ── SERVICE GRID ── */
-.svc-grid{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
-.svc-chip{font-family:'DM Mono',monospace;font-size:11px;padding:5px 10px;border-radius:6px;border:1px solid}
-
-/* ── HIGHLIGHT ── */
-.hl{color:var(--text);font-weight:500}
-.hl-blue{color:var(--accent)}
-.hl-green{color:var(--chip-green-c)}
-.hl-amber{color:var(--chip-amber-c)}
-.hl-red{color:var(--chip-red-c)}
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px){.sidebar{display:none}.main-content{margin-left:0;padding:32px 24px 80px}}
-@media(max-width:600px){.cards{grid-template-columns:1fr}.scale-row{grid-template-columns:1fr 1fr}.adr-grid{grid-template-columns:1fr}}
-</style>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="architecture.css">
 </head>
 <body>
 
@@ -204,10 +22,19 @@ body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:
     <span class="logo-wordmark">Gravity<span>Labs</span></span>
   </a>
   <div class="nav-tabs">
-    <a class="nav-tab active" href="index.html">Documentation</a>
-    <a class="nav-tab" href="diagram.html">Architecture</a>
+    <a class="nav-tab active" href="index.html">Architecture</a>
+    <a class="nav-tab" href="diagram.html">Diagram</a>
     <a class="nav-tab" href="flows.html">Flows</a>
+    <a class="nav-tab" href="brd.html">BRD</a>
+    <a class="nav-tab" href="fsd.html">FSD</a>
+    <a class="nav-tab" href="cursor.html">Cursor Guide</a>
   </div>
+  <div class="nav-search-wrap" role="search">
+    <label class="sr-only" for="gl-doc-search">Search this page</label>
+    <input type="search" id="gl-doc-search" class="nav-search-input" placeholder="Search this page…" autocomplete="off" />
+    <div id="gl-doc-search-results" class="nav-search-results" hidden></div>
+  </div>
+  <button type="button" class="nav-mtoggle" onclick="glToggleNav()" aria-label="Open section menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
   <div class="nav-right">
     <span class="version-badge">v1.0 · May 2026</span>
     <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
@@ -218,33 +45,35 @@ body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:
 </nav>
 
 <div class="page-wrap">
+<div class="sb-backdrop" id="sb-backdrop" onclick="glCloseNav()" aria-hidden="true"></div>
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <div class="sb-section-label">Overview</div>
-  <a class="sb-link active" onclick="scrollTo('s00')"><span class="sb-num">00</span>Users &amp; Actors</a>
-  <a class="sb-link" onclick="scrollTo('s01')"><span class="sb-num">01</span>Access &amp; Edge</a>
-  <a class="sb-link" onclick="scrollTo('s02')"><span class="sb-num">02</span>Full Stack</a>
-  <div class="sb-section-label">Application</div>
-  <a class="sb-link" onclick="scrollTo('s03')"><span class="sb-num">03</span>Client Layer</a>
-  <a class="sb-link" onclick="scrollTo('s04')"><span class="sb-num">04</span>API Gateway</a>
-  <a class="sb-link" onclick="scrollTo('s05')"><span class="sb-num">05</span>App Services</a>
-  <a class="sb-link" onclick="scrollTo('s06')"><span class="sb-num">06</span>AI Agents</a>
-  <a class="sb-link" onclick="scrollTo('s07')"><span class="sb-num">07</span>Workflow</a>
-  <div class="sb-section-label">Infrastructure</div>
-  <a class="sb-link" onclick="scrollTo('s08')"><span class="sb-num">08</span>Messaging &amp; Cache</a>
-  <a class="sb-link" onclick="scrollTo('s09')"><span class="sb-num">09</span>Data Layer</a>
-  <a class="sb-link" onclick="scrollTo('s10')"><span class="sb-num">10</span>CI/CD &amp; Clusters</a>
-  <a class="sb-link" onclick="scrollTo('s11')"><span class="sb-num">11</span>Monitoring</a>
-  <a class="sb-link" onclick="scrollTo('s12')"><span class="sb-num">12</span>Peripheral Services</a>
-  <div class="sb-section-label">Planning</div>
-  <a class="sb-link" onclick="scrollTo('s13')"><span class="sb-num">13</span>Scale Strategy</a>
-  <a class="sb-link" onclick="scrollTo('s14')"><span class="sb-num">14</span>Open Decisions</a>
+  <div class="sb-lbl">Overview</div>
+  <a class="sb-a active" href="#s00"><span class="n">00</span>Users &amp; Actors</a>
+  <a class="sb-a" href="#s01"><span class="n">01</span>Access &amp; Edge</a>
+  <a class="sb-a" href="#s02"><span class="n">02</span>Full Stack</a>
+  <div class="sb-lbl">Application</div>
+  <a class="sb-a" href="#s03"><span class="n">03</span>Client Layer</a>
+  <a class="sb-a" href="#s04"><span class="n">04</span>API Gateway</a>
+  <a class="sb-a" href="#s05"><span class="n">05</span>App Services</a>
+  <a class="sb-a" href="#s06"><span class="n">06</span>AI Agents</a>
+  <a class="sb-a" href="#s07"><span class="n">07</span>Workflow</a>
+  <div class="sb-lbl">Infrastructure</div>
+  <a class="sb-a" href="#s08"><span class="n">08</span>Messaging &amp; Cache</a>
+  <a class="sb-a" href="#s09"><span class="n">09</span>Data Layer &amp; PgBouncer</a>
+  <a class="sb-a" href="#s10"><span class="n">10</span>CI/CD &amp; Clusters</a>
+  <a class="sb-a" href="#s11"><span class="n">11</span>Monitoring</a>
+  <a class="sb-a" href="#s12"><span class="n">12</span>Peripheral Services</a>
+  <div class="sb-lbl">Planning</div>
+  <a class="sb-a" href="#s13"><span class="n">13</span>Scale Strategy</a>
+  <a class="sb-a" href="#s14"><span class="n">14</span>Open Decisions</a>
 </aside>
 
 <!-- MAIN CONTENT -->
-<div class="main-content">
+<div class="main-content" id="gl-search-scope">
+<div class="content-shell">
 
-  <div class="page-intro">
+  <div class="page-intro page-intro--hero">
     <div class="section-eyebrow">Architecture Reference Document</div>
     <h1>Gravity Labs Platform Architecture</h1>
     <p>Layer-by-layer reference for the entire platform — every technology, every decision, and exactly how it fits. Living document updated each sprint.</p>
@@ -255,22 +84,181 @@ body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;background:
     </div>
   </div>
 
-  <!-- S00: Users & Actors -->
-  <div class="doc-section" id="s00">
-    <div class="section-eyebrow">00 / Users &amp; Actors</div>
-    <h2 class="section-title">Users &amp; Actors</h2>
-    <p class="section-lead">Four distinct user types interact with the Gravity Labs platform, each with different access levels, capabilities, and entry points.</p>
-    <div class="actors">
-      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Participants / Learners</div>
-      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Trainers / Evaluators</div>
-      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Platform Admins</div>
-      <div class="actor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sponsors / Partners</div>
-    </div>
-    <div class="cards">
-      <div class="card"><div class="card-label">Participants</div><p>Access labs via browser. Receive a unique isolated cloud environment. Interact through Guacamole (RDP/SSH) or Code-Server. Scored in real time by the AI scoring agent.</p></div>
-      <div class="card"><div class="card-label">Trainers / Evaluators</div><p>Create and manage lab content via the lab catalog. Monitor participant progress in real time via the Proctor View. Review AI-generated scores and override if needed.</p></div>
-      <div class="card"><div class="card-label">Platform Admins</div><p>Full access to the Admin Portal. Approve HITL gates, manage tenants, configure subscriptions, monitor infrastructure health, and trigger event launches.</p></div>
-    </div>
+  <!-- S00: Users & Actors (premium section — template for rolling out to other sections) -->
+  <div class="doc-section doc-section--actors" id="s00">
+    <div class="actors-premium actors-premium-layout">
+      <div class="actors-premium-main">
+      <header class="actors-premium-head">
+        <div class="section-eyebrow">00 / Users &amp; Actors</div>
+        <h2 class="actors-premium-title">Users &amp; Actors</h2>
+        <p class="actors-premium-lead">Four distinct user types interact with the Gravity Labs platform. Each has its own access model, primary surfaces, and operational footprint — from learners in isolated lab VMs to partners co-selling sponsored cohorts.</p>
+      </header>
+
+      <div class="actors-tabs" role="tablist" aria-label="Actor types">
+        <button type="button" class="actors-tab is-active" role="tab" aria-selected="true" aria-controls="actors-panel-0" id="actors-tab-0" data-actors-panel="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Participants
+        </button>
+        <button type="button" class="actors-tab" role="tab" aria-selected="false" aria-controls="actors-panel-1" id="actors-tab-1" data-actors-panel="1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Trainers
+        </button>
+        <button type="button" class="actors-tab" role="tab" aria-selected="false" aria-controls="actors-panel-2" id="actors-tab-2" data-actors-panel="2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Admins
+        </button>
+        <button type="button" class="actors-tab" role="tab" aria-selected="false" aria-controls="actors-panel-3" id="actors-tab-3" data-actors-panel="3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Sponsors
+        </button>
+      </div>
+
+      <div class="actors-panel-wrap">
+        <div class="actors-panel is-active" role="tabpanel" id="actors-panel-0" aria-labelledby="actors-tab-0">
+          <div class="actors-feature-card">
+            <div class="actors-feature-top">
+              <div class="actors-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <div>
+                <div class="actors-feature-meta">Primary persona · Browser</div>
+                <h3 class="actors-feature-name">Participants / Learners</h3>
+              </div>
+            </div>
+            <p class="actors-feature-body">Learners access labs through the browser with least-privilege credentials. Each session receives a uniquely isolated cloud environment. Interaction flows through Guacamole (RDP/SSH) or Code-Server; the AI scoring agent evaluates submissions continuously and surfaces results without blocking the lab experience.</p>
+            <div class="actors-feature-foot">
+              <span class="actors-kpi">Surface: <strong>Participant app</strong></span>
+              <span class="actors-kpi">Lab access: <strong>Guacamole · Code-Server</strong></span>
+              <span class="actors-kpi">Scoring: <strong>Real-time AI agent</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="actors-panel" role="tabpanel" id="actors-panel-1" aria-labelledby="actors-tab-1" hidden>
+          <div class="actors-feature-card">
+            <div class="actors-feature-top">
+              <div class="actors-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div>
+                <div class="actors-feature-meta">Content &amp; oversight</div>
+                <h3 class="actors-feature-name">Trainers / Evaluators</h3>
+              </div>
+            </div>
+            <p class="actors-feature-body">Trainers author and curate lab content through the catalog, monitor cohort health in real time via Proctor View, and reconcile AI judgments with human judgment when the domain demands it. Overrides are audited so scoring stays explainable across programs and events.</p>
+            <div class="actors-feature-foot">
+              <span class="actors-kpi">Surface: <strong>Catalog · Proctor View</strong></span>
+              <span class="actors-kpi">Controls: <strong>Score override · audit trail</strong></span>
+              <span class="actors-kpi">Live ops: <strong>Cohort telemetry</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="actors-panel" role="tabpanel" id="actors-panel-2" aria-labelledby="actors-tab-2" hidden>
+          <div class="actors-feature-card">
+            <div class="actors-feature-top">
+              <div class="actors-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <div>
+                <div class="actors-feature-meta">Platform control plane</div>
+                <h3 class="actors-feature-name">Platform Admins</h3>
+              </div>
+            </div>
+            <p class="actors-feature-body">Administrators operate the tenant boundary: approving HITL gates, managing subscriptions and quotas, monitoring infrastructure signals, and triggering high-stakes event launches. The Admin Portal is the authoritative surface for policy, procurement, and reliability workflows.</p>
+            <div class="actors-feature-foot">
+              <span class="actors-kpi">Surface: <strong>Admin Portal</strong></span>
+              <span class="actors-kpi">Scope: <strong>Tenants · billing · health</strong></span>
+              <span class="actors-kpi">Governance: <strong>HITL approvals</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="actors-panel" role="tabpanel" id="actors-panel-3" aria-labelledby="actors-tab-3" hidden>
+          <div class="actors-feature-card">
+            <div class="actors-feature-top">
+              <div class="actors-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <div class="actors-feature-meta">Commercial &amp; brand</div>
+                <h3 class="actors-feature-name">Sponsors / Partners</h3>
+              </div>
+            </div>
+            <p class="actors-feature-body">Partners sponsor cohorts, hackathons, and branded challenges with scoped visibility into utilization, seat consumption, and outcomes dashboards. Access is deliberately read-oriented — enough to prove ROI and co-market success without exposing participant-grade controls.</p>
+            <div class="actors-feature-foot">
+              <span class="actors-kpi">Surface: <strong>Partner portal</strong></span>
+              <span class="actors-kpi">Reports: <strong>Usage · outcomes</strong></span>
+              <span class="actors-kpi">Access: <strong>Read-predominant</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div><!-- /actors-premium-main -->
+
+      <aside class="actors-rail" aria-label="Reference">
+        <div class="actors-rail-inner">
+          <p class="actors-rail-intro"><strong>How to read this section.</strong> Narrative on the left explains intent; the reference rail mirrors API-style docs — fields, enums, and a compact schema — so you can scan like product or partner documentation.</p>
+
+          <div class="actors-rail-card actors-rail-panel is-active" data-actors-rail="0">
+            <div class="actors-rail-cap">Persona schema · Participants</div>
+            <div class="actors-rail-row"><div class="actors-rail-k">persona <span class="actors-rail-badge req">required</span></div><div class="actors-rail-d"><span class="actors-rail-badge">enum</span> participant</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">primary_surface</div><div class="actors-rail-d">Participant web app (labs, submissions, status)</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">lab_access</div><div class="actors-rail-d">Apache Guacamole (RDP/SSH) · Code-Server terminals</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">trust_tier</div><div class="actors-rail-d">Tenant-scoped JWT · per-lab network isolation</div></div>
+            <pre class="actors-rail-pre" id="actors-pre-0">{
+  "persona": "participant",
+  "session": "browser",
+  "scoring": "ai_agent_streaming",
+  "egress": ["guacamole", "codeserver"]
+}</pre>
+            <p class="actors-rail-foot">Scoring runs asynchronously; UX never blocks on model latency.</p>
+          </div>
+
+          <div class="actors-rail-card actors-rail-panel" data-actors-rail="1" hidden>
+            <div class="actors-rail-cap">Persona schema · Trainers</div>
+            <div class="actors-rail-row"><div class="actors-rail-k">persona <span class="actors-rail-badge req">required</span></div><div class="actors-rail-d"><span class="actors-rail-badge">enum</span> trainer_evaluator</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">catalog_scope</div><div class="actors-rail-d">Lab templates, cohort wiring, scoring rubric hooks</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">live_ops</div><div class="actors-rail-d">Proctor View · participant timeline · anomaly flags</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">human_override</div><div class="actors-rail-d">Recorded override on AI scores — full audit trail</div></div>
+            <pre class="actors-rail-pre" id="actors-pre-1">{
+  "persona": "trainer",
+  "surfaces": ["catalog", "proctor"],
+  "approval_workflow": "override_with_reason",
+  "audit": "append_only"
+}</pre>
+            <p class="actors-rail-foot">Trainers reconcile automation with policy; overrides never delete machine output.</p>
+          </div>
+
+          <div class="actors-rail-card actors-rail-panel" data-actors-rail="2" hidden>
+            <div class="actors-rail-cap">Persona schema · Admins</div>
+            <div class="actors-rail-row"><div class="actors-rail-k">persona <span class="actors-rail-badge req">required</span></div><div class="actors-rail-d"><span class="actors-rail-badge">enum</span> platform_admin</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">admin_plane</div><div class="actors-rail-d">Tenant CRUD · subscriptions · infra health · event launch</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">hitl_gates</div><div class="actors-rail-d">Approvals for blueprint, procurement, and pre-launch</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">blast_radius</div><div class="actors-rail-d">Highest — changes fan out to all tenants in scope</div></div>
+            <pre class="actors-rail-pre" id="actors-pre-2">{
+  "persona": "admin",
+  "rbac": "global_operator",
+  "gates": ["G1_blueprint","G2_procurement","G3_launch"],
+  "telemetry": "full_stack"
+}</pre>
+            <p class="actors-rail-foot">Use breaker policies: split prod changes from staging experimentation.</p>
+          </div>
+
+          <div class="actors-rail-card actors-rail-panel" data-actors-rail="3" hidden>
+            <div class="actors-rail-cap">Persona schema · Sponsors</div>
+            <div class="actors-rail-row"><div class="actors-rail-k">persona <span class="actors-rail-badge req">required</span></div><div class="actors-rail-d"><span class="actors-rail-badge">enum</span> sponsor_partner</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">visibility</div><div class="actors-rail-d">Cohort usage · seat burn · branded leaderboard (read-heavy)</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">billing_ref</div><div class="actors-rail-d">Linked sponsor account · invoice segmentation</div></div>
+            <div class="actors-rail-row"><div class="actors-rail-k">data_exposure</div><div class="actors-rail-d">Aggregates by default — no raw participant PII</div></div>
+            <pre class="actors-rail-pre" id="actors-pre-3">{
+  "persona": "sponsor",
+  "access": "read_predominant",
+  "reports": ["usage","outcomes","brand_kit"],
+  "pii": "aggregated_only"
+}</pre>
+            <p class="actors-rail-foot">Share enough to prove ROI while keeping learner data minimized.</p>
+          </div>
+        </div>
+      </aside>
+    </div><!-- /actors-premium-layout -->
   </div>
   <hr class="divider">
 
@@ -519,6 +507,52 @@ gravitylabs_temporal  ← Temporal internal</div>
       <div class="card"><div class="card-label">Why Single Instance</div><ul><li>Simpler ops — one backup, one upgrade, one monitoring target</li><li>Cheaper — one pod vs 8 separate pods</li><li>Logical isolation enforced at Postgres user level — wrong credentials = no access</li><li>Easy to split individual DBs to dedicated instances later if one service needs to scale</li></ul></div>
       <div class="card"><div class="card-label">Why Self-Managed</div><p>Azure Database for PostgreSQL Flexible Server and AWS Aurora are excellent but cloud-specific. Running Postgres in AKS means identical setup on Azure, AWS, GCP, or on-prem. Backup runs as a Kubernetes CronJob executing <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">pg_dump</code> → cloud object storage (Azure Blob / S3).</p></div>
     </div>
+    <!-- PgBouncer -->
+    <div style="margin-top:16px">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Connection Pooling</div>
+      <div class="cards">
+        <div class="card" style="border-color:rgba(74,222,128,0.2)">
+          <div class="card-label">PgBouncer — Why It Is Critical</div>
+          <p style="margin-bottom:10px">PgBouncer is a lightweight proxy that sits between all application pods and PostgreSQL. It multiplexes thousands of application connections into a small fixed pool of real Postgres connections — preventing connection exhaustion at event scale.</p>
+          <table class="tbl">
+            <tr><th>Scenario</th><th>Without PgBouncer</th><th>With PgBouncer</th></tr>
+            <tr><td>25K event peak</td><td style="color:var(--chip-red-c)">~2,000+ direct connections → Postgres OOM crash</td><td style="color:var(--chip-green-c)">2,000 app connections → 20 real Postgres connections</td></tr>
+            <tr><td>KEDA scale-out</td><td style="color:var(--chip-red-c)">300 pods × 2 = 600 new connections in 90s → storm</td><td style="color:var(--chip-green-c)">Pool absorbs burst transparently</td></tr>
+            <tr><td>Postgres default</td><td style="color:var(--chip-amber-c)">max_connections = 100 (hard limit)</td><td style="color:var(--chip-green-c)">max_client_conn = 5000 visible to apps</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-label">PgBouncer Configuration</div>
+          <div class="code">[pgbouncer]
+pool_mode           = transaction
+max_client_conn     = 5000
+default_pool_size   = 20
+reserve_pool_size   = 5
+reserve_pool_timeout = 3
+server_idle_timeout = 600
+auth_type           = scram-sha-256</div>
+          <div class="example" style="margin-top:12px">
+            <div class="example-label">SQLAlchemy compatibility fix</div>
+            <p>Transaction pooling mode breaks prepared statements. Set <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">statement_cache_size=0</code> in SQLAlchemy <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">connect_args</code> across all services. One-line change — nothing else required.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">How It Fits in AKS</div>
+          <div class="code">All microservice pods
+       ↓
+PgBouncer pod
+(ClusterIP: port 5432)
+       ↓
+PostgreSQL pod
+(internal only)</div>
+          <p style="margin-top:10px;color:var(--text2);font-size:13.5px">Services connect to <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)">pgbouncer:5432</code> — never directly to Postgres. Connection string host change only. All query code unchanged.</p>
+          <div class="example" style="margin-top:10px">
+            <div class="example-label">Without PgBouncer = world record event fails</div>
+            <p>At 25,000 users the platform has 2,000+ simultaneous DB-connected pods. PostgreSQL cannot handle this. PgBouncer is the difference between the event running and not running.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <hr class="divider">
 
@@ -647,10 +681,11 @@ gravitylabs_temporal  ← Temporal internal</div>
     </div>
   </div>
 
-  <div style="text-align:center;padding:48px 0;color:var(--text3);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;border-top:1px solid var(--border);margin-top:40px">
-    GRAVITY LABS · ARCHITECTURE REFERENCE · v1.0 · MAY 2026 · CONSTEL GLOBAL
+  <div class="doc-footer">
+    GRAVITY LABS · ARCHITECTURE REFERENCE · v1.0 · MAY 2026 · CONSTEL GLOBAL · KNOWLEDGE BASE
   </div>
 
+</div><!-- /content-shell -->
 </div><!-- /main-content -->
 </div><!-- /page-wrap -->
 
@@ -658,12 +693,47 @@ gravitylabs_temporal  ← Temporal internal</div>
 function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('gl-theme',t)}
 (function(){const s=localStorage.getItem('gl-theme');if(s)document.documentElement.setAttribute('data-theme',s);else if(window.matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.setAttribute('data-theme','light')})();
 function toggleLayer(el){el.classList.toggle('open')}
-function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
-// Sidebar active state on scroll
+/* Sidebar hash nav + active section: use href="#s00" (avoids Window.scrollTo name clash) */
+(function(){
+  const tabBtns=document.querySelectorAll('.actors-tab');
+  const panels=document.querySelectorAll('.actors-panel');
+  const railPanels=document.querySelectorAll('.actors-rail-panel');
+  function setActorsTab(i){
+    tabBtns.forEach((btn,idx)=>{
+      const on=idx===i;
+      btn.classList.toggle('is-active',on);
+      btn.setAttribute('aria-selected',on);
+    });
+    panels.forEach((panel,idx)=>{
+      const on=idx===i;
+      panel.classList.toggle('is-active',on);
+      if(on)panel.removeAttribute('hidden');else panel.setAttribute('hidden','');
+    });
+    railPanels.forEach((rail,idx)=>{
+      const on=idx===i;
+      rail.classList.toggle('is-active',on);
+      if(on)rail.removeAttribute('hidden');else rail.setAttribute('hidden','');
+    });
+  }
+  tabBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{const i=parseInt(btn.getAttribute('data-actors-panel'),10);if(!isNaN(i))setActorsTab(i)});
+  });
+})();
 const sections=document.querySelectorAll('.doc-section');
-const links=document.querySelectorAll('.sb-link');
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const id=e.target.id;links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes(id))l.classList.add('active')});}});},{rootMargin:'-20% 0px -70% 0px'});
+const links=document.querySelectorAll('.sb-a');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const id=e.target.id;
+    links.forEach(l=>{
+      l.classList.remove('active');
+      if(l.getAttribute('href')==='#'+id)l.classList.add('active');
+    });
+  });
+},{rootMargin:'-20% 0px -70% 0px'});
 sections.forEach(s=>obs.observe(s));
 </script>
+<script src="docs-nav.js"></script>
+<script src="docs-search.js"></script>
 </body>
 </html>

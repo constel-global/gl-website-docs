@@ -1,0 +1,33 @@
+/* Flow diagrams — extends shared.css */
+[data-theme="dark"]{
+  --f-bg:#0d1120;--f-process:#1a2540;--f-process-s:rgba(37,99,235,0.4);
+  --f-decision:#1c2040;--f-decision-s:rgba(167,139,250,0.4);
+  --f-terminal-s:#16a34a;--f-terminal-f:#1a2a1a;
+  --f-terminal-e-s:#dc2626;--f-terminal-e-f:#2a1a1a;
+  --f-hitl-s:#d97706;--f-hitl-f:#2a2010;
+  --f-agent-s:rgba(167,139,250,0.5);--f-agent-f:#1a1830;
+  --f-text:#c8d0e8;--f-text2:#6b7599;
+  --f-arrow:#2563eb;--f-arrow-y:#d97706;--f-arrow-g:#16a34a;
+}
+[data-theme="light"]{
+  --f-bg:#f5f8ff;--f-process:#ddeaff;--f-process-s:rgba(37,99,235,0.35);
+  --f-decision:#ede8ff;--f-decision-s:rgba(109,40,217,0.3);
+  --f-terminal-s:#16a34a;--f-terminal-f:#dcfce7;
+  --f-terminal-e-s:#dc2626;--f-terminal-e-f:#fee2e2;
+  --f-hitl-s:#d97706;--f-hitl-f:#fef3c7;
+  --f-agent-s:rgba(109,40,217,0.4);--f-agent-f:#ede8ff;
+  --f-text:#1a2040;--f-text2:#5a6888;
+  --f-arrow:#2563eb;--f-arrow-y:#d97706;--f-arrow-g:#16a34a;
+}
+.flow-section{margin-bottom:80px;scroll-margin-top:88px}
+.flow-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em}
+.flow-desc{color:var(--text2);font-size:14px;margin-bottom:24px}
+.flow-card{background:var(--f-bg);border:1px solid var(--border);border-radius:12px;padding:clamp(14px,3vw,28px);overflow-x:auto;transition:all var(--transition)}
+.flow-card svg{min-width:500px;width:100%;height:auto;display:block}
+.flow-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.fl-item{display:flex;align-items:center;gap:7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2)}
+.fl-box{width:14px;height:14px;border-radius:3px;border:1px solid}
+.fl-diamond{width:14px;height:14px;transform:rotate(45deg);border:1px solid;border-radius:2px}
+.page-intro-flow{margin-bottom:56px;padding-bottom:36px;border-bottom:1px solid var(--border)}
+.page-intro-flow h1{font-family:'Sora',sans-serif;font-size:clamp(22px,4vw,30px);font-weight:700;letter-spacing:-0.025em;color:var(--text);margin-bottom:12px}
+.page-intro-flow p{color:var(--text2);font-size:15px;max-width:600px}
